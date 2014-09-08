@@ -27,7 +27,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         con=context;
         //con.deleteFile("datacollection.db");
 
-        // TODO Auto-generated constructor stub 
+        // TODO Auto-generated constructor stub
     }
 
     @Override

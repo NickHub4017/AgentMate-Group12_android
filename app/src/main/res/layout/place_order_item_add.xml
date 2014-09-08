@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scrollView" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Place Order"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:textSize="@android:dimen/app_icon_size"
+            android:textStyle="bold"
+            android:textColor="#ff1acb14" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Selected vender is"
+            android:id="@+id/txt_vname_order_b"
+            android:textSize="@dimen/norm_val" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/table1"></TableLayout>
+    </LinearLayout>
+</ScrollView>
