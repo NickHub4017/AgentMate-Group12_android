@@ -6,6 +6,7 @@ package group12.ucsc.agentmate.ui;
 
 
         import android.app.Activity;
+        import android.content.Intent;
         import android.os.Bundle;
         import android.telephony.SmsManager;
         import android.view.View;
@@ -16,6 +17,7 @@ package group12.ucsc.agentmate.ui;
         import android.widget.Toast;
 
         import group12.ucsc.agentmate.R;
+        import group12.ucsc.agentmate.bll.Representative;
         import group12.ucsc.agentmate.dbc.DatabaseControl;
 
 public class Recover extends  Activity{
@@ -26,7 +28,7 @@ public class Recover extends  Activity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recover_window);
-
+        final Representative logged_rep=(Representative)getIntent().getExtras().getSerializable("logged_user");
         String user=getIntent().getExtras().getString("Username_is");
         EditText ans_txt=(EditText)findViewById(R.id.edit_empid);
         ans_txt.setText("Your UserName is  "+(String)user);
@@ -48,7 +50,7 @@ public class Recover extends  Activity{
                 String ent_ans=ans_txt.getText().toString();
                 if (ans.equals(dbc.password_encoder(ent_ans))){
 
-                    String phoneNo = "0712626607";
+                    String phoneNo = "0777117110";//0712626607
                     String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
                     try {
 
@@ -66,6 +68,22 @@ public class Recover extends  Activity{
                 else{
                     Toast.makeText(getApplicationContext(),"Wrong answer. Try again. :0" , Toast.LENGTH_SHORT).show();
 
+                }
+            }
+        });
+        final EditText code_win=(EditText)findViewById(R.id.editcode);
+
+        Button btn_code=(Button)findViewById(R.id.btn_submit_code);
+        btn_code.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Encoded.equals(code_win.getText().toString())){
+                    Intent reset=new Intent(Recover.this,SetPassword.class);
+                    reset.putExtra("logged_user", logged_rep);
+                    startActivity(reset);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"Wrong code",Toast.LENGTH_SHORT).show();
                 }
             }
         });

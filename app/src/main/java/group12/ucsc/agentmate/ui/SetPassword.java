@@ -48,7 +48,7 @@ public class SetPassword extends Activity{
                 String new_pw_ins_cnfrm=new_pw_ins_cnf_window.getText().toString();
 
                 String encoded_old_pw=dbc.password_encoder(old_pw_ins);
-                if (encoded_old_pw.equals(logged_password)){
+                if (encoded_old_pw.equals(logged_password) || old_pw_ins.equals(logged_rep.enc_password)){
                     if (new_pw_ins.equals(new_pw_ins_cnfrm)){
                         //Change password
                         Toast.makeText(SetPassword.this, "Your password change has been completed", Toast.LENGTH_SHORT).show();

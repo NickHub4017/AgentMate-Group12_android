@@ -170,7 +170,9 @@ public void forgot(){
 
 
        Intent intent = new Intent(Login_Activity.this, Recover.class);
+        Representative log_user=new Representative(c.getString(c.getColumnIndex("EmpId")), c.getString(c.getColumnIndex("UserName")), c.getString(c.getColumnIndex("Password")), c.getString(c.getColumnIndex("Question")), c.getString(c.getColumnIndex("Question")));
         //String k= c.getString(c.getColumnIndex("Question")).toString();
+        intent.putExtra("logged_user",log_user);
         intent.putExtra("Username_is", c.getString(c.getColumnIndex("UserName")));
         intent.putExtra("Question_is", c.getString(c.getColumnIndex("Question")));
         intent.putExtra("Answer_is", c.getString(c.getColumnIndex("Answer")));

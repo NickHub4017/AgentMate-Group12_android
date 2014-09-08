@@ -53,7 +53,7 @@
         <TextView
             android:id="@+id/textView3"
             android:layout_width="182dp"
-            android:layout_height="72dp"
+            android:layout_height="55dp"
             android:layout_above="@+id/lblqstn"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
@@ -86,7 +86,38 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
-            android:text="Submit" />
+            android:text="Submit"
+            android:layout_gravity="center"/>
+
+        <EditText
+            android:id="@+id/editcode"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_above="@+id/btn_submit"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:ems="10"
+            />
+        <Button
+            android:id="@+id/btn_submit_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:text="Enter the code"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/lblview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editanswer"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:textColor="@android:color/holo_green_dark"
+            android:text="Enter the same code for reset your password in next window"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </LinearLayout>
 
