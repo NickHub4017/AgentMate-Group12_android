@@ -27,12 +27,12 @@ public class DatabaseControl extends SQLiteOpenHelper{
         con=context;
         //con.deleteFile("datacollection.db");
 
-        // TODO Auto-generated constructor stub
+
     }
 
     @Override
     public void onCreate(SQLiteDatabase database) {
-        // TODO Auto-generated method stub
+
 //Create login table
         String create_login_query = "CREATE TABLE login (EmpId VARCHAR(4),UserName VARCHAR(10) PRIMARY KEY,Password TEXT,Question VARCHAR(50),Answer VARCHAR(20),LastUpdate datetime default current_timestamp)";
         database.execSQL(create_login_query);
@@ -61,7 +61,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
+
 
     }
     public void k(){

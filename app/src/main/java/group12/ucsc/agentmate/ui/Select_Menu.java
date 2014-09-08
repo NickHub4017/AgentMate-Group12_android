@@ -78,7 +78,7 @@ public class Select_Menu extends Activity{
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
+
                 Intent create_new_vendor_intent=new Intent(Select_Menu.this,CreateNewVendor.class);
                 create_new_vendor_intent.putExtra("logged_user", logged_rep);
                 startActivity(create_new_vendor_intent);

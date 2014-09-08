@@ -23,7 +23,7 @@ public class SetPassword extends Activity{
     DatabaseControl dbc=new DatabaseControl(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         final String logged_username;
         final String logged_password;
 

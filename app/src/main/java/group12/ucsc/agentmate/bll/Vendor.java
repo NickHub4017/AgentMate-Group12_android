@@ -87,7 +87,7 @@ public class Vendor implements Serializable{
     }
 
     public void updateVendor(Vendor edited_vendor){
-        //ToDo coonect this with database class
+
     }
     public void setShopName(String shp_nm){
         this.shopName=shp_nm;

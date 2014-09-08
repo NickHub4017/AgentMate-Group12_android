@@ -21,7 +21,6 @@ public class CreateNewVendor extends Activity {
 DatabaseControl dbc=new DatabaseControl(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         final Representative logged_rep=(Representative)getIntent().getExtras().getSerializable("logged_user");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_new_customer);
@@ -36,7 +35,7 @@ DatabaseControl dbc=new DatabaseControl(this);
         }
         });
 
-        Button view_btn=(Button)findViewById(R.id.btn_view_test);
+       /* Button view_btn=(Button)findViewById(R.id.btn_view_test);
 
 
         view_btn.setOnClickListener(new View.OnClickListener() {
@@ -46,7 +45,7 @@ DatabaseControl dbc=new DatabaseControl(this);
 
 
             }
-        });
+        });*/
         //Vendor vn=new Vendor("abcdV001","shop","vname","addrs","shopno","cnfno",0.1,false);
         //dbc.addVendor(vn);
        Cursor crs=dbc.getVendorTable();
@@ -105,7 +104,7 @@ DatabaseControl dbc=new DatabaseControl(this);
         Vendor new_vendor=new Vendor(vno_ins,shopname_ins,owner_ins,address_ins,shoptel_ins,cnftel_ins,0.0,false);
         //Vendor new_vendor=new Vendor(1,"a","b","c",2,3,0.0,false);
         dbc.addVendor(new_vendor);
-        //ToDO implement addVendor in database control with parameters of vendor object.
+
         }
         else{
             if (shopname_ins.isEmpty()){
@@ -131,7 +130,7 @@ DatabaseControl dbc=new DatabaseControl(this);
 
     }
 
-    public void a(){
+  /*  public void a(){
         EditText et=(EditText)findViewById(R.id.edit_ShopName);
         String k=et.getText().toString();
         Cursor c=dbc.findVendor(k);
@@ -144,6 +143,6 @@ DatabaseControl dbc=new DatabaseControl(this);
         if (c.getCount()==0){
             Toast.makeText(this,"0", Toast.LENGTH_SHORT);
         }
-    }
+    }*/
 
 }

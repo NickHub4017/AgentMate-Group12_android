@@ -1,6 +1,8 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -77,7 +79,10 @@ public class Login_Activity extends Activity {
         Exit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 finish();
+
+
             }
         });
     }

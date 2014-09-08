@@ -92,7 +92,8 @@ tools:context=".Login_Activity" >
         android:id="@+id/BtnExit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/exit" />
+        android:text="@string/exit"
+        android:visibility="invisible"/>
 </LinearLayout>
 
 </RelativeLayout>

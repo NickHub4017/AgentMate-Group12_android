@@ -23,7 +23,7 @@ public class Recover extends  Activity{
     String ans,Eid,Encoded;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recover_window);
 
