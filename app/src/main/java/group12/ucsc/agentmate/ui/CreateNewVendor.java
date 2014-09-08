@@ -2,6 +2,7 @@ package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -86,6 +87,7 @@ DatabaseControl dbc=new DatabaseControl(this);
 
 
     public void vender_create_func(){
+
         EditText edit_vno_window=(EditText)findViewById(R.id.edit_vno);
         EditText edit_shopname_window=(EditText)findViewById(R.id.edit_ShopName);
         EditText edit_owner_window=(EditText)findViewById(R.id.edit_Owner);
@@ -99,11 +101,33 @@ DatabaseControl dbc=new DatabaseControl(this);
         String address_ins=edit_address_window.getText().toString();
         String shoptel_ins=edit_shoptel_window.getText().toString();
         String cnftel_ins=edit_cnftel_window.getText().toString();
-
+        if (!shopname_ins.isEmpty() && !owner_ins.isEmpty() && !address_ins.isEmpty()){
         Vendor new_vendor=new Vendor(vno_ins,shopname_ins,owner_ins,address_ins,shoptel_ins,cnftel_ins,0.0,false);
         //Vendor new_vendor=new Vendor(1,"a","b","c",2,3,0.0,false);
         dbc.addVendor(new_vendor);
         //ToDO implement addVendor in database control with parameters of vendor object.
+        }
+        else{
+            if (shopname_ins.isEmpty()){
+                edit_shopname_window.setBackgroundColor(Color.CYAN);
+            }
+            else{
+                edit_shopname_window.setBackgroundColor(Color.WHITE);
+            }
+            if (owner_ins.isEmpty()){
+                edit_owner_window.setBackgroundColor(Color.CYAN);
+            }
+            else{
+                edit_owner_window.setBackgroundColor(Color.WHITE);
+            }
+            if (address_ins.isEmpty()){
+               edit_address_window.setBackgroundColor(Color.CYAN);
+            }
+            else{
+                edit_address_window.setBackgroundColor(Color.WHITE);
+            }
+            Toast.makeText(getApplicationContext(),"Please fill the required fields",Toast.LENGTH_SHORT).show();
+        }
 
     }
 

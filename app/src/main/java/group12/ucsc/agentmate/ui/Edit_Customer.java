@@ -2,6 +2,7 @@ package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -56,7 +57,7 @@ public class Edit_Customer extends Activity{
         edit_new_confTel_window.setEnabled(false);
 
 
-        final Cursor cursor=dbc.getVendorTable();
+        final Cursor cursor=dbc.getVendorTable();//Get the value 's of all vendors in the table
         Toast.makeText(this, ""+cursor.getCount(), Toast.LENGTH_SHORT).show();
         final String[] str_arry_vno=new String[cursor.getCount()];
         final String[] str_arry_shname=new String[cursor.getCount()];
@@ -69,7 +70,7 @@ public class Edit_Customer extends Activity{
                 i++;
             }while(cursor.moveToNext());
         }
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,str_arry_vno);
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,str_arry_vno);//Set Array adpter for the Vno
 
         no_edit_auto.setAdapter(adapter);
         no_edit_auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,7 +86,7 @@ public class Edit_Customer extends Activity{
             }
         });
 
-        ArrayAdapter adapter_shname = new ArrayAdapter(this,android.R.layout.simple_list_item_1,str_arry_shname);
+        ArrayAdapter adapter_shname = new ArrayAdapter(this,android.R.layout.simple_list_item_1,str_arry_shname);///Set aray adapter for shop names
 
         shname_edit_auto.setAdapter(adapter_shname);
         shname_edit_auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,10 +140,31 @@ public class Edit_Customer extends Activity{
         String newAddressName=edit_new_address_window.getText().toString();
         String newShopTelName=edit_new_shopTel_window.getText().toString();
         String newConfTelName=edit_new_confTel_window.getText().toString();
-
-        Vendor edited_vendor=new Vendor(v_no,newShopName,newOwnerName,newAddressName,newShopTelName,newConfTelName,0,false);
-        dbc.editVendor(edited_vendor,getApplicationContext());
-
+        if(!newShopName.isEmpty() && !newOwnerName.isEmpty() && !newAddressName.isEmpty()) {
+            Vendor edited_vendor = new Vendor(v_no, newShopName, newOwnerName, newAddressName, newShopTelName, newConfTelName, 0, false);
+            dbc.editVendor(edited_vendor, getApplicationContext());
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"required fields are missing",Toast.LENGTH_SHORT).show();
+            if (newShopName.isEmpty()){
+                edit_new_shopname_window.setBackgroundColor(Color.MAGENTA);
+            }
+            else{
+                edit_new_shopname_window.setBackgroundColor(Color.WHITE);
+            }
+            if (newOwnerName.isEmpty()){
+                edit_new_owner_window.setBackgroundColor(Color.MAGENTA);
+            }
+            else{
+                edit_new_owner_window.setBackgroundColor(Color.WHITE);
+            }
+            if (newAddressName.isEmpty()){
+                edit_new_address_window.setBackgroundColor(Color.MAGENTA);
+            }
+            else{
+                edit_new_address_window.setBackgroundColor(Color.WHITE);
+            }
+        }
 
     }
 }
