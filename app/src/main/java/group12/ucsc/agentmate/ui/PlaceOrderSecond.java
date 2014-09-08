@@ -60,19 +60,4 @@ public class PlaceOrderSecond extends Activity {
 }
 
 
-/*
-ImageView img=(ImageView)findViewById(R.id.imageView);
-Bitmap bitmap1=null;
 
-bitmap1 = BitmapFactory.decodeFile("/sdcard/Download/c.png");
-        if (bitmap1==null){
-        bitmap1 = BitmapFactory.decodeFile("/sdcard/Download/b.png");
-        }
-
-
-
-
-        img.setAdjustViewBounds(true);
-        img.setMaxHeight(64);
-        img.setImageBitmap(bitmap1);
-*/

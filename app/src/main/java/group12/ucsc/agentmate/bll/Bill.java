@@ -11,6 +11,5 @@ public class Bill implements Serializable {
     String BillDate;
     String PayDate;
     
-    String create_billTable_query = "CREATE TABLE bill (BillID TEXT PRIMARY KEY, venorderID TEXT , " +
-            "Billing_date datetime default current_timestamp,paid_date datetime default not_yet TEXT,paid_amount FLOAT,full_amount FLOAT)";
+
 }

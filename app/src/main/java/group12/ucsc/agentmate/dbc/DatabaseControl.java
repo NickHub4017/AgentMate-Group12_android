@@ -54,7 +54,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
 
 
-        Toast.makeText(con, "dell ", Toast.LENGTH_SHORT).show();
+
 
 
     }
@@ -102,42 +102,6 @@ public class DatabaseControl extends SQLiteOpenHelper{
         Cursor cursor = database.rawQuery(selectQuery,null);
         Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
         Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
-	/*if (cursor.moveToFirst()) {
-        do {
-
-        	LoginMap.put("EmpId", cursor.getString(1));
-        	LoginMap.put("UserName", cursor.getString(2));
-        	LoginMap.put("Password", cursor.getString(3));
-        	LoginMap.put("Question", cursor.getString(4));
-
-        } while (cursor.moveToNext());
-    }
-        return cursor;
-    }
-
-    public Cursor getLoginInfoByEmpId(String EmpId_ins) {
-        HashMap<String, String> LoginMap = new HashMap<String, String>();
-
-
-
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String selectQuery = "SELECT * FROM login  where EmpId='"+EmpId_ins+"'";
-
-        Cursor cursor = database.rawQuery(selectQuery,null);
-        Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
-        Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
-	/*if (cursor.moveToFirst()) {
-        do {
-
-        	LoginMap.put("EmpId", cursor.getString(1));
-        	LoginMap.put("UserName", cursor.getString(2));
-        	LoginMap.put("Password", cursor.getString(3));
-        	LoginMap.put("Question", cursor.getString(4));
-
-
-        } while (cursor.moveToNext());
-    }*/
         return cursor;
     }
 
@@ -199,29 +163,6 @@ public class DatabaseControl extends SQLiteOpenHelper{
         database.update("vendor", values, "venderno" + " = ?", new String[]{ven_id});
     }
 
-
-
-  /*  public void addItem(String ItemID_ins,String itemName_ins,float price_ins,float comp_disc,Discount[] discnts){
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        if (){//ToDO add method Exsists do update
-
-        }
-        else{
-           values.put("ItemID",ItemID_ins);
-            values.put("ItemName",itemName_ins);
-            values.put("price_ins",price_ins);
-            values.put("CompanyDiscount",comp_disc);
-            database.insert("item",null, values);
-
-            for (int i=0;i<discnts.length;i++){
-                addDiscount(discnts[i].min_amount,discnts[i].max_amount,discnts[i].unit_of_measure,discnts[i].discount);
-            }
-
-        }
-
-    }*/
   public void addVendor(Vendor new_vendor){
       SQLiteDatabase database = this.getWritableDatabase();
       ContentValues values = new ContentValues();
@@ -385,12 +326,5 @@ public void setStateItem(Item itemEdit){
 
 }
 
-
-
-
-
-//public void editVendor(Vendor edited_vendor){
-//
-//}
 
 }
