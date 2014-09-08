@@ -64,6 +64,15 @@ public class Login_Activity extends Activity {
                dbc.like();
             }
         });
+
+        try {
+            dbc.insertToLogin("RP01", "grp12", dbc.password_encoder("2012"), "Year of joined ", dbc.password_encoder("2012"));
+            dbc.insertToLogin("RP02", "grp12a", dbc.password_encoder("2014"), "this year ", dbc.password_encoder("2014"));
+        }
+        catch(Exception e){
+            Toast.makeText(getApplicationContext(),"Not insert"+e.getMessage(),Toast.LENGTH_SHORT).show();
+
+        }
     }
 
 

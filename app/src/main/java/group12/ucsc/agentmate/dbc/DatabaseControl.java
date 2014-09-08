@@ -34,11 +34,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase database) {
         // TODO Auto-generated method stub
 //Create login table
-        String create_login_query = "CREATE TABLE login (id VARCHAR(4) , pict )";
+        String create_login_query = "CREATE TABLE login (EmpId VARCHAR(4),UserName VARCHAR(10) PRIMARY KEY,Password TEXT,Question VARCHAR(50),Answer VARCHAR(20),LastUpdate datetime default current_timestamp)";
         database.execSQL(create_login_query);
-
-        insertToLogin("RP01","grp12", password_encoder("2012"),"Year of joined ", password_encoder("2012"));
-        insertToLogin("RP02","grp12a", password_encoder("2014"),"this year ", password_encoder("2014"));
 
 //Create vendor table
         String create_vendorTable_query = "CREATE TABLE vendor (venderno VARCHAR(6) PRIMARY KEY,ShopName VARCHAR(20) ,VenderName VARCHAR(30) , " +
@@ -57,24 +54,9 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
 
 
-        //Toast.makeText(con, "dell ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(con, "dell ", Toast.LENGTH_SHORT).show();
 
-//Create vendor table
-        String create_complainTable_query = "CREATE TABLE complain (ComplainID TEXT PRIMARY KEY,ItemID TEXT, Complain TEXT , " +
-                "VendorID TEXT,Synced BOOLEAN)";
-        database.execSQL(create_complainTable_query);
 
-//Create order table
-        String create_venorderTable_query = "CREATE TABLE venorder (venorderID TEXT PRIMARY KEY, VenderID TEXT , " +
-                "OrderDate datetime default current_timestamp,DeliverDate datetime default not_yet,Sync BOOLEAN)";
-        database.execSQL(create_venorderTable_query);
-
-//Create order table
-        String create_billTable_query = "CREATE TABLE bill (BillID TEXT PRIMARY KEY, venorderID TEXT , " +
-                "Billing_date datetime default current_timestamp,paid_date datetime default not_yet,paid_amount FLOAT,full_amount FLOAT)";
-        database.execSQL(create_billTable_query);
-//TODO create discount table.
-//TODO create payment table
     }
 
     @Override
