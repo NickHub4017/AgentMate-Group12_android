@@ -38,7 +38,7 @@
             android:layout_above="@+id/edit_empid"
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
-            android:text="Enter Your Employee ID"
+            android:text="Your Employee ID"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText

@@ -162,6 +162,10 @@ public void forgot(){
         intent.putExtra("Username_is", c.getString(c.getColumnIndex("UserName")));
         intent.putExtra("Question_is", c.getString(c.getColumnIndex("Question")));
         intent.putExtra("Answer_is", c.getString(c.getColumnIndex("Answer")));
+        intent.putExtra("EmpId_is", c.getString(c.getColumnIndex("EmpId")));
+        intent.putExtra("Pwd_is", c.getString(c.getColumnIndex("Password")));
+
+
         //intent.putExtra("obj", new Bill("Check"));
         startActivity(intent);
     }

@@ -7,6 +7,7 @@ package group12.ucsc.agentmate.ui;
 
         import android.app.Activity;
         import android.os.Bundle;
+        import android.telephony.SmsManager;
         import android.view.View;
         import android.view.View.OnClickListener;
         import android.widget.Button;
@@ -19,7 +20,7 @@ package group12.ucsc.agentmate.ui;
 
 public class Recover extends  Activity{
     DatabaseControl dbc=new DatabaseControl(this);
-    String ans;
+    String ans,Eid,Encoded;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -35,9 +36,9 @@ public class Recover extends  Activity{
         TextView qsttv=(TextView)findViewById(R.id.lblqstn);
         qsttv.setText(qstn);
         ans=getIntent().getExtras().getString("Answer_is");
-        //Toast.makeText(getApplicationContext(), user+ " ****** " + qstn+ " ******* "+ ans , Toast.LENGTH_SHORT).show();
-        //Bill bl=(Bill) getIntent().getExtras().get("obj");
-        //Toast.makeText(getApplicationContext(),bl.item_no , Toast.LENGTH_SHORT).show();
+        Eid=getIntent().getExtras().getString("EmpId_is");
+        Encoded=getIntent().getExtras().getString("Pwd_is");
+
         Button submit=(Button)findViewById(R.id.btn_submit);
         submit.setOnClickListener(new OnClickListener() {
 
@@ -46,7 +47,22 @@ public class Recover extends  Activity{
                 EditText ans_txt=(EditText)findViewById(R.id.editanswer);
                 String ent_ans=ans_txt.getText().toString();
                 if (ans.equals(dbc.password_encoder(ent_ans))){
-                    Toast.makeText(getApplicationContext(),"Your submission is send to head office. Please check your email." , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Your submission is send to head office. Please check your email/sms inbox." , Toast.LENGTH_SHORT).show();
+                    String phoneNo = "0712626607";
+                    String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
+                    try {
+
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+                        Toast.makeText(getApplicationContext(), "Message Sent",
+                                Toast.LENGTH_LONG).show();
+                    } catch (Exception ex) {
+                        Toast.makeText(getApplicationContext(),
+                                ex.getMessage().toString(),
+                                Toast.LENGTH_LONG).show();
+                        ex.printStackTrace();
+                    }
+
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Wrong answer. Try again. :0" , Toast.LENGTH_SHORT).show();
