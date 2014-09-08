@@ -80,7 +80,7 @@ DatabaseControl dbc=new DatabaseControl(this);
         else{
            EditText edit_vno=(EditText)findViewById(R.id.edit_vno);
            edit_vno.setText(logged_rep.Emp_id+"V"+"001");
-
+           edit_vno.setEnabled(false);
        }
     }
 
