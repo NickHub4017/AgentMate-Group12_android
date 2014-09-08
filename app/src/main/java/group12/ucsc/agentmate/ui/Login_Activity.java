@@ -73,6 +73,13 @@ public class Login_Activity extends Activity {
             Toast.makeText(getApplicationContext(),"Not insert"+e.getMessage(),Toast.LENGTH_SHORT).show();
 
         }
+
+        Exit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
