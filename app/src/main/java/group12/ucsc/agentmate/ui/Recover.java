@@ -47,15 +47,14 @@ public class Recover extends  Activity{
                 EditText ans_txt=(EditText)findViewById(R.id.editanswer);
                 String ent_ans=ans_txt.getText().toString();
                 if (ans.equals(dbc.password_encoder(ent_ans))){
-                    Toast.makeText(getApplicationContext(),"Your submission is send to head office. Please check your email/sms inbox." , Toast.LENGTH_SHORT).show();
+
                     String phoneNo = "0712626607";
                     String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
                     try {
 
                         SmsManager smsManager = SmsManager.getDefault();
                         smsManager.sendTextMessage(phoneNo, null, msg, null, null);
-                        Toast.makeText(getApplicationContext(), "Message Sent",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Your submission is send to head office. Please check your email/sms inbox." , Toast.LENGTH_SHORT).show();
                     } catch (Exception ex) {
                         Toast.makeText(getApplicationContext(),
                                 ex.getMessage().toString(),
