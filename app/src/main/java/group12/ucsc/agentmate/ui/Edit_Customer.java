@@ -58,7 +58,7 @@ public class Edit_Customer extends Activity{
 
 
         final Cursor cursor=dbc.getVendorTable();//Get the value 's of all vendors in the table
-        Toast.makeText(this, ""+cursor.getCount(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, ""+cursor.getCount(), Toast.LENGTH_SHORT).show();
         final String[] str_arry_vno=new String[cursor.getCount()];
         final String[] str_arry_shname=new String[cursor.getCount()];
         int i=0;
@@ -79,7 +79,7 @@ public class Edit_Customer extends Activity{
                 String selection = (String)adapterView.getItemAtPosition(position);
                 int real_pos=getArrayPosition(selection,str_arry_vno);
                 cursor.moveToPosition(real_pos);
-                Toast.makeText(getApplicationContext(),selection,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),selection,Toast.LENGTH_SHORT).show();
                 setDataField(cursor);
                 enableall();
                 cursor.close();
@@ -95,7 +95,7 @@ public class Edit_Customer extends Activity{
                 String selection = (String)adapterView.getItemAtPosition(position);
                 int real_pos=getArrayPosition(selection,str_arry_shname);
                 cursor.moveToPosition(real_pos);
-                Toast.makeText(getApplicationContext(),""+cursor.getString(cursor.getColumnIndex("ShopName"))+"Shop name"+selection,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),""+cursor.getString(cursor.getColumnIndex("ShopName"))+"Shop name"+selection,Toast.LENGTH_SHORT).show();
                 setDataField(cursor);
                 enableall();
                 cursor.close();

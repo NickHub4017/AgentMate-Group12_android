@@ -25,7 +25,7 @@ public class Login_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
         ///Message for activity startup done
-        Toast.makeText(getApplicationContext(), dbc.password_encoder("k"), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), dbc.password_encoder("k"), Toast.LENGTH_SHORT).show();
         ///Create buttons
         Button Login_button = (Button) findViewById(R.id.BtnLogin);
         Button Forget_button = (Button) findViewById(R.id.BtnForget);
@@ -115,10 +115,10 @@ public void login(){
         else{
             if (c.moveToFirst()) {
                 do {
-                    Toast.makeText(getApplicationContext(), "id "+c.getString(c.getColumnIndex("EmpId"))+ " user "+c.getString(c.getColumnIndex("UserName"))+ " pass "+c.getString(c.getColumnIndex("Password"))+ " quest "+c.getString(c.getColumnIndex("Question"))+ " update "+c.getString(c.getColumnIndex("LastUpdate")), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "id "+c.getString(c.getColumnIndex("EmpId"))+ " user "+c.getString(c.getColumnIndex("UserName"))+ " pass "+c.getString(c.getColumnIndex("Password"))+ " quest "+c.getString(c.getColumnIndex("Question"))+ " update "+c.getString(c.getColumnIndex("LastUpdate")), Toast.LENGTH_SHORT).show();
                     if (c.getString(c.getColumnIndex("Password")).equals(enc_password)){
                         correct=true;
-                        Toast.makeText(getApplicationContext(), "done "+c.getString(c.getColumnIndex("Question")), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getApplicationContext(), "done "+c.getString(c.getColumnIndex("Question")), Toast.LENGTH_SHORT).show();
                         emp_id_cons=(c.getString(c.getColumnIndex("EmpId")));
                         username_cons=(c.getString(c.getColumnIndex("UserName")));
                         password_cons=(c.getString(c.getColumnIndex("Password")));
@@ -132,7 +132,9 @@ public void login(){
 
         }
         if (correct){
-            //Go to selection window.
+                //Go to selection window.
+            Toast.makeText(getApplicationContext(),"Welcome to the AGENT MATE",Toast.LENGTH_SHORT).show();
+            
            Intent intent = new Intent(Login_Activity.this, Select_Menu.class);
             Representative logged_rep=new Representative(emp_id_cons, username_cons, password_cons, Question_cons, Answer_cons);
             intent.putExtra("Logged_User", logged_rep);
