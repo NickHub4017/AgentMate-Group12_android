@@ -53,6 +53,7 @@ public class SetPassword extends Activity{
                         //Change password
                         Toast.makeText(SetPassword.this, "Your password change has been completed", Toast.LENGTH_SHORT).show();
                         dbc.change_Password(logged_username, new_pw_ins);
+
                     }
                     else{
                         Toast.makeText(SetPassword.this, "New password confirmation does not succeeded", Toast.LENGTH_SHORT).show();

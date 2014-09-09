@@ -185,9 +185,7 @@ public void forgot(){
     }
 }
 
-public void exit(){
 
-    }
 
 
 }

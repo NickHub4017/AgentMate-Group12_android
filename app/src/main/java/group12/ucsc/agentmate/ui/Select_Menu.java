@@ -22,35 +22,7 @@ package group12.ucsc.agentmate.ui;
 
 public class Select_Menu extends Activity{
 
-    @Override
-    public void onBackPressed() {
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which){
-                    case DialogInterface.BUTTON_POSITIVE:
-                        //Yes button clicked
-                        Intent log=new Intent(Select_Menu.this,Login_Activity.class);
-                        startActivity(log);
-                        break;
-
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        //No button clicked
-                        dialog.dismiss();
-                        break;
-                }
-            }
-        };
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure want to Logout?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
-
-
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

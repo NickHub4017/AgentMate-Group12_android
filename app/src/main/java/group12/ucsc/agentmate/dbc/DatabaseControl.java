@@ -100,8 +100,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String selectQuery = "SELECT * FROM login  where UserName='"+Username_ins+"'";
 
         Cursor cursor = database.rawQuery(selectQuery,null);
-        Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
-        Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
         return cursor;
     }
 
@@ -133,18 +133,19 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String now_time=""+cal.get(Calendar.YEAR)+"-"+cal.get(Calendar.MONTH)+"-"+cal.get(Calendar.DATE)+" "+cal.get(Calendar.HOUR_OF_DAY)+":"+cal.get(Calendar.MINUTE)+":"+cal.get(Calendar.SECOND);
         ContentValues values = new ContentValues();
         values.put("Password", password_encoder(new_Password));
-        Toast.makeText(con,"---> "+seconds, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(con,"---> "+seconds+"  "+new_Password, Toast.LENGTH_SHORT).show();
         values.put("LastUpdate",now_time);//////SET TO GET THE DATE
 
         ///Set the date of the update when this happens
 
         database.update("login", values,"UserName"+" = ?",new String[] {UserName});
+
         Cursor c=getLoginInfo(UserName);
         c.moveToFirst();
-        String pw_in_db=c.getString(c.getColumnIndex("Password"));
-        if (pw_in_db.equals(password_encoder(new_Password))){
+        String pw_in_db2=c.getString(c.getColumnIndex("Password"));
+        if (pw_in_db2.equals(password_encoder(new_Password))){
             //Updated correctly
-            Toast.makeText(con,"Updated succefully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(con,"Updated succefully "+UserName, Toast.LENGTH_SHORT).show();
         }
         else{
             //Not updated
@@ -152,8 +153,6 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
         }
     }
-
-
 
     public void confirm_data(Vendor vendor_conf){
         String ven_id=vendor_conf.getVenderNo();
@@ -183,7 +182,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String select_ven_id_Query = "SELECT * FROM vendor " +
                 "WHERE ShopName LIKE '"+ven_id+"%'";
 
-        Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
         Cursor cursor = database.rawQuery(select_ven_id_Query,null);
         return cursor;
     }
@@ -219,7 +218,6 @@ public class DatabaseControl extends SQLiteOpenHelper{
     }
 
 
-
     public void add_complain(String CompID_ins,String ItemID_ins,String Complain_ins,String VendorID_ins,Boolean synced_ins){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -251,8 +249,8 @@ public void like(){
     String selectQuery = "SELECT * FROM login " +
             "WHERE UserName LIKE 'pq%'";
     Cursor cursor = database.rawQuery(selectQuery,null);
-    Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
-    Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
+    //Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
+    //Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
 }
 
 

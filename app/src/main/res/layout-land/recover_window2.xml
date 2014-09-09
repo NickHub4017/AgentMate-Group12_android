@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center" >
@@ -79,7 +82,45 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Submit" />
+        <TextView
+            android:id="@+id/lblview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editanswer"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:text="Enter the code which is received via SMS"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <EditText
+            android:id="@+id/editcode"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_above="@+id/btn_submit"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:ems="10"
+            />
+        <Button
+            android:id="@+id/btn_submit_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:text="Enter the code"
+            />
+
+        <TextView
+            android:id="@+id/lblview2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editanswer"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:textColor="@android:color/holo_green_dark"
+            android:text="Enter the same code for reset your password in next window"/>
 
     </LinearLayout>
 
 </RelativeLayout>
+    </ScrollView>

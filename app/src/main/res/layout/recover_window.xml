@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<RelativeLayout
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -89,6 +91,16 @@
             android:text="Submit"
             android:layout_gravity="center"/>
 
+        <TextView
+            android:id="@+id/lblview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/editanswer"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:text="Enter the code which is received via SMS"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
         <EditText
             android:id="@+id/editcode"
             android:layout_width="match_parent"
@@ -106,10 +118,10 @@
             android:layout_alignParentLeft="true"
             android:layout_weight="1"
             android:text="Enter the code"
-            android:layout_gravity="center"/>
+            />
 
         <TextView
-            android:id="@+id/lblview"
+            android:id="@+id/lblview2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/editanswer"
@@ -123,3 +135,4 @@
 
 
 </RelativeLayout>
+    </ScrollView>

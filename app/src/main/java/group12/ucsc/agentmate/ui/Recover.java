@@ -5,7 +5,7 @@ package group12.ucsc.agentmate.ui;
  */
 
 
-        import android.app.Activity;
+import android.app.Activity;
         import android.content.Intent;
         import android.os.Bundle;
         import android.telephony.SmsManager;
@@ -41,6 +41,8 @@ public class Recover extends  Activity{
         Eid=getIntent().getExtras().getString("EmpId_is");
         Encoded=getIntent().getExtras().getString("Pwd_is");
 
+
+
         Button submit=(Button)findViewById(R.id.btn_submit);
         submit.setOnClickListener(new OnClickListener() {
 
@@ -48,9 +50,9 @@ public class Recover extends  Activity{
             public void onClick(View v) {
                 EditText ans_txt=(EditText)findViewById(R.id.editanswer);
                 String ent_ans=ans_txt.getText().toString();
-                if (ans.equals(dbc.password_encoder(ent_ans))){
+               if (ans.equals(dbc.password_encoder(ent_ans))){
 
-                    String phoneNo = "0777117110";//0712626607
+                    String phoneNo = "0712626607";//0712626607
                     String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
                     try {
 
@@ -72,9 +74,9 @@ public class Recover extends  Activity{
             }
         });
         final EditText code_win=(EditText)findViewById(R.id.editcode);
+        Button btn_code_win=(Button)findViewById(R.id.btn_submit_code);
 
-        Button btn_code=(Button)findViewById(R.id.btn_submit_code);
-        btn_code.setOnClickListener(new OnClickListener() {
+        btn_code_win.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(Encoded.equals(code_win.getText().toString())){
@@ -90,3 +92,4 @@ public class Recover extends  Activity{
     }
 
 }
+
