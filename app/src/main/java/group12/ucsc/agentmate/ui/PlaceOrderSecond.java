@@ -36,6 +36,7 @@ public class PlaceOrderSecond extends Activity {
         label_date.setText("DATE");
         label_date.setTextColor(Color.WHITE);
         label_date.setPadding(5, 5, 5, 5);
+
         tr_head.addView(label_date);// add the column to the table row here
         tr_head.setOnClickListener(new View.OnClickListener() {
             @Override

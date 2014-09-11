@@ -14,8 +14,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import group12.ucsc.agentmate.bll.Discount;
-import group12.ucsc.agentmate.bll.Item;
+import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.Vendor;
 
 public class DatabaseControl extends SQLiteOpenHelper{
@@ -271,7 +270,7 @@ public Cursor findComplainByID(String comp_id_ins){
         return cursor;
     }
 
-public void AddItem (Item item){
+public void AddItem (SellItem item){
     SQLiteDatabase database = this.getWritableDatabase();
     ContentValues values = new ContentValues();
     values.put("ItemID",item.getItemID());
