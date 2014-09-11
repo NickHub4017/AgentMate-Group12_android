@@ -312,7 +312,7 @@ public Cursor getAllItemByName (){
         return cursor;
     }
 
-public void setStateItem(Item itemEdit){
+public void setStateItem(SellItem itemEdit){
     SQLiteDatabase database = this.getWritableDatabase();
     ContentValues values = new ContentValues();
 
