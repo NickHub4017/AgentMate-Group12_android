@@ -14,12 +14,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import group12.ucsc.agentmate.R;
+import group12.ucsc.agentmate.bll.Representative;
+import group12.ucsc.agentmate.bll.Vendor;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 
 /**
  * Created by NRV on 9/7/2014.
  */
 public class PlaceOrderFirst extends Activity {
+    Representative sel_rep;
+    Vendor sel_vendor;
     DatabaseControl dbc=new DatabaseControl(this);
     Cursor cursor_ven_id;
 
@@ -34,7 +38,7 @@ public class PlaceOrderFirst extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_order_ven_select);
-
+        final Representative logged_rep=(Representative)getIntent().getExtras().getSerializable("logged_user");
         vno_edit_auto=(AutoCompleteTextView)findViewById(R.id.edit_auto_venid_order);
         shname_edit_auto=(AutoCompleteTextView)findViewById(R.id.edit_shopname_auto_order);
         txt_venaddr=(TextView)findViewById(R.id.txt_venaddr_order);
@@ -92,6 +96,8 @@ public class PlaceOrderFirst extends Activity {
                     if (btn_cntd.isEnabled()){
                         cursor_ven_id.close();
                         Intent next=new Intent(PlaceOrderFirst.this,PlaceOrderSecond.class);
+                        next.putExtra("vendor",sel_vendor);
+                        next.putExtra("logged_user",logged_rep);
                         startActivity(next);
                     }
                 }
@@ -113,6 +119,16 @@ public class PlaceOrderFirst extends Activity {
        txt_due_amnt.setTextColor(Color.parseColor("#F505E5"));
 
        btn_cntd.setEnabled(true);
+       sel_vendor=new Vendor();
+       sel_vendor.setVenderNo(cur.getString(cur.getColumnIndex("venderno")));
+       sel_vendor.setShopName(cur.getString(cur.getColumnIndex("ShopName")));
+       sel_vendor.setAddress(cur.getString(cur.getColumnIndex("Address")));
+       sel_vendor.setVenderName(cur.getString(cur.getColumnIndex("VenderName")));
+       sel_vendor.setTelNoConfm(cur.getString(cur.getColumnIndex("TelNoConfirm")));
+       sel_vendor.setTelNoShop(cur.getString(cur.getColumnIndex("TelNoShop")));
+       sel_vendor.setOverdue(Float.parseFloat(cur.getString(cur.getColumnIndex("Overdue"))));
+
+
 
 
     }

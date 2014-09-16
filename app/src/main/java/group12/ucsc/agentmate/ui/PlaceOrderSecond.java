@@ -13,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import group12.ucsc.agentmate.R;
+import group12.ucsc.agentmate.bll.Representative;
+import group12.ucsc.agentmate.bll.Vendor;
 
 /**
  * Created by NRV on 9/7/2014.
@@ -22,7 +24,10 @@ public class PlaceOrderSecond extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_order_item_add);
-
+        final Representative logged_rep=(Representative)getIntent().getExtras().getSerializable("logged_user");
+        final Vendor sel_vendor=(Vendor)getIntent().getExtras().getSerializable("vendor");
+        TextView logged_vendor_tv=(TextView)findViewById(R.id.txt_vname_order_b);
+        logged_vendor_tv.setText(sel_vendor.getShopName());
         //TableLayout t1;
         TableLayout tl = (TableLayout) findViewById(R.id.table1);
         final TableRow tr_head = new TableRow(this);
@@ -57,6 +62,9 @@ public class PlaceOrderSecond extends Activity {
         tl.addView(tr_head, new TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT,
                 TableLayout.LayoutParams.WRAP_CONTENT));
+
+        
+
     }
 }
 

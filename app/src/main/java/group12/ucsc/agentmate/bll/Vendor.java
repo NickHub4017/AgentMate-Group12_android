@@ -28,8 +28,11 @@ public class Vendor implements Serializable{
         this.overdue = overdue_cons;
         this.confirm = confirm_cons;
         this.shopName=shopName_cons;
-    }
 
+    }
+    public Vendor(){
+
+    }
     public String getVenderNo() {
         return venderNo;
     }

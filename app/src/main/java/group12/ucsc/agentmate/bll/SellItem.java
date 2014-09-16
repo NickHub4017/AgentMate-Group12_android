@@ -6,6 +6,30 @@ import java.io.Serializable;
  * Created by NRV on 9/9/2014.
  */
 public class SellItem implements Serializable {
+
+
+    String ItemID;
+    String ItemName;
+    double Price;
+    int StoreQty;
+    double CompanyDiscount;
+    String MinUnit;
+    String MinOrderUnit;
+    String CategoryID;
+    boolean Sync;
+
+    public SellItem(String itemID, String itemName, double price, int storeQty, double companyDiscount, String minUnit, String minOrderUnit, String categoryID, boolean sync) {
+        ItemID = itemID;
+        ItemName = itemName;
+        Price = price;
+        StoreQty = storeQty;
+        CompanyDiscount = companyDiscount;
+        MinUnit = minUnit;
+        MinOrderUnit = minOrderUnit;
+        CategoryID = categoryID;
+        Sync = sync;
+    }
+
     public String getItemID() {
         return ItemID;
     }
@@ -77,15 +101,5 @@ public class SellItem implements Serializable {
     public void setSync(boolean sync) {
         Sync = sync;
     }
-
-    String ItemID;
-    String ItemName;
-    double Price;
-    int StoreQty;
-    double CompanyDiscount;
-    String MinUnit;
-    String MinOrderUnit;
-    String CategoryID;
-    boolean Sync;
 
 }
