@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:text="Name"
-                android:id="@+id/auto_comp_name" />
+                android:id="@+id/auto_comp_item_name" />
         </LinearLayout>
 
         <TableLayout

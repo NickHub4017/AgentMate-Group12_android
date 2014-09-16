@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 
 import group12.ucsc.agentmate.R;
+import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 import group12.ucsc.agentmate.bll.Representative;
 
@@ -27,6 +28,18 @@ public class Login_Activity extends Activity {
         ///Message for activity startup done
         //Toast.makeText(getApplicationContext(), dbc.password_encoder("k"), Toast.LENGTH_SHORT).show();
         ///Create buttons
+        SellItem s1=new SellItem("12","aaaa",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s2=new SellItem("123","aabbbb",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s3=new SellItem("1234","cccc",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s4=new SellItem("124","ddaa",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s5=new SellItem("125","aabbcc",20.5,5,2.5,"pkt","pkt","pe",false);
+       /* dbc.AddItem(s1);
+        dbc.AddItem(s2);
+        dbc.AddItem(s3);
+        dbc.AddItem(s4);
+        dbc.AddItem(s5);*/
+        //ToDo delete this part
+
         Button Login_button = (Button) findViewById(R.id.BtnLogin);
         Button Forget_button = (Button) findViewById(R.id.BtnForget);
         Button Exit_button = (Button) findViewById(R.id.BtnExit);
@@ -79,9 +92,15 @@ public class Login_Activity extends Activity {
         Exit_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                finish();
-
+                //dbc.test();
+                //finish();
+                dbc.AddDiscount("123",5,1,2.5);
+                dbc.AddDiscount("123",15,6,3.5);
+                dbc.AddDiscount("123",25,16,4.5);
+                dbc.AddDiscount("123",30,26,5.5);
+                dbc.AddDiscount("12",15,1,2.5);
+                dbc.AddDiscount("12",25,16,3.5);
+                //ToDo delete this part
 
             }
         });

@@ -1,12 +1,19 @@
 package group12.ucsc.agentmate.bll;
 
+import android.content.Context;
+import android.database.Cursor;
+
 import java.io.Serializable;
+
+import group12.ucsc.agentmate.dbc.DatabaseControl;
+import group12.ucsc.agentmate.ui.PlaceOrderFirst;
+import group12.ucsc.agentmate.ui.PlaceOrderSecond;
 
 /**
  * Created by NRV on 9/9/2014.
  */
 public class SellItem implements Serializable {
-
+    DatabaseControl dbc;
 
     String ItemID;
     String ItemName;
@@ -17,6 +24,7 @@ public class SellItem implements Serializable {
     String MinOrderUnit;
     String CategoryID;
     boolean Sync;
+    Discount discount[];
 
     public SellItem(String itemID, String itemName, double price, int storeQty, double companyDiscount, String minUnit, String minOrderUnit, String categoryID, boolean sync) {
         ItemID = itemID;
@@ -28,6 +36,26 @@ public class SellItem implements Serializable {
         MinOrderUnit = minOrderUnit;
         CategoryID = categoryID;
         Sync = sync;
+
+    }
+
+    public Discount[] getDiscount() {
+        return discount;
+    }
+
+    public  SellItem(String itemID,Context con){
+        dbc=new DatabaseControl(con);
+        Cursor cur=dbc.getExactItemByID(itemID);
+        cur.moveToFirst();
+        ItemID = itemID;
+        ItemName = cur.getString(cur.getColumnIndex("ItemName"));
+        Price = Double.parseDouble(cur.getString(cur.getColumnIndex("Price")));
+        StoreQty = Integer.parseInt(cur.getString(cur.getColumnIndex("StoreQty")));
+        CompanyDiscount = Double.parseDouble(cur.getString(cur.getColumnIndex("CompanyDiscount")));
+        MinUnit =cur.getString(cur.getColumnIndex("MinUnit"));
+        MinOrderUnit = cur.getString(cur.getColumnIndex("MinOrderUnit"));
+        CategoryID = cur.getString(cur.getColumnIndex("CategoryID"));
+        discount=this.getAlldiscounts();
     }
 
     public String getItemID() {
@@ -102,4 +130,33 @@ public class SellItem implements Serializable {
         Sync = sync;
     }
 
+    public Discount[] getAlldiscounts() {
+        Cursor cur = dbc.getAllDiscounts(this.ItemID);
+        Discount[] allDiscount=new Discount[cur.getCount()];
+        int i=0;
+        if (cur.moveToFirst()) {
+            do {
+                Discount temp_disc=new Discount();
+                temp_disc.setMax_amount(Integer.parseInt(cur.getString(cur.getColumnIndex("MaxQty"))));
+                temp_disc.setMin_amount(Integer.parseInt(cur.getString(cur.getColumnIndex("MinQty"))));
+                temp_disc.setDiscount(Float.parseFloat(cur.getString(cur.getColumnIndex("Discount"))));
+                allDiscount[i]=temp_disc;
+                i++;
+            } while (cur.moveToNext());
+        }
+        return allDiscount;
+    }
+
+    public double getRelavantDiscount(int QtyInMinUnit){
+        int i=0,j=-1;
+        for (i=0;i<discount.length;i++){
+            if ((discount[i].getMax_amount()<=QtyInMinUnit) &&(discount[i].getMin_amount()>=QtyInMinUnit)){
+                return discount[i].getDiscount();
+            }
+            if (discount[i].getMax_amount()==-1){
+                j=i;
+            }
+        }
+        return discount[j].getDiscount();
+    }
 }

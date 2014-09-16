@@ -18,7 +18,7 @@ import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.Vendor;
 
 public class DatabaseControl extends SQLiteOpenHelper{
-
+    SQLiteDatabase dbase;
     Context con;
     public DatabaseControl(Context context) {
 
@@ -35,7 +35,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 //Create login table
         String create_login_query = "CREATE TABLE login (EmpId VARCHAR(4),UserName VARCHAR(10) PRIMARY KEY,Password TEXT,Question VARCHAR(50),Answer VARCHAR(20),LastUpdate datetime default current_timestamp)";
         database.execSQL(create_login_query);
-
+        dbase=database;
 //Create vendor table
         String create_vendorTable_query = "CREATE TABLE vendor (venderno VARCHAR(6) PRIMARY KEY,ShopName VARCHAR(20) ,VenderName VARCHAR(30) , " +
                 "Address VARCHAR(100),TelNoShop VARCHAR(10),TelNoConfirm VARCHAR(10),Overdue FLOAT,Confirm BOOLEAN)";
@@ -51,7 +51,11 @@ public class DatabaseControl extends SQLiteOpenHelper{
                 "OrderDate datetime default current_timestamp,DeliverDate datetime,Sync BOOLEAN)";
         database.execSQL(create_venOrderTable_query);
 
-
+//Create discount table
+        String create_discount_Table_query = "CREATE TABLE discount (ItemID VARCHAR(5), MinQty INTEGER, " +
+                "MaxQty INTEGER,Discount FLOAT,Sync BOOLEAN,PRIMARY KEY (ItemID, MinQty, MaxQty))";
+        database.execSQL(create_discount_Table_query);
+        Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
 
 
 
@@ -273,6 +277,7 @@ public Cursor findComplainByID(String comp_id_ins){
 public void AddItem (SellItem item){
     SQLiteDatabase database = this.getWritableDatabase();
     ContentValues values = new ContentValues();
+    Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
     values.put("ItemID",item.getItemID());
     values.put("ItemName",item.getItemName());
     values.put("Price",item.getPrice());
@@ -288,13 +293,6 @@ public void AddItem (SellItem item){
 
 }
 
-public Cursor getAllItemByID (){
-    SQLiteDatabase database = this.getReadableDatabase();
-    String select_item_id_Query = "SELECT ItemID FROM item";
-
-    Cursor cursor = database.rawQuery(select_item_id_Query,null);
-    return cursor;
-}
 
 public Cursor getExactItemByID(String ItemID){
     SQLiteDatabase database = this.getReadableDatabase();
@@ -323,4 +321,30 @@ public void setStateItem(SellItem itemEdit){
 
 }
 
+public Cursor getAllDiscounts(String itemID){
+    SQLiteDatabase database = this.getReadableDatabase();
+    String select_discount_id_Query = "SELECT * FROM discount where ItemID='"+itemID+"'";
+
+    Cursor cursor = database.rawQuery(select_discount_id_Query,null);
+    return cursor;
+}
+
+public void AddDiscount (String id,int max,int min,double disc) {
+    SQLiteDatabase database = this.getWritableDatabase();
+    ContentValues values = new ContentValues();
+    //Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
+    values.put("ItemID", id);
+    values.put("MinQty", min);
+    values.put("MaxQty", max);
+    values.put("Discount", disc);
+
+    database.insert("discount", null, values);
+}
+
+    public void test(){
+        String create_discount_Table_query = "CREATE TABLE discount (ItemID VARCHAR(5), MinQty INTEGER, " +
+                "MaxQty INTEGER,Discount FLOAT,Sync BOOLEAN,PRIMARY KEY (ItemID, MinQty, MaxQty))";
+        dbase.execSQL(create_discount_Table_query);
+        Toast.makeText(con,"DONE DONE",Toast.LENGTH_SHORT).show();
+    }
 }
