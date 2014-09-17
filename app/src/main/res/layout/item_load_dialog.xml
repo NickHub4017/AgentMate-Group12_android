@@ -33,7 +33,7 @@
         android:id="@+id/textView3" />
 
     <EditText
-        android:id="@+id/etxtName"
+        android:id="@+id/edit_demand_qty"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit"
-            android:id="@+id/btn_contd_sbmt_dialog" />
+            android:id="@+id/btn_sbmt_dialog" />
 
         <Button
             android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Submit With demand"
-            android:id="@+id/btn_contd_sbmt_with_demand_dialog" />
+            android:id="@+id/btn_sbmt_with_demand_dialog" />
 
     </LinearLayout>
 

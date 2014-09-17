@@ -3,6 +3,7 @@ package group12.ucsc.agentmate.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,7 +31,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
 /**
  * Created by NRV on 9/7/2014.
  */
-public class PlaceOrderSecond extends Activity {
+public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator{
     DatabaseControl dbc=new DatabaseControl(this);
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
@@ -78,8 +79,10 @@ public class PlaceOrderSecond extends Activity {
 
                 //RowCreator(currentItem);
                 currentItem=new SellItem(selection,PlaceOrderSecond.this);
-                showDialog(1);
-
+                //showDialog(1);
+                FragmentManager fm=getFragmentManager();
+                DialogGetQty md=new DialogGetQty();
+                md.show(fm,"dialog");
 
             ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
 
@@ -93,7 +96,7 @@ public class PlaceOrderSecond extends Activity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDialog(1);
+                //showDialog(1);
             }
         });
     }
@@ -211,13 +214,21 @@ public void table_hdr(){
 
  }
 
-public Dialog onCreateDialog(int a){
+    @Override
+    public void onDialogMessage(String msg) {
+        currentItem.setQty(Integer.parseInt(msg));
+        RowCreator(currentItem);
+
+    }
+
+/*public Dialog onCreateDialog(int a){
     AlertDialog.Builder builder;//=new AlertDialog.Builder(this);
     LayoutInflater inflater;//=getLayoutInflater();
     builder=new AlertDialog.Builder(this);
     inflater=getLayoutInflater();
+
     builder.setView(inflater.inflate(R.layout.item_load_dialog, null))
-            .setTitle("First Dialog Box" )
+            .setTitle("" )
             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                 @Override
@@ -239,8 +250,10 @@ public Dialog onCreateDialog(int a){
                 public void onClick(DialogInterface dialog, int which) {
                     Toast.makeText(getApplicationContext(), "You clicked on Cancel", Toast.LENGTH_LONG).show();
                 }
-            });
+            })
+            ;
+
     return builder.create();
-}
+}*/
 
 }
