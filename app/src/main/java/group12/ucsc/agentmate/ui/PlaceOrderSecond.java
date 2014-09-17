@@ -30,6 +30,7 @@ public class PlaceOrderSecond extends Activity {
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
     Cursor itm_cur;
+    int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,52 +44,7 @@ public class PlaceOrderSecond extends Activity {
         //TableLayout t1;
 
 
-        TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
-        final TableRow tr_head = new TableRow(this);
-        tr_head.setId(10);
-        tr_head.setBackgroundColor(Color.BLACK);
-        tr_head.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.MATCH_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-        TextView label_Item_ID = new TextView(this);
-        label_Item_ID.setId(20);
-        label_Item_ID.setText("Item ID");
-        label_Item_ID.setTextColor(Color.WHITE);
-        label_Item_ID.setPadding(5, 5, 5, 5);
-        tr_head.addView(label_Item_ID);// add the column to the table row here
-
-        TextView label_Item_Name = new TextView(this);
-        label_Item_Name.setId(21);// define id that must be unique
-        label_Item_Name.setText("Item Name"); // set the text for the header
-        label_Item_Name.setTextColor(Color.WHITE); // set the color
-        label_Item_Name.setPadding(5, 5, 5, 5); // set the padding (if required)
-        tr_head.addView(label_Item_Name); // add the column to the table row here
-
-        TextView label_Qty = new TextView(this);
-        label_Qty.setId(22);// define id that must be unique
-        label_Qty.setText("Qty"); // set the text for the header
-        label_Qty.setTextColor(Color.WHITE); // set the color
-        label_Qty.setPadding(5, 5, 5, 5); // set the padding (if required)
-        tr_head.addView(label_Qty); // add the column to the table row here
-
-        TextView label_Discount = new TextView(this);
-        label_Discount.setId(23);// define id that must be unique
-        label_Discount.setText("Discount"); // set the text for the header
-        label_Discount.setTextColor(Color.WHITE); // set the color
-        label_Discount.setPadding(5, 5, 5, 5); // set the padding (if required)
-        tr_head.addView(label_Discount); // add the column to the table row here
-
-        TextView label_Price = new TextView(this);
-        label_Price.setId(24);// define id that must be unique
-        label_Price.setText("Price"); // set the text for the header
-        label_Price.setTextColor(Color.WHITE); // set the color
-        label_Price.setPadding(5, 5, 5, 5); // set the padding (if required)
-        tr_head.addView(label_Price); // add the column to the table row here
-
-        tl.addView(tr_head, new TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT));
-
+        table_hdr();
         itm_cur=dbc.getAllItemByName();
 
         final String[] str_arry_item_id=new String[itm_cur.getCount()];
@@ -114,9 +70,10 @@ public class PlaceOrderSecond extends Activity {
                 Cursor cur=dbc.getExactItemByID(selection);
                 cur.moveToFirst();
 
-                RowCreator(selection);
+                //RowCreator(currentItem);
                 SellItem currentItem=new SellItem(selection,PlaceOrderSecond.this);
-                //Toast.makeText(getApplicationContext(),si.getItemID()+" "+si.getDiscount()[0].getDiscount()+" "+si.getDiscount()[1].getDiscount(),Toast.LENGTH_SHORT).show();
+                RowCreator(currentItem);
+
             ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
 
             }
@@ -136,14 +93,11 @@ public class PlaceOrderSecond extends Activity {
        return -1;
     }
 
-    public void RowCreator(String p){
+    public void RowCreator(SellItem item){
+        item.setQty(10);
+        //ToDo remove the hardcoded qty via dialobox.
         TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
-        Integer count=0;
-        int i=0;
 
-            i++;
-            String date = p;// get the first variable
-            Double weight_kg =2.5;// get the second variable
 // Create the table row
             TableRow tr = new TableRow(this);
             if(count%2!=0) tr.setBackgroundColor(Color.GRAY);
@@ -151,39 +105,40 @@ public class PlaceOrderSecond extends Activity {
             tr.setLayoutParams(new TableRow.LayoutParams(
                     TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
-
+///TODO must write a method to get qty
 //Create two columns to add as table data
             // Create a TextView to add date
-            TextView labelDATE = new TextView(this);
-            labelDATE.setId(200+count);
-            labelDATE.setText(date);
-            labelDATE.setPadding(2, 0, 5, 0);
-            labelDATE.setTextColor(Color.BLACK);
-            tr.addView(labelDATE);
+            TextView labelID = new TextView(this);
+        labelID.setId(200+count);
+        labelID.setText(item.getItemID());
+        labelID.setPadding(2, 0, 5, 0);
+        labelID.setTextColor(Color.BLACK);
+            tr.addView(labelID);
 
-            TextView labelWEIGHT = new TextView(this);
-            labelWEIGHT.setId(200+count);
-            labelWEIGHT.setText(weight_kg.toString());
-            labelWEIGHT.setTextColor(Color.BLACK);
-            tr.addView(labelWEIGHT);
+        TextView labelName = new TextView(this);
+        labelName.setId(300+count);
+        labelName.setText(String.valueOf(item.getItemName()));
+        labelName.setTextColor(Color.BLACK);
+        tr.addView(labelName);
 
-            TextView labelItem = new TextView(this);
-            labelItem.setId(200+count);
-            labelItem.setText("Name");
-            labelItem.setTextColor(Color.BLACK);
-            tr.addView(labelItem);
+            TextView labelQty = new TextView(this);
+        labelQty.setId(400+count);
+        labelQty.setText(String.valueOf(item.getQty()));
+        labelQty.setTextColor(Color.BLACK);
+            tr.addView(labelQty);
 
-            TextView labelItem2 = new TextView(this);
-            labelItem2.setId(200+count);
-            labelItem2.setText("Name");
-            labelItem2.setTextColor(Color.BLACK);
-            tr.addView(labelItem2);
+            TextView labelDiscount = new TextView(this);
+        labelDiscount.setId(500+count);
+        labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
+        labelDiscount.setTextColor(Color.BLACK);
+            tr.addView(labelDiscount);
 
-            TextView labelItem3 = new TextView(this);
-            labelItem3.setId(200+count);
-            labelItem3.setText("Name");
-            labelItem3.setTextColor(Color.BLACK);
-            tr.addView(labelItem3);
+            TextView labelPrice = new TextView(this);
+        labelPrice.setId(600+count);
+        double value=(100-item.getRelavantDiscount(item.getQty()))*item.getPrice()*item.getQty();
+        labelPrice.setText(String.valueOf(value/100));
+        labelPrice.setTextColor(Color.BLACK);
+            tr.addView(labelPrice);
 
 // finally add this to the table row
             tl.addView(tr, new TableLayout.LayoutParams(
@@ -192,9 +147,53 @@ public class PlaceOrderSecond extends Activity {
             count++;
 
     }
+ public void table_hdr(){
+     TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
+     final TableRow tr_head = new TableRow(this);
+     tr_head.setId(10);
+     tr_head.setBackgroundColor(Color.BLACK);
+     tr_head.setLayoutParams(new TableRow.LayoutParams(
+             TableRow.LayoutParams.MATCH_PARENT,
+             TableRow.LayoutParams.WRAP_CONTENT));
+     TextView label_Item_ID = new TextView(this);
+     label_Item_ID.setId(20);
+     label_Item_ID.setText("Item ID");
+     label_Item_ID.setTextColor(Color.WHITE);
+     label_Item_ID.setPadding(5, 5, 5, 5);
+     tr_head.addView(label_Item_ID);// add the column to the table row here
 
+     TextView label_Item_Name = new TextView(this);
+     label_Item_Name.setId(21);// define id that must be unique
+     label_Item_Name.setText("Item Name"); // set the text for the header
+     label_Item_Name.setTextColor(Color.WHITE); // set the color
+     label_Item_Name.setPadding(5, 5, 5, 5); // set the padding (if required)
+     tr_head.addView(label_Item_Name); // add the column to the table row here
+
+     TextView label_Qty = new TextView(this);
+     label_Qty.setId(22);// define id that must be unique
+     label_Qty.setText("Qty"); // set the text for the header
+     label_Qty.setTextColor(Color.WHITE); // set the color
+     label_Qty.setPadding(5, 5, 5, 5); // set the padding (if required)
+     tr_head.addView(label_Qty); // add the column to the table row here
+
+     TextView label_Discount = new TextView(this);
+     label_Discount.setId(23);// define id that must be unique
+     label_Discount.setText("Discount"); // set the text for the header
+     label_Discount.setTextColor(Color.WHITE); // set the color
+     label_Discount.setPadding(5, 5, 5, 5); // set the padding (if required)
+     tr_head.addView(label_Discount); // add the column to the table row here
+
+     TextView label_Price = new TextView(this);
+     label_Price.setId(24);// define id that must be unique
+     label_Price.setText("Price"); // set the text for the header
+     label_Price.setTextColor(Color.WHITE); // set the color
+     label_Price.setPadding(5, 5, 5, 5); // set the padding (if required)
+     tr_head.addView(label_Price); // add the column to the table row here
+
+     tl.addView(tr_head, new TableLayout.LayoutParams(
+             TableLayout.LayoutParams.MATCH_PARENT,
+             TableLayout.LayoutParams.WRAP_CONTENT));
+
+ }
 
 }
-
-
-
