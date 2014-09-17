@@ -37,7 +37,9 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
     AutoCompleteTextView itemName_edit_auto;
     Cursor itm_cur;
     SellItem currentItem;
-    int count=0;
+    public int count=0;
+    public static int cur_st_value=0;
+    Bundle cur_bun;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         TextView logged_vendor_tv=(TextView)findViewById(R.id.txt_vname_order_b);
         logged_vendor_tv.setText("Selected Vendor is :- "+sel_vendor.getShopName());
         //TableLayout t1;
-
+        cur_bun=savedInstanceState;
 
         table_hdr();
         itm_cur=dbc.getAllItemByName();
@@ -79,6 +81,8 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
 
                 //RowCreator(currentItem);
                 currentItem=new SellItem(selection,PlaceOrderSecond.this);
+                cur_st_value=currentItem.getStoreQty();
+                //cur_bun.putSerializable("cur_item",currentItem);
                 //showDialog(1);
                 FragmentManager fm=getFragmentManager();
                 DialogGetQty md=new DialogGetQty();

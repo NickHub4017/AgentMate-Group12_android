@@ -28,11 +28,11 @@ public class Login_Activity extends Activity {
         ///Message for activity startup done
         //Toast.makeText(getApplicationContext(), dbc.password_encoder("k"), Toast.LENGTH_SHORT).show();
         ///Create buttons
-        SellItem s1=new SellItem("12","aaaa",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s2=new SellItem("123","aabbbb",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s3=new SellItem("1234","cccc",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s4=new SellItem("124","ddaa",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s5=new SellItem("125","aabbcc",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s1=new SellItem("11","cccc",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s2=new SellItem("113","ccbbbb",20.10,5,2.5,"pkt","pkt","pe",false);
+        SellItem s3=new SellItem("1134","cccc",20.5,100,2.5,"pkt","pkt","pe",false);
+        SellItem s4=new SellItem("114","ffaa",20.5,5,2.5,"pkt","pkt","pe",false);
+        SellItem s5=new SellItem("115","fffbcc",20.5,5,2.5,"pkt","pkt","pe",false);
         /*dbc.AddItem(s1);
         dbc.AddItem(s2);
         dbc.AddItem(s3);

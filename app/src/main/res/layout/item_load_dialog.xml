@@ -31,7 +31,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Enter the Demanded Quantity"
-        android:id="@+id/textView3" />
+        android:id="@+id/text_remain" />
 
     <EditText
         android:id="@+id/edit_demand_qty"
