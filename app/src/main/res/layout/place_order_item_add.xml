@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView" >
+    android:id="@+id/scrollView"
+    android:fillViewport="false">
 
     <LinearLayout
         android:orientation="vertical"
@@ -26,6 +27,12 @@
             android:text="Selected vender is"
             android:id="@+id/txt_vname_order_b"
             android:textSize="@dimen/norm_val" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:id="@+id/button_testing" />
 
         <LinearLayout
             android:orientation="horizontal"

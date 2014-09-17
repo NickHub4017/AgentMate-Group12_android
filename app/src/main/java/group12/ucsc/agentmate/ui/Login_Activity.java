@@ -33,7 +33,7 @@ public class Login_Activity extends Activity {
         SellItem s3=new SellItem("1234","cccc",20.5,5,2.5,"pkt","pkt","pe",false);
         SellItem s4=new SellItem("124","ddaa",20.5,5,2.5,"pkt","pkt","pe",false);
         SellItem s5=new SellItem("125","aabbcc",20.5,5,2.5,"pkt","pkt","pe",false);
-       /* dbc.AddItem(s1);
+        /*dbc.AddItem(s1);
         dbc.AddItem(s2);
         dbc.AddItem(s3);
         dbc.AddItem(s4);

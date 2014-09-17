@@ -1,14 +1,19 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -30,6 +35,7 @@ public class PlaceOrderSecond extends Activity {
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
     Cursor itm_cur;
+    SellItem currentItem;
     int count=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +77,9 @@ public class PlaceOrderSecond extends Activity {
                 cur.moveToFirst();
 
                 //RowCreator(currentItem);
-                SellItem currentItem=new SellItem(selection,PlaceOrderSecond.this);
-                RowCreator(currentItem);
+                currentItem=new SellItem(selection,PlaceOrderSecond.this);
+                showDialog(1);
+
 
             ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
 
@@ -82,6 +89,13 @@ public class PlaceOrderSecond extends Activity {
         itemName_edit_auto.setAdapter(adapter2);
         //itemName_edit_auto.setOnItemClickListener(new );
 
+        Button b2=(Button)findViewById(R.id.button_testing);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog(1);
+            }
+        });
     }
 
     public int getReal(String key,String[] array){
@@ -93,8 +107,8 @@ public class PlaceOrderSecond extends Activity {
        return -1;
     }
 
-    public void RowCreator(SellItem item){
-        item.setQty(10);
+public void RowCreator(SellItem item){
+        //item.setQty(10);
         //ToDo remove the hardcoded qty via dialobox.
         TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
 
@@ -147,7 +161,8 @@ public class PlaceOrderSecond extends Activity {
             count++;
 
     }
- public void table_hdr(){
+
+public void table_hdr(){
      TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
      final TableRow tr_head = new TableRow(this);
      tr_head.setId(10);
@@ -195,5 +210,37 @@ public class PlaceOrderSecond extends Activity {
              TableLayout.LayoutParams.WRAP_CONTENT));
 
  }
+
+public Dialog onCreateDialog(int a){
+    AlertDialog.Builder builder;//=new AlertDialog.Builder(this);
+    LayoutInflater inflater;//=getLayoutInflater();
+    builder=new AlertDialog.Builder(this);
+    inflater=getLayoutInflater();
+    builder.setView(inflater.inflate(R.layout.item_load_dialog, null))
+            .setTitle("First Dialog Box" )
+            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                    Dialog dlg=(Dialog)arg0;
+                    EditText etxtName=(EditText)dlg.findViewById(R.id.txt_Qty);
+                    if(etxtName.getText().toString().length()>0)
+                    {
+                        String name=etxtName.getText().toString();
+                        Toast.makeText(getApplicationContext(), "I am , " + name, Toast.LENGTH_LONG).show();
+                        currentItem.setQty(Integer.parseInt(name));
+                        RowCreator(currentItem);
+                    }
+                }
+            })
+            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Toast.makeText(getApplicationContext(), "You clicked on Cancel", Toast.LENGTH_LONG).show();
+                }
+            });
+    return builder.create();
+}
 
 }
