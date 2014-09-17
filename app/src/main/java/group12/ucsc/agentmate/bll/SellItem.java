@@ -25,6 +25,7 @@ public class SellItem implements Serializable {
     String CategoryID;
     boolean Sync;
     Discount discount[];
+    int QtyInMinUnit;
 
     public SellItem(String itemID, String itemName, double price, int storeQty, double companyDiscount, String minUnit, String minOrderUnit, String categoryID, boolean sync) {
         ItemID = itemID;
@@ -130,6 +131,14 @@ public class SellItem implements Serializable {
         Sync = sync;
     }
 
+    public void setQty(int qty){
+        QtyInMinUnit=qty;
+    }
+
+    public int getQty(){
+        return QtyInMinUnit;
+    }
+
     public Discount[] getAlldiscounts() {
         Cursor cur = dbc.getAllDiscounts(this.ItemID);
         Discount[] allDiscount=new Discount[cur.getCount()];
@@ -149,14 +158,24 @@ public class SellItem implements Serializable {
 
     public double getRelavantDiscount(int QtyInMinUnit){
         int i=0,j=-1;
+        if (QtyInMinUnit==0){
+            return 0;
+        }
         for (i=0;i<discount.length;i++){
-            if ((discount[i].getMax_amount()<=QtyInMinUnit) &&(discount[i].getMin_amount()>=QtyInMinUnit)){
+            if ((discount[i].getMax_amount()>=QtyInMinUnit) &&(discount[i].getMin_amount()<=QtyInMinUnit)){
                 return discount[i].getDiscount();
             }
             if (discount[i].getMax_amount()==-1){
                 j=i;
             }
         }
-        return discount[j].getDiscount();
+
+        if (j!= -1) {
+            return discount[j].getDiscount();
+        }
+        else{
+            return 0;
+        }
     }
+
 }
