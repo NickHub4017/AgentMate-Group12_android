@@ -21,7 +21,8 @@
         android:layout_marginRight="5dp"
         android:layout_marginBottom="0dp"
         android:layout_marginLeft="5dp"
-        android:hint="Enter QTY">
+        android:hint="Enter QTY"
+        android:inputType="number">
     </EditText>
 
     <TextView
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Enter the Quantity"
+        android:text="Enter the Demanded Quantity"
         android:id="@+id/textView3" />
 
     <EditText

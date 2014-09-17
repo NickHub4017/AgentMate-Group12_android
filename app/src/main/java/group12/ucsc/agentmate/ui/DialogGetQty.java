@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import group12.ucsc.agentmate.R;
 
@@ -23,6 +24,9 @@ public class DialogGetQty extends DialogFragment{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         cm=(Communicator)activity;
+        activity.getIntent().getExtras();
+
+
     }
 
     @Override
