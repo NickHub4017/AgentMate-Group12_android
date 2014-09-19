@@ -23,7 +23,8 @@
         <activity android:name=".ui.CreateNewVendor" android:label="New Vendor"></activity>
         <activity android:name=".ui.Edit_Customer" android:label="Edit Vendor"></activity>
         <activity android:name=".ui.PlaceOrderFirst" android:label="Place an Order"></activity>
-        <activity android:name=".ui.PlaceOrderSecond" android:label="Place an Order"></activity>
+        <activity android:name=".ui.PlaceOrderSecond" android:label="Place an Order"
+            android:screenOrientation="landscape"></activity>
 
     </application>
 

@@ -306,9 +306,10 @@ public void table_hdr(){
         currentItem.setSelectedUnit(u_map[qtyUnitindex].getUnit());
         demandQty_global=demandQty;
         demandUnitIndex_global=demandQtyUnitIndex;
-
+        if (qty!=0)
         RowCreator(currentItem,R.id.selected_table1);
         new_order.addItem(currentItem);
+
         if (demandQty!=0) {
             RowCreator(currentItem, R.id.demanded_table);
 
