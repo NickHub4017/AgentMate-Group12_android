@@ -26,6 +26,15 @@ public class SellItem implements Serializable {
     boolean Sync;
     Discount discount[];
     int QtyInMinUnit;
+    String selectedUnit;
+
+    public String getSelectedUnit() {
+        return selectedUnit;
+    }
+
+    public void setSelectedUnit(String selectedUnit) {
+        this.selectedUnit = selectedUnit;
+    }
 
     public SellItem(String itemID, String itemName, double price, int storeQty, double companyDiscount, String minUnit, String minOrderUnit, String categoryID, boolean sync) {
         ItemID = itemID;

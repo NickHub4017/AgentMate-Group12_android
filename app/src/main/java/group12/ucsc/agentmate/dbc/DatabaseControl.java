@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import group12.ucsc.agentmate.bll.SellItem;
+import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.Vendor;
 
 public class DatabaseControl extends SQLiteOpenHelper{
@@ -55,6 +56,10 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String create_discount_Table_query = "CREATE TABLE discount (ItemID VARCHAR(5), MinQty INTEGER, " +
                 "MaxQty INTEGER,Discount FLOAT,Sync BOOLEAN,PRIMARY KEY (ItemID, MinQty, MaxQty))";
         database.execSQL(create_discount_Table_query);
+
+        String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
+        database.execSQL(create_unit_mapping_Table_query);
+
         Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
 
 
@@ -68,7 +73,32 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
     public void k(){
+        SQLiteDatabase database = this.getWritableDatabase();
+        String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
+        //database.execSQL(create_unit_mapping_Table_query);
         Toast.makeText(con, "id ", Toast.LENGTH_SHORT).show();
+
+        ContentValues values = new ContentValues();
+        values.put("ItemID","123");
+        values.put("unit","pkt");
+        values.put("MapQty",15);
+
+        database.insert("measure",null, values);
+
+        ContentValues values2 = new ContentValues();
+        values2.put("ItemID","123");
+        values2.put("unit","box");
+        values2.put("MapQty",180);
+
+        database.insert("measure",null, values2);
+
+        ContentValues values3 = new ContentValues();
+        values3.put("ItemID","123");
+        values3.put("unit","bulk");
+        values3.put("MapQty",50);
+
+        database.insert("measure",null, values3);
+        Toast.makeText(con, "****/////**** ", Toast.LENGTH_SHORT).show();
     }
 
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
@@ -347,4 +377,22 @@ public void AddDiscount (String id,int max,int min,double disc) {
         dbase.execSQL(create_discount_Table_query);
         Toast.makeText(con,"DONE DONE",Toast.LENGTH_SHORT).show();
     }
+
+    public UnitMap[] findQtyMap(String itemID){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_discount_id_Query = "SELECT * FROM measure where ItemID='"+itemID+"'";
+
+        Cursor cursor = database.rawQuery(select_discount_id_Query,null);
+        UnitMap[] mapset=new UnitMap[cursor.getCount()];
+        int i=0;
+        if (cursor.moveToFirst()) {
+            do {
+                mapset[i]=new UnitMap(cursor.getInt(cursor.getColumnIndex("MapQty")),cursor.getString(cursor.getColumnIndex("unit")));
+                i++;
+            } while (cursor.moveToNext());
+            return mapset;
+        }
+        return null;
+    }
+
 }

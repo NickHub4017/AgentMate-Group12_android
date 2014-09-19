@@ -81,5 +81,21 @@
             android:id="@+id/selected_table1"
             android:stretchColumns="0,1,2,3,4"
             ></TableLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="On demanded items"
+            android:id="@+id/textView4"
+            android:background="#ffff881c"
+            android:gravity="center_horizontal" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/demanded_table"
+            android:stretchColumns="0,1,2,3">
+            </TableLayout>
+
     </LinearLayout>
 </ScrollView>

@@ -25,6 +25,7 @@ import android.widget.Toast;
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Representative;
 import group12.ucsc.agentmate.bll.SellItem;
+import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.Vendor;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 
@@ -40,6 +41,9 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
     public int count=0;
     public static int cur_st_value=0;
     Bundle cur_bun;
+    int demandQty_global;
+    int demandUnitIndex_global;
+    public static UnitMap u_map[];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +58,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         cur_bun=savedInstanceState;
 
         table_hdr();
+        demand_table_hdr();
         itm_cur=dbc.getAllItemByName();
 
         final String[] str_arry_item_id=new String[itm_cur.getCount()];
@@ -82,6 +87,10 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
                 //RowCreator(currentItem);
                 currentItem=new SellItem(selection,PlaceOrderSecond.this);
                 cur_st_value=currentItem.getStoreQty();
+                u_map=dbc.findQtyMap(selection);
+                /*for (int i=0;i<u_map.length;i++){
+                    Toast.makeText(getApplicationContext(),u_map[i].getUnit()+" "+u_map[i].getQtyMap(),Toast.LENGTH_SHORT).show();
+                }*/
                 //cur_bun.putSerializable("cur_item",currentItem);
                 //showDialog(1);
                 FragmentManager fm=getFragmentManager();
@@ -101,6 +110,8 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             @Override
             public void onClick(View view) {
                 //showDialog(1);
+                DatabaseControl d=new DatabaseControl(getApplicationContext());
+                d.k();
             }
         });
     }
@@ -114,10 +125,10 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
        return -1;
     }
 
-public void RowCreator(SellItem item){
+public void RowCreator(SellItem item,int layout){
         //item.setQty(10);
         //ToDo remove the hardcoded qty via dialobox.
-        TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
+        TableLayout tl = (TableLayout) findViewById(layout);
 
 // Create the table row
             TableRow tr = new TableRow(this);
@@ -144,28 +155,41 @@ public void RowCreator(SellItem item){
 
             TextView labelQty = new TextView(this);
         labelQty.setId(400+count);
-        labelQty.setText(String.valueOf(item.getQty()));
+//        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
         labelQty.setTextColor(Color.BLACK);
+            //tr.addView(labelQty);
+
+    TextView labelDiscount = new TextView(this);
+    labelDiscount.setId(500 + count);
+    //labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
+    labelDiscount.setTextColor(Color.BLACK);
+
+        if (layout==R.id.selected_table1) {
+            labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
+            tr.addView(labelQty);
+            labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
+            tr.addView(labelDiscount);
+            TextView labelPrice = new TextView(this);
+            labelPrice.setId(600 + count);
+            double value = (100 - item.getRelavantDiscount(item.getQty())) * item.getPrice() * item.getQty();
+            labelPrice.setText(String.valueOf(value / 100));
+            labelPrice.setTextColor(Color.BLACK);
+            tr.addView(labelPrice);
+        }
+    else{
+            labelQty.setText(String.valueOf(demandQty_global)+" "+u_map[demandUnitIndex_global].getUnit());
             tr.addView(labelQty);
 
-            TextView labelDiscount = new TextView(this);
-        labelDiscount.setId(500+count);
-        labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
-        labelDiscount.setTextColor(Color.BLACK);
+            labelDiscount.setText("Today");
             tr.addView(labelDiscount);
-
-            TextView labelPrice = new TextView(this);
-        labelPrice.setId(600+count);
-        double value=(100-item.getRelavantDiscount(item.getQty()))*item.getPrice()*item.getQty();
-        labelPrice.setText(String.valueOf(value/100));
-        labelPrice.setTextColor(Color.BLACK);
-            tr.addView(labelPrice);
+        }
 
 // finally add this to the table row
             tl.addView(tr, new TableLayout.LayoutParams(
                     TableRow.LayoutParams.FILL_PARENT,
                     TableRow.LayoutParams.WRAP_CONTENT));
-            count++;
+
+
 
     }
 
@@ -218,13 +242,71 @@ public void table_hdr(){
 
  }
 
-    @Override
-    public void onDialogMessage(String msg) {
-        currentItem.setQty(Integer.parseInt(msg));
-        RowCreator(currentItem);
+    public void demand_table_hdr(){
+        TableLayout tl = (TableLayout) findViewById(R.id.demanded_table);
+        final TableRow tr_head = new TableRow(this);
+        tr_head.setId(10);
+        tr_head.setBackgroundColor(Color.BLACK);
+        tr_head.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.MATCH_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+        TextView label_Item_ID = new TextView(this);
+        label_Item_ID.setId(30);
+        label_Item_ID.setText("Item ID");
+        label_Item_ID.setTextColor(Color.WHITE);
+        label_Item_ID.setPadding(5, 5, 5, 5);
+        tr_head.addView(label_Item_ID);// add the column to the table row here
+
+        TextView label_Item_Name = new TextView(this);
+        label_Item_Name.setId(31);// define id that must be unique
+        label_Item_Name.setText("Item Name"); // set the text for the header
+        label_Item_Name.setTextColor(Color.WHITE); // set the color
+        label_Item_Name.setPadding(5, 5, 5, 5); // set the padding (if required)
+        tr_head.addView(label_Item_Name); // add the column to the table row here
+
+        TextView label_Qty = new TextView(this);
+        label_Qty.setId(32);// define id that must be unique
+        label_Qty.setText("Qty"); // set the text for the header
+        label_Qty.setTextColor(Color.WHITE); // set the color
+        label_Qty.setPadding(5, 5, 5, 5); // set the padding (if required)
+        tr_head.addView(label_Qty); // add the column to the table row here
+
+        TextView label_Discount = new TextView(this);
+        label_Discount.setId(33);// define id that must be unique
+        label_Discount.setText("Date"); // set the text for the header
+        label_Discount.setTextColor(Color.WHITE); // set the color
+        label_Discount.setPadding(5, 5, 5, 5); // set the padding (if required)
+        tr_head.addView(label_Discount); // add the column to the table row here
+
+
+        tl.addView(tr_head, new TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT));
 
     }
 
+    @Override
+    public void onDialogMessage(int qty,int demandQty,int qtyUnitindex,int demandQtyUnitIndex) {
+        currentItem.setQty(qty);
+        currentItem.setSelectedUnit(u_map[qtyUnitindex].getUnit());
+        demandQty_global=demandQty;
+        demandUnitIndex_global=demandQtyUnitIndex;
+
+        RowCreator(currentItem,R.id.selected_table1);
+        if (demandQty!=0) {
+            RowCreator(currentItem, R.id.demanded_table);
+        }
+        count++;
+
+    }
+
+    public static String[] getStringUnits(){
+        String[] array=new String[u_map.length];
+        for (int i=0;i<u_map.length;i++){
+            array[i]=u_map[i].getUnit();
+        }
+        return array;
+    }
 /*public Dialog onCreateDialog(int a){
     AlertDialog.Builder builder;//=new AlertDialog.Builder(this);
     LayoutInflater inflater;//=getLayoutInflater();
