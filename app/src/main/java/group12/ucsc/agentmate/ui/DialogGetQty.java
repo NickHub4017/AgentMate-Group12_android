@@ -56,7 +56,7 @@ public class DialogGetQty extends DialogFragment{
             @Override
             public void onClick(View view) {
                 entered_qty=Integer.parseInt(txt_get_qty.getText().toString());
-                cm.onDialogMessage(entered_qty,0,unit_spinner.getSelectedItemPosition(),0);//ToDo set arrays
+                cm.onDialogMessage(entered_qty,0,unit_spinner.getSelectedItemPosition(),unit_demand_spinner.getSelectedItemPosition());//ToDo set arrays
                 dismiss();
             }
         });
@@ -75,7 +75,7 @@ public class DialogGetQty extends DialogFragment{
             public void onClick(View view) {
                 entered_qty=Integer.parseInt(txt_get_qty.getText().toString());
                 entered_demand_qty=Integer.parseInt(txt_get_dmnd_qty.getText().toString());
-                cm.onDialogMessage(entered_qty,entered_demand_qty,unit_spinner.getSelectedItemPosition(),0);//ToDo set arrays
+                cm.onDialogMessage(entered_qty,entered_demand_qty,unit_spinner.getSelectedItemPosition(),unit_demand_spinner.getSelectedItemPosition());//ToDo set arrays
                 dismiss();
 
             }
@@ -87,8 +87,13 @@ public class DialogGetQty extends DialogFragment{
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unit_spinner.setAdapter(spinnerArrayAdapter);
 
-        Spinner demand_unit_spinner=(Spinner)view.findViewById(R.id.demand_unit_spinner);
-        demand_unit_spinner.setAdapter(spinnerArrayAdapter);
+        unit_demand_spinner=(Spinner)view.findViewById(R.id.demand_unit_spinner);
+        unitSet=PlaceOrderSecond.getStringUnits();
+        //ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,array); //selected item will look like a spinner set from XML
+        final ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,PlaceOrderSecond.getStringUnits());
+        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unit_demand_spinner.setAdapter(spinnerArrayAdapter2);
+
         return view;
     }
     public int getUnitposition(String selection){
