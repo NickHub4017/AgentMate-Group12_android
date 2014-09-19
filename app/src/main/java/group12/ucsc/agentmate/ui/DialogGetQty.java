@@ -98,14 +98,12 @@ public class DialogGetQty extends DialogFragment{
         });
 
         unitSet=PlaceOrderSecond.getStringUnits();
-        //ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,array); //selected item will look like a spinner set from XML
         final ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,PlaceOrderSecond.getStringUnits());
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unit_spinner.setAdapter(spinnerArrayAdapter);
 
 
         unitSet=PlaceOrderSecond.getStringUnits();
-        //ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,array); //selected item will look like a spinner set from XML
         final ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,PlaceOrderSecond.getStringUnits());
         spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unit_demand_spinner.setAdapter(spinnerArrayAdapter2);
@@ -143,3 +141,4 @@ interface Communicator{
 //ToDo change number of parameteres in onDialogMessage method (to get qty in dif units),get demand qty,date for demanded values
 }
 
+//ToDO convert all qty to its minimum unit.

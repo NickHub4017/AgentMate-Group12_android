@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import group12.ucsc.agentmate.R;
+import group12.ucsc.agentmate.bll.Order;
 import group12.ucsc.agentmate.bll.Representative;
 import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.UnitMap;
@@ -33,6 +34,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
  * Created by NRV on 9/7/2014.
  */
 public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator{
+    Order new_order=new Order();
     DatabaseControl dbc=new DatabaseControl(this);
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
@@ -44,6 +46,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
     int demandQty_global;
     int demandUnitIndex_global;
     public static UnitMap u_map[];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,23 +84,34 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
                 String selection = (String)adapterView.getItemAtPosition(position);
                 //int real_id_pos=getReal(selection,str_arry_item_id);
                 //itm_cur.moveToPosition(real_id_pos);
-                Cursor cur=dbc.getExactItemByID(selection);
-                cur.moveToFirst();
 
-                //RowCreator(currentItem);
-                currentItem=new SellItem(selection,PlaceOrderSecond.this);
-                cur_st_value=currentItem.getStoreQty();
-                u_map=dbc.findQtyMap(selection);
+                int pos=new_order.findById(selection);
+                //Toast.makeText(getApplicationContext(),pos+"---->"+new_order.list.size(),Toast.LENGTH_SHORT).show();
+                if ( pos!=-1){
+                    currentItem=new_order.findByIdObj(pos);
+                    Toast.makeText(getApplicationContext(),"OK",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"OK DA?",Toast.LENGTH_SHORT).show();
+                    Cursor cur = dbc.getExactItemByID(selection);
+                    cur.moveToFirst();
+
+                    //RowCreator(currentItem);
+                    currentItem = new SellItem(selection, PlaceOrderSecond.this);
+                }
+
+                    cur_st_value = currentItem.getStoreQty();
+                    u_map = dbc.findQtyMap(selection);
                 /*for (int i=0;i<u_map.length;i++){
                     Toast.makeText(getApplicationContext(),u_map[i].getUnit()+" "+u_map[i].getQtyMap(),Toast.LENGTH_SHORT).show();
                 }*/
-                //cur_bun.putSerializable("cur_item",currentItem);
-                //showDialog(1);
-                FragmentManager fm=getFragmentManager();
-                DialogGetQty md=new DialogGetQty();
-                md.show(fm,"dialog");
+                    //cur_bun.putSerializable("cur_item",currentItem);
+                    //showDialog(1);
+                    FragmentManager fm = getFragmentManager();
+                    DialogGetQty md = new DialogGetQty();
+                    md.show(fm, "dialog");
 
-            ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
+                    ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
 
             }
         });
@@ -288,13 +302,16 @@ public void table_hdr(){
     @Override
     public void onDialogMessage(int qty,int demandQty,int qtyUnitindex,int demandQtyUnitIndex) {
         currentItem.setQty(qty);
+        currentItem.setStoreQty(currentItem.getStoreQty()-qty);
         currentItem.setSelectedUnit(u_map[qtyUnitindex].getUnit());
         demandQty_global=demandQty;
         demandUnitIndex_global=demandQtyUnitIndex;
 
         RowCreator(currentItem,R.id.selected_table1);
+        new_order.addItem(currentItem);
         if (demandQty!=0) {
             RowCreator(currentItem, R.id.demanded_table);
+
         }
         count++;
 
