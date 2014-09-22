@@ -24,6 +24,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Order;
 import group12.ucsc.agentmate.bll.Representative;
@@ -36,7 +38,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
  * Created by NRV on 9/7/2014.
  */
 public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator,DialogEditQty.EditComm {
-    Order new_order = new Order();
+    static Order new_order = new Order();
     DatabaseControl dbc = new DatabaseControl(this);
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
@@ -49,22 +51,26 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
     int demandQty_global;
     int demandUnitIndex_global;
     public static UnitMap u_map[];
-
+    boolean exsist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_order_item_add);
+
         itemID_edit_auto = (AutoCompleteTextView) findViewById(R.id.auto_comp_item_id);
         itemName_edit_auto = (AutoCompleteTextView) findViewById(R.id.auto_comp_item_name);
+
         final Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
+
         TextView logged_vendor_tv = (TextView) findViewById(R.id.txt_vname_order_b);
         logged_vendor_tv.setText("Selected Vendor is :- " + sel_vendor.getShopName());
-        //TableLayout t1;
-        cur_bun = savedInstanceState;
 
-        table_hdr();
+
+
+        table_hdr();///Draw headers of the tables
         demand_table_hdr();
+
         itm_cur = dbc.getAllItemByName();
 
         final String[] str_arry_item_id = new String[itm_cur.getCount()];
@@ -84,44 +90,43 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String selection = (String) adapterView.getItemAtPosition(position);
-                //int real_id_pos=getReal(selection,str_arry_item_id);
-                //itm_cur.moveToPosition(real_id_pos);
+                String selection = (String) adapterView.getItemAtPosition(position);//
 
                 int pos = new_order.findById(selection);
-                //Toast.makeText(getApplicationContext(),pos+"---->"+new_order.list.size(),Toast.LENGTH_SHORT).show();
-                //Log.d("PlaceOrder Onselected item",String.valueOf(pos));
-                //Log.d("PlaceOrder On selected Order",String.valueOf(new_order.list.get(0).getItemName()));
+                Toast.makeText(getApplicationContext(), String.valueOf(pos), Toast.LENGTH_SHORT).show();
                 if (pos != -1) {
                     currentItem = new_order.findByIdObj(pos);
-                    Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
+                    exsist=true;
+                    //Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "OK DA?", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "OK DA?", Toast.LENGTH_SHORT).show();
                     Cursor cur = dbc.getExactItemByID(selection);
                     cur.moveToFirst();
+                    exsist=false;
 
-                    //RowCreator(currentItem);
                     currentItem = new SellItem(selection, PlaceOrderSecond.this);
                 }
+                //if object exsits in the array array will update else new will create
 
-                cur_st_value = currentItem.getStoreQty();
+                cur_st_value = currentItem.getStoreQty();//reference to the dialog box say about qty in stock
                 u_map = dbc.findQtyMap(selection);
-                /*for (int i=0;i<u_map.length;i++){
-                    Toast.makeText(getApplicationContext(),u_map[i].getUnit()+" "+u_map[i].getQtyMap(),Toast.LENGTH_SHORT).show();
-                }*/
-                //cur_bun.putSerializable("cur_item",currentItem);
-                //showDialog(1);
+
+
                 FragmentManager fm = getFragmentManager();
                 DialogGetQty md = new DialogGetQty();
-                md.show(fm, "dialog");
+                md.show(fm, "dialog");///After this object(full) will create in onDialog method.
 
                 ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
 
             }
         });
+//////LOAD ARRAY ADAPTERS
+
         ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str_arry_item_name);
         itemName_edit_auto.setAdapter(adapter2);
         //itemName_edit_auto.setOnItemClickListener(new );
+
+//////LOAD ARRAY ADAPTER
 
         Button b2 = (Button) findViewById(R.id.button_testing);
         b2.setOnClickListener(new View.OnClickListener() {
@@ -134,17 +139,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         });
     }
 
-    public int getReal(String key, String[] array) {
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(key)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void RowCreator(SellItem item, int layout) {
-        //item.setQty(10);
+    public void RowCreator(SellItem item, int layout,int rw) {
 
         TableLayout tl = (TableLayout) findViewById(layout);
 
@@ -155,15 +150,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         tr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView ID_tv = (TextView) findViewById(200 + (tr.getId() % 100));
-                int t_pos = new_order.findById((String) ID_tv.getText());
-                u_map = dbc.findQtyMap(String.valueOf(ID_tv.getText()));
-                Toast.makeText(getApplicationContext(),"-->"+u_map.length,Toast.LENGTH_SHORT).show();
 
-                t_selItem = new_order.findByIdObj(t_pos);
-                Log.d("PlaceOrder Onselected item",String.valueOf(t_pos));
-                Log.d("PlaceOrder On selected Order",String.valueOf(new_order.list.get(t_pos).getItemName()));
-                //Log.d("OnSelectItem Table",currentItem)
                 FragmentManager fm = getFragmentManager();
                 DialogEditQty md = new DialogEditQty();
                 md.show(fm, "edit");
@@ -171,8 +158,8 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             }
         });
 
-        if (count % 2 != 0) tr.setBackgroundColor(Color.GRAY);
-        tr.setId(100 + count);
+        if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
+        tr.setId(100 + rw);
         tr.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.FILL_PARENT,
                 TableRow.LayoutParams.WRAP_CONTENT));
@@ -180,26 +167,26 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
 //Create two columns to add as table data
         // Create a TextView to add date
         TextView labelID = new TextView(this);
-        labelID.setId(200 + count);
+        labelID.setId(200 + rw);
         labelID.setText(item.getItemID());
         labelID.setPadding(2, 0, 5, 0);
         labelID.setTextColor(Color.BLACK);
         tr.addView(labelID);
 
         TextView labelName = new TextView(this);
-        labelName.setId(300 + count);
+        labelName.setId(300 + rw);
         labelName.setText(String.valueOf(item.getItemName()));
         labelName.setTextColor(Color.BLACK);
         tr.addView(labelName);
 
         TextView labelQty = new TextView(this);
-        labelQty.setId(400 + count);
+        labelQty.setId(400 + rw);
 //        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
         labelQty.setTextColor(Color.BLACK);
         //tr.addView(labelQty);
 
         TextView labelDiscount = new TextView(this);
-        labelDiscount.setId(500 + count);
+        labelDiscount.setId(500 + rw);
         //labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
         labelDiscount.setTextColor(Color.BLACK);
 
@@ -209,7 +196,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
             tr.addView(labelDiscount);
             TextView labelPrice = new TextView(this);
-            labelPrice.setId(600 + count);
+            labelPrice.setId(600 + rw);
             double value = (100 - item.getRelavantDiscount(item.getQty())) * item.getPrice() * item.getQty();
             labelPrice.setText(String.valueOf(value / 100));
             labelPrice.setTextColor(Color.BLACK);
@@ -330,15 +317,35 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         demandQty_global = demandQty;
         demandUnitIndex_global = demandQtyUnitIndex;
         if (qty != 0)
-            RowCreator(currentItem, R.id.selected_table1);
-        new_order.addItem(currentItem);
+            if (!exsist) {
+                //RowCreator(currentItem, R.id.selected_table1);
+                new_order.addItem(currentItem);
+            }//else means exsits item loaded alredy and we updated it.
 
         if (demandQty != 0) {
-            RowCreator(currentItem, R.id.demanded_table);
+
+            RowCreator(currentItem, R.id.demanded_table,1);
 
         }
         count++;
 
+
+       DrawTable(R.id.selected_table1,new_order.list);
+
+    }
+
+    public void DrawTable(int layout,ArrayList<SellItem> arls){
+        try {
+            TableLayout ttt = (TableLayout) findViewById(layout);
+            //for (int i = 1; i < new_order.list.size(); i++) {
+            ttt.removeAllViewsInLayout();
+            //}
+        }
+        catch (Exception e){}
+        table_hdr();
+        for (int i=0;i<arls.size();i++){
+            RowCreator(arls.get(i), layout,i);
+        }
     }
 
     public static String[] getStringUnits() {
@@ -359,47 +366,14 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         demandQty_global = demandQty;
         demandUnitIndex_global = demandQtyUnitIndex;
         if (qty != 0)
-            RowCreator(currentItem, R.id.selected_table1);
+            RowCreator(currentItem, R.id.selected_table1,1);
         new_order.addItem(currentItem);
 
         if (demandQty != 0) {
-            RowCreator(currentItem, R.id.demanded_table);
+            RowCreator(currentItem, R.id.demanded_table,1);
 
         }
-/*public Dialog onCreateDialog(int a){
-    AlertDialog.Builder builder;//=new AlertDialog.Builder(this);
-    LayoutInflater inflater;//=getLayoutInflater();
-    builder=new AlertDialog.Builder(this);
-    inflater=getLayoutInflater();
 
-    builder.setView(inflater.inflate(R.layout.item_load_dialog, null))
-            .setTitle("" )
-            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                    Dialog dlg=(Dialog)arg0;
-                    EditText etxtName=(EditText)dlg.findViewById(R.id.txt_Qty);
-                    if(etxtName.getText().toString().length()>0) 
-                    {
-                        String name=etxtName.getText().toString();
-                        Toast.makeText(getApplicationContext(), "I am , " + name, Toast.LENGTH_LONG).show();
-                        currentItem.setQty(Integer.parseInt(name));
-                        RowCreator(currentItem);
-                    }
-                }
-            })
-            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(getApplicationContext(), "You clicked on Cancel", Toast.LENGTH_LONG).show();
-                }
-            })
-            ;
-
-    return builder.create();
-}*/
 
     }
 

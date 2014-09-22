@@ -83,7 +83,7 @@ public class Select_Menu extends Activity{
             @Override
             public void onClick(View view) {
                 Intent complain_intent=new Intent(Select_Menu.this,ComplainReport.class);
-                //place_order_first_intent.putExtra("logged_user", logged_rep);
+                complain_intent.putExtra("logged_user", logged_rep);
                 startActivity(complain_intent);
             }
         });

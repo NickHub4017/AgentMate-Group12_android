@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import group12.ucsc.agentmate.bll.Complain;
 import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.Vendor;
@@ -60,6 +61,11 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
         database.execSQL(create_unit_mapping_Table_query);
 
+        String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(17) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
+        database.execSQL(create_complain_Table_query);
+
+
+
         Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
 
 
@@ -74,11 +80,14 @@ public class DatabaseControl extends SQLiteOpenHelper{
     }
     public void k(){
         SQLiteDatabase database = this.getWritableDatabase();
-        String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
+        //String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
         //database.execSQL(create_unit_mapping_Table_query);
-        Toast.makeText(con, "id ", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(con, "id ", Toast.LENGTH_SHORT).show();
 
-        ContentValues values = new ContentValues();
+        String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(12) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
+        database.execSQL(create_complain_Table_query);
+
+        /*ContentValues values = new ContentValues();
         values.put("ItemID","123");
         values.put("unit","pkt");
         values.put("MapQty",15);
@@ -98,7 +107,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         values3.put("MapQty",50);
 
         database.insert("measure",null, values3);
-        Toast.makeText(con, "****/////**** ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(con, "****//*///*//**** ", Toast.LENGTH_SHORT).show();*/
     }
 
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
@@ -394,5 +403,35 @@ public void AddDiscount (String id,int max,int min,double disc) {
         }
         return null;
     }
+
+    public void addToComplain(Complain cmp){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ComplainID",cmp.getComplainID());
+        values.put("ItemID",cmp.getItemID());
+        values.put("Complain",cmp.getComplain());
+        values.put("VendorNo",cmp.getVendorNo());
+        values.put("Sync",cmp.getSync());
+        database.insert("complain",null, values);
+
+    }
+    public void getComplainID(){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_id_complain_Query = "SELECT * FROM complain";
+        Cursor cursor = database.rawQuery(select_id_complain_Query,null);
+
+        if (cursor.moveToFirst() && cursor.getCount() != 0) {
+            do {
+
+                Toast.makeText(con,cursor.getString(cursor.getColumnIndex("ComplainID"))+"-->"+cursor.getString(cursor.getColumnIndex("ItemID"))+"-->"+cursor.getString(cursor.getColumnIndex("Complain"))+"-->"+cursor.getString(cursor.getColumnIndex("VendorNo")),Toast.LENGTH_SHORT).show();
+
+
+            } while (cursor.moveToNext());
+
+        }
+
+    }
+
+
 
 }
