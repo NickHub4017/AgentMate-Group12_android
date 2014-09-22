@@ -77,6 +77,16 @@ public class Select_Menu extends Activity{
                 startActivity(place_order_first_intent);
             }
         });
+
+        Button btn_complain_report=(Button)findViewById(R.id.btn_complain_report);
+        btn_complain_report.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent complain_intent=new Intent(Select_Menu.this,ComplainReport.class);
+                //place_order_first_intent.putExtra("logged_user", logged_rep);
+                startActivity(complain_intent);
+            }
+        });
     }
 
 
