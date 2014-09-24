@@ -39,6 +39,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
  */
 public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator,DialogEditQty.EditComm{
     static Order new_order = new Order();
+    static Order new_temp_order = new Order();
     DatabaseControl dbc = new DatabaseControl(this);
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
@@ -327,8 +328,13 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             }//else means exsits item loaded alredy and we updated it.
 
         if (demandQty != 0) {
+            SellItem temp_item=new SellItem(currentItem.getItemID(),PlaceOrderSecond.this);
+            temp_item.setQty(demandQty);
+            temp_item.setStoreQty(-1);
+            new_temp_order.addItem(temp_item);
+            Log.d("PlaceSecond",String.valueOf(new_temp_order.list.size()));
+            //Toast.makeText(getApplicationContext(),new_temp_order.list.size(),Toast.LENGTH_SHORT).show();
 
-            RowCreator(currentItem, R.id.demanded_table,1);
 
         }
         count++;
@@ -336,6 +342,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
 
        DrawTable(R.id.selected_table1,new_order.list);
 
+        //RowCreator(currentItem, R.id.demanded_table, 1);
     }
 
     public void DrawTable(int layout,ArrayList<SellItem> arls){
@@ -346,7 +353,12 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             //}
         }
         catch (Exception e){}
-        table_hdr();
+        if (layout==R.id.selected_table1) {
+            table_hdr();
+        }
+        else{
+            demand_table_hdr();
+        }
         for (int i=0;i<arls.size();i++){
             RowCreator(arls.get(i), layout,i);
         }

@@ -63,6 +63,7 @@ public class DialogEditQty extends DialogFragment{
             }
         });
 
+
         ArrayAdapter adapter2 = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, getData(1));
         auto_edit_itm_name.setAdapter(adapter2);
 
