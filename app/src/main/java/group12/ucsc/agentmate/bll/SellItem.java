@@ -188,5 +188,8 @@ public class SellItem implements Serializable {
             return 0;
         }
     }
+    public void resetStoreQty(){
+        this.setStoreQty(getStoreQty()+getQty());
+    }
 
 }

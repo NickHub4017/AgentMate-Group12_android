@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -26,87 +28,109 @@ import group12.ucsc.agentmate.bll.SellItem;
  * Created by NRV on 9/20/2014.
  */
 public class DialogEditQty extends DialogFragment{
-    Button btn_submit,btn_cancel,btn_submit_demand;
-    EditComm Ecm;
-    int entered_qty,entered_demand_qty,select_unit_index,demand_unit_index;
-    EditText txt_get_qty;
-    EditText txt_get_dmnd_qty;
-    Spinner unit_spinner2,unit_demand_spinner;
-    SellItem s_item;
-    String[] unitSet;
+
+    EditComm ecm;
+    String[] itemid;
+    SellItem toEditItem;
+    int select_pos;
+    EditText etx_qty;
+    TextView txt_cur_qty;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        ecm = (EditComm)activity;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.item_load_dialog, null);
-        btn_submit=(Button)view.findViewById(R.id.btn_sbmt_dialog);
-        btn_cancel=(Button)view.findViewById(R.id.btn_cancel_dialog);
-        btn_submit_demand=(Button)view.findViewById(R.id.btn_sbmt_with_demand_dialog);
-        txt_get_qty=(EditText)view.findViewById(R.id.txt_Qty);
-        txt_get_dmnd_qty=(EditText)view.findViewById(R.id.edit_demand_qty);
+        View view=inflater.inflate(R.layout.select_list_edit, null);
+        AutoCompleteTextView auto_edit_itm_id=(AutoCompleteTextView)view.findViewById(R.id.editauto_item_id);
+        AutoCompleteTextView auto_edit_itm_name=(AutoCompleteTextView)view.findViewById(R.id.editauto_item_name);
+        txt_cur_qty=(TextView)view.findViewById(R.id.txt_edit_order2);
+        etx_qty=(EditText)view.findViewById(R.id.edit_qty_order);
 
-        TextView Remain_tv=(TextView)view.findViewById(R.id.text_remain);//ToDO set store quantity to diplay
-        Remain_tv.setText("Current Store has "+PlaceOrderSecond.t_selItem.getStoreQty()+" "+"You prevously selected"+PlaceOrderSecond.t_selItem.getQty()+" "+PlaceOrderSecond.t_selItem.getSelectedUnit());
-        Log.d("EditQty",String.valueOf(PlaceOrderSecond.t_selItem==null));
-        //+PlaceOrderSecond.t_selItem.getStoreQty()+" "+"You prevously selected"+PlaceOrderSecond.t_selItem.getQty()+" "+PlaceOrderSecond.t_selItem.getSelectedUnit()
-        unitSet=PlaceOrderSecond.getStringUnits();
-        Log.d("DialogEditQty",String.valueOf(unitSet.length)+unitSet[0]+unitSet[1]+unitSet[2]);
-        //String[] p={"a","b","c"};
-        ViewGroup unit_radio_group = (ViewGroup) view.findViewById(R.id.hour_radio_group);  // This is the id of the RadioGroup we defined
-        for (int i = 0; i<unitSet.length; i++) {
-            RadioButton button = new RadioButton(getActivity().getApplicationContext());
-            button.setId(i+1000);
-            button.setText(unitSet[i]);
-            button.setTextColor(Color.BLACK);
-             // Only select button with same index as currently selected number of hours
-            if (PlaceOrderSecond.t_selItem.getSelectedUnit().equals(unitSet[i])){//ToDo set boollean with cyrrent unit
-                button.setChecked(true);
-                select_unit_index=i;
-            }
-            //button.setBackgroundResource(R.drawable.item_selector); // This is a custom button drawable, defined in XML
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((RadioGroup) view.getParent()).check(view.getId());
-                    //Toast.makeText(getActivity().getApplicationContext(),String.valueOf(view.getId()),Toast.LENGTH_SHORT).show();
-                    select_unit_index=view.getId()-1000;
-                }
-            });
-
-            unit_radio_group.addView(button);
-        }
-
-        btn_submit.setOnClickListener(new View.OnClickListener() {
+        itemid=getData(0);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1,itemid );
+        auto_edit_itm_id.setAdapter(adapter);
+        auto_edit_itm_id.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long l) {
+                select_pos=pos;
+                toEditItem=PlaceOrderSecond.new_order.list.get(GetRealPos((String) adapterView.getItemAtPosition(pos)));
+                txt_cur_qty.setText("Enter Qty you want current is "+toEditItem.getQty()+" has total "+(toEditItem.getQty()+toEditItem.getStoreQty()));
+                //Toast.makeText(getActivity().getApplicationContext(),toEditItem.getStoreQty(),Toast.LENGTH_SHORT).show();
+                //Log.d("DialogEditQty",String.valueOf(toEditItem.getStoreQty()));
             }
         });
 
-        //ToDO implement unit change conflict method for update..
+        ArrayAdapter adapter2 = new ArrayAdapter(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, getData(1));
+        auto_edit_itm_name.setAdapter(adapter2);
 
+        Button btn_delete=(Button)view.findViewById(R.id.btn_order_edit_delete);
+        btn_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlaceOrderSecond.new_order.list.remove(toEditItem);
+                itemid=getData(0);
+                ecm.onEditMessage();
+                dismiss();
+            }
+        });
 
+        Button btn_edit=(Button)view.findViewById(R.id.btn_order_edit_edit);
+        btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toEditItem.resetStoreQty();
+                toEditItem.setQty(Integer.parseInt(etx_qty.getText().toString()));
+                toEditItem.setStoreQty(toEditItem.getStoreQty()-toEditItem.getQty());
+                ecm.onEditMessage();
+                dismiss();
 
-
-        //Toast.makeText(getActivity().getApplicationContext(),PlaceOrderSecond.u_map.length,Toast.LENGTH_SHORT).show();
-        /*ArrayAdapter<String> spinnerArrayAdapter3 = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,p);
-        spinnerArrayAdapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unit_spinner2.setAdapter(spinnerArrayAdapter3);*/
-//////TODO CLEAR THIS
-/*
-        unitSet=PlaceOrderSecond.getStringUnits();
-        final ArrayAdapter<String> spinnerArrayAdapter2 = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,PlaceOrderSecond.getStringUnits());
-        spinnerArrayAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        unit_demand_spinner.setAdapter(spinnerArrayAdapter2);*/
-
+            }
+        });
+        /*btn_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                toEditItem.setStoreQty(toEditItem.getStoreQty()+toEditItem.getQty());
+                int qty=Integer.parseInt(etx_qty.getText().toString());
+                toEditItem.setQty(qty);
+                toEditItem.setStoreQty(toEditItem.getStoreQty()-qty);
+                ecm.onEditMessage();
+            }
+        });*/
 
         return view;
     }
 
     interface EditComm{
-        public void onEditMessage(int qty,int demandQty,int qtyUnitindex,int demandQtyUnitIndex);
+        public void onEditMessage();
     }
+
+
+    public String[] getData(int dataid){
+        int len=PlaceOrderSecond.new_order.list.size();
+        String[] reslt_list=new String[len];
+        for (int i=0;i<len;i++){
+            if (dataid==0){
+                reslt_list[i]=PlaceOrderSecond.new_order.list.get(i).getItemID();
+            }
+            else{
+                reslt_list[i]=PlaceOrderSecond.new_order.list.get(i).getItemName();
+            }
+        }
+        return reslt_list;
+
+
+    }
+
+    public int GetRealPos(String key){
+        for (int i=0;i<itemid.length;i++){
+            if (itemid[i].equals(key)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

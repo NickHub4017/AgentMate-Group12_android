@@ -126,6 +126,7 @@ public class ComplainReport extends Activity {
                 String complain=edit_comment.getText().toString();
                 Complain cmp=new Complain(cmpID,itemcode,complain,vendor_id,false);
                 dbc.addToComplain(cmp);
+                Toast.makeText(getApplicationContext(),"Complain is sucessfully submitted",Toast.LENGTH_SHORT).show();
 
             }
         });

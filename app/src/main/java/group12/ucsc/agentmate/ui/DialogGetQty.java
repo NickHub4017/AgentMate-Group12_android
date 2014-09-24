@@ -27,6 +27,7 @@ import group12.ucsc.agentmate.bll.SellItem;
 public class DialogGetQty extends DialogFragment{
     Button btn_submit,btn_cancel,btn_submit_demand;
     Communicator cm;
+
     int entered_qty,entered_demand_qty;
     EditText txt_get_qty;
     EditText txt_get_dmnd_qty;
@@ -37,6 +38,7 @@ public class DialogGetQty extends DialogFragment{
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         cm=(Communicator)activity;
+
         //s_item=(SellItem)activity.getIntent().getSerializableExtra("cur_item");
 
 

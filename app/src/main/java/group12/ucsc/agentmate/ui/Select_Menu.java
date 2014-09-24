@@ -87,6 +87,15 @@ public class Select_Menu extends Activity{
                 startActivity(complain_intent);
             }
         });
+
+        Button btn_stock_van=(Button) findViewById(R.id.btn_vehicle_stock);
+        btn_stock_van.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               Intent van_stock_intent=new Intent(Select_Menu.this,ReamainVan.class);
+                startActivity(van_stock_intent);
+            }
+        });
     }
 
 

@@ -37,7 +37,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
 /**
  * Created by NRV on 9/7/2014.
  */
-public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator,DialogEditQty.EditComm {
+public class PlaceOrderSecond extends Activity implements DialogGetQty.Communicator,DialogEditQty.EditComm{
     static Order new_order = new Order();
     DatabaseControl dbc = new DatabaseControl(this);
     AutoCompleteTextView itemID_edit_auto;
@@ -52,6 +52,9 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
     int demandUnitIndex_global;
     public static UnitMap u_map[];
     boolean exsist;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -137,6 +140,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
                 d.k();
             }
         });
+        b2.setVisibility(View.INVISIBLE);
     }
 
     public void RowCreator(SellItem item, int layout,int rw) {
@@ -358,24 +362,14 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
 
     //ToDO complete this method
     @Override
-    public void onEditMessage(int qty, int demandQty, int qtyUnitindex, int demandQtyUnitIndex) {
-        t_selItem.setStoreQty(currentItem.getStoreQty() + currentItem.getQty());
-        t_selItem.setQty(qty);
-        t_selItem.setStoreQty(currentItem.getStoreQty() - qty);
-        t_selItem.setSelectedUnit(u_map[qtyUnitindex].getUnit());
-        demandQty_global = demandQty;
-        demandUnitIndex_global = demandQtyUnitIndex;
-        if (qty != 0)
-            RowCreator(currentItem, R.id.selected_table1,1);
-        new_order.addItem(currentItem);
-
-        if (demandQty != 0) {
-            RowCreator(currentItem, R.id.demanded_table,1);
-
-        }
-
+    public void onEditMessage() {
+        //DrawTable(R.id.selected_table1,new_order.list);
+        Toast.makeText(getApplicationContext(),"**********",Toast.LENGTH_SHORT).show();
+        DrawTable(R.id.selected_table1,new_order.list);
 
     }
+
+
 
 
 }
