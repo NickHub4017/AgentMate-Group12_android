@@ -333,6 +333,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
             temp_item.setStoreQty(-1);
             new_temp_order.addItem(temp_item);
             Log.d("PlaceSecond",String.valueOf(new_temp_order.list.size()));
+            DrawTable(R.id.demanded_table,new_temp_order.list);
             //Toast.makeText(getApplicationContext(),new_temp_order.list.size(),Toast.LENGTH_SHORT).show();
 
 
@@ -361,6 +362,7 @@ public class PlaceOrderSecond extends Activity implements DialogGetQty.Communica
         }
         for (int i=0;i<arls.size();i++){
             RowCreator(arls.get(i), layout,i);
+            Log.d("PlaceOrderArray",arls.get(i).getItemID()+"**"+arls.get(i).getQty());
         }
     }
 
