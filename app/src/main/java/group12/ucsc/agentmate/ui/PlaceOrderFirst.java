@@ -95,7 +95,7 @@ public class PlaceOrderFirst extends Activity {
                 public void onClick(View view) {
                     if (btn_cntd.isEnabled()){
                         cursor_ven_id.close();
-                        Intent next=new Intent(PlaceOrderFirst.this,PlaceOrderSecond.class);
+                        Intent next=new Intent(PlaceOrderFirst.this,PlaceOrderSecond2.class);
                         next.putExtra("vendor",sel_vendor);
                         next.putExtra("logged_user",logged_rep);
                         startActivity(next);

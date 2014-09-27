@@ -44,7 +44,8 @@
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/Radiolink1">
+        android:id="@+id/Radiolink1"
+        >
 
         <RadioGroup
             android:id="@+id/hour_radio_group"
@@ -90,8 +91,16 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
+        android:layout_height="53dp"
+        android:id="@+id/radio_link_2"
+        ></LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dialogLayout">
+        android:id="@+id/dialogLayout"
+        android:layout_gravity="center_horizontal">
 
         <Button
             android:layout_width="wrap_content"

@@ -1,7 +1,9 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,9 +85,15 @@ public class DialogEditQty extends DialogFragment{
             @Override
             public void onClick(View view) {
                 toEditItem.resetStoreQty();
-                toEditItem.setQty(Integer.parseInt(etx_qty.getText().toString()));
-                toEditItem.setStoreQty(toEditItem.getStoreQty()-toEditItem.getQty());
-                ecm.onEditMessage();
+                int temp_qty=Integer.parseInt(etx_qty.getText().toString());
+                if (temp_qty>toEditItem.getStoreQty()){
+                    show_warning();
+                }
+                else {
+                    toEditItem.setQty(temp_qty);
+                    toEditItem.setStoreQty(toEditItem.getStoreQty() - toEditItem.getQty());
+                    ecm.onEditMessage();
+                }
                 dismiss();
 
             }
@@ -133,5 +141,21 @@ public class DialogEditQty extends DialogFragment{
         }
         return -1;
     }
+
+    public void show_warning(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder
+                .setTitle("Quantity limit exceed")
+                .setMessage("Quantity limit exceeds Maximum is "+(toEditItem.getStoreQty()))
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Yes button clicked, do something
+                    }
+                })						//Do nothing on no
+                .show();
+
+    }
+
 
 }

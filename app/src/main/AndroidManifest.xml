@@ -27,6 +27,8 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".ui.ComplainReport" android:label="Place an Order"></activity>
         <activity android:name=".ui.ReamainVan" android:label="Reamin Stock"></activity>
+        <activity android:name=".ui.PlaceOrderSecond2" android:label="Reamin Stock"></activity>
+
 
     </application>
 

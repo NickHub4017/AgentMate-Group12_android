@@ -68,6 +68,7 @@ public class SellItem implements Serializable {
         MinOrderUnit = cur.getString(cur.getColumnIndex("MinOrderUnit"));
         CategoryID = cur.getString(cur.getColumnIndex("CategoryID"));
         discount=this.getAlldiscounts();
+
     }
 
     public String getItemID() {

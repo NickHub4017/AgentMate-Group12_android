@@ -1,9 +1,11 @@
 package group12.ucsc.agentmate.bll;
 
+import java.io.Serializable;
+
 /**
  * Created by NRV on 9/19/2014.
  */
-public class UnitMap {
+public class UnitMap implements Serializable{
     String unit;
     int QtyMap;
 

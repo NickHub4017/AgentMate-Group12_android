@@ -64,6 +64,9 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(17) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_complain_Table_query);
 
+        String create_bill_Table_query = "CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,Total INTEGER,Sync BOOLEAN)";
+        database.execSQL(create_bill_Table_query);
+
 
 
         Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
@@ -79,13 +82,16 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
     public void k(){
-        SQLiteDatabase database = this.getWritableDatabase();
+        //SQLiteDatabase database = this.getWritableDatabase();
         //String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
         //database.execSQL(create_unit_mapping_Table_query);
         //Toast.makeText(con, "id ", Toast.LENGTH_SHORT).show();
 
-        String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(12) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
-        database.execSQL(create_complain_Table_query);
+        //String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(12) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
+        //database.execSQL(create_complain_Table_query);
+
+       // String create_bill_Table_query = "CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,Total INTEGER,Sync BOOLEAN)";
+        //database.execSQL(create_bill_Table_query);
 
         /*ContentValues values = new ContentValues();
         values.put("ItemID","123");
@@ -108,6 +114,11 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
         database.insert("measure",null, values3);
         Toast.makeText(con, "****//*///*//**** ", Toast.LENGTH_SHORT).show();*/
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("StoreQty", 800);
+        database.update("item", values,"ItemID"+" = ?",new String[] {"12"});
     }
 
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
@@ -389,7 +400,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
     public UnitMap[] findQtyMap(String itemID){
         SQLiteDatabase database = this.getReadableDatabase();
-        String select_discount_id_Query = "SELECT * FROM measure where ItemID='"+itemID+"'";
+        String select_discount_id_Query = "SELECT * FROM measure where ItemID='"+itemID+"' order by MapQty desc";
 
         Cursor cursor = database.rawQuery(select_discount_id_Query,null);
         UnitMap[] mapset=new UnitMap[cursor.getCount()];
@@ -430,6 +441,13 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
         }
 
+    }
+    public Cursor findBillByID(String BillID_ins){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_discount_id_Query = "SELECT * FROM bill where BillID='"+BillID_ins+"' order by name desc";
+
+        Cursor cursor = database.rawQuery(select_discount_id_Query,null);
+        return cursor;
     }
 
 

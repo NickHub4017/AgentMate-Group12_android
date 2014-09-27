@@ -1,31 +1,29 @@
-
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.FragmentManager;
-import android.content.DialogInterface;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+
+/**
+ * Created by NRV on 9/27/2014.
+ */
+
+import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Order;
@@ -34,33 +32,26 @@ import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.Vendor;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
-
+import group12.ucsc.agentmate.bll.mapper;
+import group12.ucsc.agentmate.ui.DialogGetQty.GetQtyCommunicator;
 /**
- * Created by NRV on 9/7/2014.
+ * Created by NRV on 9/27/2014.
  */
-public class PlaceOrderSecond extends Activity {
-    static Order new_order = new Order();
-    static Order new_temp_order = new Order();
+public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
+    Order new_order=new Order(); //Create new Order
     DatabaseControl dbc = new DatabaseControl(this);
+    UnitMap[] map;
+    mapper mpUnitnames=null;
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
-    Cursor itm_cur;
     SellItem currentItem;
-    public static SellItem t_selItem;
-    public int count = 0;
-    public static int cur_st_value = 0;
-    Bundle cur_bun;
-    int demandQty_global;
-    int demandUnitIndex_global;
-    public static UnitMap u_map[];
-    boolean exsist;
+    boolean select_exsist;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_order_item_add);
-/*
 
         itemID_edit_auto = (AutoCompleteTextView) findViewById(R.id.auto_comp_item_id);
         itemName_edit_auto = (AutoCompleteTextView) findViewById(R.id.auto_comp_item_name);
@@ -71,12 +62,10 @@ public class PlaceOrderSecond extends Activity {
         TextView logged_vendor_tv = (TextView) findViewById(R.id.txt_vname_order_b);
         logged_vendor_tv.setText("Selected Vendor is :- " + sel_vendor.getShopName());
 
-
-
         table_hdr();///Draw headers of the tables
         demand_table_hdr();
 
-        itm_cur = dbc.getAllItemByName();
+        Cursor itm_cur = dbc.getAllItemByName();
 
         final String[] str_arry_item_id = new String[itm_cur.getCount()];
         final String[] str_arry_item_name = new String[itm_cur.getCount()];
@@ -88,7 +77,6 @@ public class PlaceOrderSecond extends Activity {
                 j++;
             } while (itm_cur.moveToNext());
         }
-
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str_arry_item_id);
         itemID_edit_auto.setAdapter(adapter);
         itemID_edit_auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,131 +84,42 @@ public class PlaceOrderSecond extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String selection = (String) adapterView.getItemAtPosition(position);//
-
+                mpUnitnames=new mapper(getApplicationContext(),selection);//GET the unit maps
                 int pos = new_order.findById(selection);
-                Toast.makeText(getApplicationContext(), String.valueOf(pos), Toast.LENGTH_SHORT).show();
+
+
                 if (pos != -1) {
                     currentItem = new_order.findByIdObj(pos);
-                    exsist=true;
-                    //Toast.makeText(getApplicationContext(), "OK", Toast.LENGTH_SHORT).show();
-                } else {
-                    //Toast.makeText(getApplicationContext(), "OK DA?", Toast.LENGTH_SHORT).show();
-                    Cursor cur = dbc.getExactItemByID(selection);
-                    cur.moveToFirst();
-                    exsist=false;
-
-                    currentItem = new SellItem(selection, PlaceOrderSecond.this);
+                    select_exsist=true;
                 }
-                //if object exsits in the array array will update else new will create
-
-                cur_st_value = currentItem.getStoreQty();//reference to the dialog box say about qty in stock
-                u_map = dbc.findQtyMap(selection);
-
+                else{
+                    select_exsist=false;
+                    currentItem = new SellItem(selection, PlaceOrderSecond2.this);
+                }
 
                 FragmentManager fm = getFragmentManager();
                 DialogGetQty md = new DialogGetQty();
-                md.show(fm, "dialog");///After this object(full) will create in onDialog method.
+                Bundle args = new Bundle();
 
-                ///TODO write an constructor for item class which retrieve its data in database when the ItemId gives as constructor parameter.
+                args.putInt("qty", currentItem.getStoreQty());
+                args.putString("itemid", currentItem.getItemID());
+                args.putSerializable("umapname", mpUnitnames);
+                md.setArguments(args);
+                md.show(fm, "dialog2");
+
+
 
             }
+
         });
-//////LOAD ARRAY ADAPTERS
 
-        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str_arry_item_name);
-        itemName_edit_auto.setAdapter(adapter2);
-        //itemName_edit_auto.setOnItemClickListener(new );
-
-//////LOAD ARRAY ADAPTER
-
-        Button b2 = (Button) findViewById(R.id.button_testing);
-        b2.setOnClickListener(new View.OnClickListener() {
+        Button btset=(Button)findViewById(R.id.button_testing);
+        btset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //showDialog(1);
-                DatabaseControl d = new DatabaseControl(getApplicationContext());
-                d.k();
+                    dbc.k();
             }
         });
-        b2.setVisibility(View.INVISIBLE);
-    }
-
-    public void RowCreator(SellItem item, int layout,int rw) {
-
-        TableLayout tl = (TableLayout) findViewById(layout);
-
-// Create the table row
-        final TableRow tr = new TableRow(this);
-
-
-        tr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                FragmentManager fm = getFragmentManager();
-                DialogEditQty md = new DialogEditQty();
-                md.show(fm, "edit");
-
-            }
-        });
-
-        if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
-        tr.setId(100 + rw);
-        tr.setLayoutParams(new TableRow.LayoutParams(
-                TableRow.LayoutParams.FILL_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-///TODO must write a method to get qty
-//Create two columns to add as table data
-        // Create a TextView to add date
-        TextView labelID = new TextView(this);
-        labelID.setId(200 + rw);
-        labelID.setText(item.getItemID());
-        labelID.setPadding(2, 0, 5, 0);
-        labelID.setTextColor(Color.BLACK);
-        tr.addView(labelID);
-
-        TextView labelName = new TextView(this);
-        labelName.setId(300 + rw);
-        labelName.setText(String.valueOf(item.getItemName()));
-        labelName.setTextColor(Color.BLACK);
-        tr.addView(labelName);
-
-        TextView labelQty = new TextView(this);
-        labelQty.setId(400 + rw);
-//        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
-        labelQty.setTextColor(Color.BLACK);
-        //tr.addView(labelQty);
-
-        TextView labelDiscount = new TextView(this);
-        labelDiscount.setId(500 + rw);
-        //labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
-        labelDiscount.setTextColor(Color.BLACK);
-
-        if (layout == R.id.selected_table1) {
-            labelQty.setText(String.valueOf(item.getQty()) + " " + item.getSelectedUnit());
-            tr.addView(labelQty);
-            labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
-            tr.addView(labelDiscount);
-            TextView labelPrice = new TextView(this);
-            labelPrice.setId(600 + rw);
-            double value = (100 - item.getRelavantDiscount(item.getQty())) * item.getPrice() * item.getQty();
-            labelPrice.setText(String.valueOf(value / 100));
-            labelPrice.setTextColor(Color.BLACK);
-            tr.addView(labelPrice);
-        } else {
-            labelQty.setText(String.valueOf(demandQty_global) + " " + u_map[demandUnitIndex_global].getUnit());
-            tr.addView(labelQty);
-
-            labelDiscount.setText("Today");
-            tr.addView(labelDiscount);
-        }
-
-// finally add this to the table row
-        tl.addView(tr, new TableLayout.LayoutParams(
-                TableRow.LayoutParams.FILL_PARENT,
-                TableRow.LayoutParams.WRAP_CONTENT));
-
-
     }
 
     public void table_hdr() {
@@ -315,79 +214,12 @@ public class PlaceOrderSecond extends Activity {
 
     }
 
+
     @Override
-    public void onDialogMessage(int qty, int demandQty, int qtyUnitindex, int demandQtyUnitIndex) {
-        currentItem.setQty(qty+currentItem.getQty());//ToDo repeat of the same item row qty must change
-        currentItem.setStoreQty(currentItem.getStoreQty() - qty);
-        currentItem.setSelectedUnit(u_map[qtyUnitindex].getUnit());
-        demandQty_global = demandQty;
-        demandUnitIndex_global = demandQtyUnitIndex;
-        if (qty != 0)
-            if (!exsist) {
-                //RowCreator(currentItem, R.id.selected_table1);
-                new_order.addItem(currentItem);
-            }//else means exsits item loaded alredy and we updated it.
-
-        if (demandQty != 0) {
-            SellItem temp_item=new SellItem(currentItem.getItemID(),PlaceOrderSecond.this);
-            temp_item.setQty(demandQty);
-            temp_item.setStoreQty(-1);
-            new_temp_order.addItem(temp_item);
-            Log.d("PlaceSecond",String.valueOf(new_temp_order.list.size()));
-            DrawTable(R.id.demanded_table,new_temp_order.list);
-            //Toast.makeText(getApplicationContext(),new_temp_order.list.size(),Toast.LENGTH_SHORT).show();
-
-
-        }
-        count++;
-
-
-        DrawTable(R.id.selected_table1,new_order.list);
-
-        //RowCreator(currentItem, R.id.demanded_table, 1);
-    }
-
-    public void DrawTable(int layout,ArrayList<SellItem> arls){
-        try {
-            TableLayout ttt = (TableLayout) findViewById(layout);
-            //for (int i = 1; i < new_order.list.size(); i++) {
-            ttt.removeAllViewsInLayout();
-            //}
-        }
-        catch (Exception e){}
-        if (layout==R.id.selected_table1) {
-            table_hdr();
-        }
-        else{
-            demand_table_hdr();
-        }
-        for (int i=0;i<arls.size();i++){
-            RowCreator(arls.get(i), layout,i);
-            Log.d("PlaceOrderArray",arls.get(i).getItemID()+"**"+arls.get(i).getQty());
-        }
-    }
-
-    public static String[] getStringUnits() {
-        String[] array = new String[u_map.length];
-        for (int i = 0; i < u_map.length; i++) {
-            array[i] = u_map[i].getUnit();
-        }
-        return array;
-    }
-
-    //ToDO complete this method
-    @Override
-    public void onEditMessage() {
-        //DrawTable(R.id.selected_table1,new_order.list);
-        Toast.makeText(getApplicationContext(),"**********",Toast.LENGTH_SHORT).show();
-        DrawTable(R.id.selected_table1,new_order.list);
-
-    }
-
-
-
-
-}
-*/
+    public void onGetData(int qty, int demandQty) {
+        Toast.makeText(getApplicationContext(),"//////////////"+qty+" "+demandQty+" "+" " ,Toast.LENGTH_SHORT).show();
     }
 }
+
+
+
