@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Order;
@@ -39,13 +40,14 @@ import group12.ucsc.agentmate.ui.DialogGetQty.GetQtyCommunicator;
  */
 public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
     Order new_order=new Order(); //Create new Order
+    Order dmnd_new_order=new Order();
     DatabaseControl dbc = new DatabaseControl(this);
     UnitMap[] map;
     mapper mpUnitnames=null;
     AutoCompleteTextView itemID_edit_auto;
     AutoCompleteTextView itemName_edit_auto;
-    SellItem currentItem;
-    boolean select_exsist;
+    SellItem currentItem,currentdemanditem;
+    boolean select_exsist,demand_exsist;
 
 
     @Override
@@ -86,15 +88,29 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
                 String selection = (String) adapterView.getItemAtPosition(position);//
                 mpUnitnames=new mapper(getApplicationContext(),selection);//GET the unit maps
                 int pos = new_order.findById(selection);
-
+                int pos_dmnd=dmnd_new_order.findById(selection);
+                Toast.makeText(getApplicationContext(),dmnd_new_order.list.size()+"**",Toast.LENGTH_SHORT).show();
 
                 if (pos != -1) {
+                    Toast.makeText(getApplicationContext(),"it is in list",Toast.LENGTH_SHORT).show();
                     currentItem = new_order.findByIdObj(pos);
                     select_exsist=true;
                 }
                 else{
+                    Toast.makeText(getApplicationContext(),"it is not in list",Toast.LENGTH_SHORT).show();
                     select_exsist=false;
                     currentItem = new SellItem(selection, PlaceOrderSecond2.this);
+                }
+                ///to demand item
+                if (pos_dmnd != -1) {
+                    Toast.makeText(getApplicationContext(),"it is in demand",Toast.LENGTH_SHORT).show();
+                    currentdemanditem = dmnd_new_order.findByIdObj(pos_dmnd);
+                    demand_exsist=true;
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"it is not in demand",Toast.LENGTH_SHORT).show();
+                    demand_exsist=false;
+                    currentdemanditem = new SellItem(selection, PlaceOrderSecond2.this);
                 }
 
                 FragmentManager fm = getFragmentManager();
@@ -214,10 +230,209 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
 
     }
 
+    public void DrawTable(ArrayList<SellItem> arls){
+        try {
+            TableLayout ttt = (TableLayout) findViewById(R.id.selected_table1);
+            //for (int i = 1; i < new_order.list.size(); i++) {
+            ttt.removeAllViewsInLayout();
+            //}
+        }
+        catch (Exception e){}
+        table_hdr();
+        for (int i=0;i<arls.size();i++){
+            RowCreator(arls.get(i), R.id.selected_table1,i);
+            Log.d("PlaceOrderArray",arls.get(i).getItemID()+"**"+arls.get(i).getQty());
+        }
+    }
+
+    public void RowCreator(SellItem item, int layout,int rw) {
+
+        TableLayout tl = (TableLayout) findViewById(layout);
+
+// Create the table row
+        final TableRow tr = new TableRow(this);
+
+
+        tr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fm = getFragmentManager();
+                DialogEditQty md = new DialogEditQty();
+                md.show(fm, "edit");
+
+            }
+        });
+
+        if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
+        tr.setId(100 + rw);
+        tr.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+///TODO must write a method to get qty
+//Create two columns to add as table data
+        // Create a TextView to add date
+        TextView labelID = new TextView(this);
+        labelID.setId(200 + rw);
+        labelID.setText(item.getItemID());
+        labelID.setPadding(2, 0, 5, 0);
+        labelID.setTextColor(Color.BLACK);
+        tr.addView(labelID);
+
+        TextView labelName = new TextView(this);
+        labelName.setId(300 + rw);
+        labelName.setText(String.valueOf(item.getItemName()));
+        labelName.setTextColor(Color.BLACK);
+        tr.addView(labelName);
+
+        TextView labelQty = new TextView(this);
+        labelQty.setId(400 + rw);
+//        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
+        labelQty.setTextColor(Color.BLACK);
+        //tr.addView(labelQty);
+
+        TextView labelDiscount = new TextView(this);
+        labelDiscount.setId(500 + rw);
+        //labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
+        labelDiscount.setTextColor(Color.BLACK);
+
+
+            labelQty.setText(String.valueOf(item.getQty()) + " " + item.getSelectedUnit());
+            tr.addView(labelQty);
+            labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
+            tr.addView(labelDiscount);
+            TextView labelPrice = new TextView(this);
+            labelPrice.setId(600 + rw);
+            double value = (100 - item.getRelavantDiscount(item.getQty())) * item.getPrice() * item.getQty();
+            labelPrice.setText(String.valueOf(value / 100));
+            labelPrice.setTextColor(Color.BLACK);
+            tr.addView(labelPrice);
+
+
+// finally add this to the table row
+        tl.addView(tr, new TableLayout.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+
+
+    }
+
+    public void DemandDrawTable(ArrayList<SellItem> arls){
+        try {
+            TableLayout ttt = (TableLayout) findViewById(R.id.demanded_table);
+            //for (int i = 1; i < new_order.list.size(); i++) {
+            ttt.removeAllViewsInLayout();
+            //}
+        }
+        catch (Exception e){}
+        demand_table_hdr();
+        for (int i=0;i<arls.size();i++){
+            DemandRowCreator(arls.get(i), R.id.demanded_table,i);
+            Log.d("PlaceOrderArray",arls.get(i).getItemID()+"**"+arls.get(i).getQty());
+        }
+    }
+
+    public void DemandRowCreator(SellItem item, int layout,int rw) {
+
+        TableLayout tl = (TableLayout) findViewById(layout);
+
+// Create the table row
+        final TableRow tr = new TableRow(this);
+
+
+        tr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fm = getFragmentManager();
+                DialogEditQty md = new DialogEditQty();
+                md.show(fm, "edit");
+
+            }
+        });
+
+        if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
+        tr.setId(100 + rw);
+        tr.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+///TODO must write a method to get qty
+//Create two columns to add as table data
+        // Create a TextView to add date
+        TextView labelID = new TextView(this);
+        labelID.setId(200 + rw);
+        labelID.setText(item.getItemID());
+        labelID.setPadding(2, 0, 5, 0);
+        labelID.setTextColor(Color.BLACK);
+        tr.addView(labelID);
+
+        TextView labelName = new TextView(this);
+        labelName.setId(300 + rw);
+        labelName.setText(String.valueOf(item.getItemName()));
+        labelName.setTextColor(Color.BLACK);
+        tr.addView(labelName);
+
+        TextView labelQty = new TextView(this);
+        labelQty.setId(400 + rw);
+        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
+        labelQty.setTextColor(Color.BLACK);
+        tr.addView(labelQty);
+
+
+        TextView labelDate = new TextView(this);
+        labelDate.setId(600 + rw);
+        labelDate.setText("****************");
+        labelDate.setTextColor(Color.BLACK);
+        tr.addView(labelDate);
+
+
+// finally add this to the table row
+        tl.addView(tr, new TableLayout.LayoutParams(
+                TableRow.LayoutParams.FILL_PARENT,
+                TableRow.LayoutParams.WRAP_CONTENT));
+
+
+    }
 
     @Override
     public void onGetData(int qty, int demandQty) {
         Toast.makeText(getApplicationContext(),"//////////////"+qty+" "+demandQty+" "+" " ,Toast.LENGTH_SHORT).show();
+        //to select item
+        if((!select_exsist) &&(qty!=0)){
+            currentItem.setQty(qty);
+            currentItem.setStoreQty(currentItem.getStoreQty()-qty);
+            new_order.addItem(currentItem);
+        }
+        else{
+            int temp=currentItem.getQty();
+            currentItem.resetStoreQty();
+            currentItem.setQty(temp+qty);
+            currentItem.setStoreQty(currentItem.getStoreQty()-currentItem.getQty());
+        }
+        //to demand item
+
+        if((!demand_exsist)&&(demandQty!=0)){
+            currentdemanditem.setQty(demandQty);
+            dmnd_new_order.addItem(currentdemanditem);
+        }
+        else{
+            currentdemanditem.setQty(demandQty);
+        }
+
+        for (int i=0;i<new_order.list.size();i++){
+            String c=new_order.list.get(i).getItemID()+" "+new_order.list.get(i).getItemName()+" "+new_order.list.get(i).getStoreQty();
+            Log.d("new order",c);
+            Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(getApplicationContext(),"***********",Toast.LENGTH_SHORT).show();
+        for (int i=0;i<dmnd_new_order.list.size();i++){
+            String c=dmnd_new_order.list.get(i).getItemID()+" "+dmnd_new_order.list.get(i).getItemName()+" "+dmnd_new_order.list.get(i).getStoreQty();
+            Log.d("dmnd_new_order",c);
+            Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
+        }
+
+        DrawTable(new_order.list);
+        DemandDrawTable(dmnd_new_order.list);
     }
 }
 

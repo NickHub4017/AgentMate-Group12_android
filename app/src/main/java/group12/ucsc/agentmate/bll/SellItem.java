@@ -193,4 +193,9 @@ public class SellItem implements Serializable {
         this.setStoreQty(getStoreQty()+getQty());
     }
 
+    public void reserveQty(int Qtymin){
+        this.StoreQty=this.StoreQty-Qtymin;
+        this.setQty(Qtymin);
+    }
+
 }
