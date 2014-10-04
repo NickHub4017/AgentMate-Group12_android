@@ -177,7 +177,7 @@ public class DialogGetQty extends DialogFragment {
                         }
                         cm.onGetData(tot,demtot,deliverDate);
                         dismiss();
-                    }
+                    }///
 
                     Log.d("Time",deliverDate);
                 }
