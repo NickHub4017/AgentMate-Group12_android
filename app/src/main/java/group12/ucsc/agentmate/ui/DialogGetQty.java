@@ -224,7 +224,7 @@ public class DialogGetQty extends DialogFragment {
 
             }
             if (result_for_select==0){//we cannot give the areas by using this unit
-                seletv.setText(null);
+                seletv.setText(null);//Seltv is set to null for show the hint
             }
             else{
                 seletv.setText(String.valueOf(result_for_select));
