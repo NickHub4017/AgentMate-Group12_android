@@ -34,9 +34,9 @@ import group12.ucsc.agentmate.bll.mapper;
 /**
  * Created by NRV on 9/20/2014.
  */
-public class DialogEditQty extends DialogFragment{
+public class DialogEditDemand extends DialogFragment{
 
-    EditComm ecm;
+    EditCommDemand ecm;
     String[] itemid;
     String chooseID;
     SellItem toEditItem;
@@ -44,13 +44,13 @@ public class DialogEditQty extends DialogFragment{
     TextView tv_selectitemID,tv_selectitemName,tv_qtymsg;
     Button btnEdit;
     View rootview;
-    String[] qtys;
+    String[] demandqtys;
     LinearLayout lout;
     mapper mp;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ecm = (EditComm)activity;
+        ecm = (EditCommDemand)activity;
     }
 
     @Override
@@ -58,27 +58,26 @@ public class DialogEditQty extends DialogFragment{
         View view=inflater.inflate(R.layout.select_list_edit, null);
         chooseID=getArguments().getString("ItemID");
         selected_Qty=getArguments().getInt("Qty");
-        remainQty=getArguments().getInt("RemQty");
-        total=selected_Qty+remainQty;
-        lout= (LinearLayout) view.findViewById(R.id.data_text_layout);
 
         mp=new mapper(getActivity().getApplicationContext(),chooseID);
 
-        qtys=new String[mp.u_map.length];
+        demandqtys=new String[mp.u_map.length];
+
         String preferedUnit=UnitFinder(selected_Qty,mp);
         textboxCreator(view,mp.u_map,preferedUnit,selected_Qty);
+
         tv_selectitemID=(TextView)view.findViewById(R.id.edit_item_id);
         tv_selectitemName=(TextView)view.findViewById(R.id.edit_item_name);
         tv_selectitemID.setText(chooseID);
         tv_qtymsg=(TextView)view.findViewById(R.id.txt_edit_order2);
-        tv_qtymsg.setText("Total items in the van is "+total+" .....");
+        tv_qtymsg.setText("Current demanded qty is "+total+" .....");
         btnEdit=(Button)view.findViewById(R.id.btn_order_edit_edit);
-       btnEdit.setOnClickListener(new View.OnClickListener() {
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int temptot=collectdata();
                 if (temptot>total){
-                  show_warning();
+                    show_warning();
                 }
                 else{
                     ecm.onEditMessage(chooseID, temptot,total);
@@ -93,7 +92,7 @@ public class DialogEditQty extends DialogFragment{
         return view;
     }
 
-    interface EditComm{
+    interface EditCommDemand{
         public void onEditMessage(String ItemID,int qty,int tot);
     }
 
@@ -143,16 +142,16 @@ public class DialogEditQty extends DialogFragment{
             }
             if (Unitlist[i].getUnit()==preferedUnit){
                 tv.setText(String.valueOf(Unitsolver(selected_Qty,mp)));
-                qtys[i]=String.valueOf(Unitsolver(selected_Qty,mp));
+                demandqtys[i]=String.valueOf(Unitsolver(selected_Qty,mp));
             }
-           tv.setOnKeyListener(new View.OnKeyListener() {
-               @Override
-               public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                   qtys[view.getId()-2100]=tv.getText().toString();
-                   Log.d("EDIT QtyArray_demand EDIT",""+qtys[0]+" "+qtys[1]);
-                   return false;
-               }
-           });
+            tv.setOnKeyListener(new View.OnKeyListener() {
+                @Override
+                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                    demandqtys[view.getId()-2100]=tv.getText().toString();
+                    Log.d("EDIT QtyArray_demand EDIT",""+demandqtys[0]+" "+demandqtys[1]);
+                    return false;
+                }
+            });
             layout.addView(tv, 100, 40);
 
         }
@@ -209,25 +208,26 @@ public class DialogEditQty extends DialogFragment{
 
 
     }
-public int collectdata(){
+
+    public int collectdata(){
 
 
 
-    int newtot=0;
-    String bestUnit;
-    for (int i=0;i<qtys.length;i++){
+        int newtot=0;
+        String bestUnit;
+        for (int i=0;i<demandqtys.length;i++){
 
-        String new_qty=qtys[i];
-        try{
-            newtot=newtot+(Integer.parseInt(new_qty)*mp.u_map[i].getQtyMap());
+            String new_qty=demandqtys[i];
+            try{
+                newtot=newtot+(Integer.parseInt(new_qty)*mp.u_map[i].getQtyMap());
+            }
+            catch (Exception e){
+                newtot=newtot+0;
+            }
+
         }
-        catch (Exception e){
-            newtot=newtot+0;
-        }
 
+        return newtot;
     }
-
-    return newtot;
-}
 
 }

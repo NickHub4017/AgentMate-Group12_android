@@ -28,7 +28,7 @@
                 android:id="@+id/txt_cmp_vendor" />
 
             <AutoCompleteTextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Vendor"
                 android:id="@+id/txtauto_cmp_vendor"
@@ -47,7 +47,7 @@
                 android:id="@+id/txt_cmp_itemcode" />
 
             <AutoCompleteTextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Itemcode"
                 android:id="@+id/textauto_cmp_itemcode" />
@@ -65,7 +65,7 @@
                 android:id="@+id/txt_cmp_itemname" />
 
             <AutoCompleteTextView
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="Itemname"
                 android:id="@+id/txtauto_cmp_itemname" />
@@ -90,6 +90,14 @@
             android:text="Submit"
             android:id="@+id/btn_compalin_submit"
             android:layout_gravity="center_horizontal"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="check"
+            android:id="@+id/btn_compalin_submit2"
+            android:layout_gravity="center_horizontal"
+            android:onClick="testme"
             />
     </LinearLayout>
 </ScrollView>

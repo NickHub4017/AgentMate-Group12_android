@@ -93,7 +93,9 @@
         android:layout_width="fill_parent"
         android:layout_height="53dp"
         android:id="@+id/radio_link_2"
-        ></LinearLayout>
+        >
+
+        </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -120,6 +122,14 @@
             android:text="Submit With demand"
             android:id="@+id/btn_sbmt_with_demand_dialog" />
 
-    </LinearLayout>
 
+
+    </LinearLayout>
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:hint="Set the period to deliver (days)"
+        android:id="@+id/editdate" />
 </LinearLayout>

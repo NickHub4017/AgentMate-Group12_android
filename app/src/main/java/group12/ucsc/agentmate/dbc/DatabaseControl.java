@@ -117,8 +117,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put("StoreQty", 800);
-        database.update("item", values,"ItemID"+" = ?",new String[] {"12"});
+        values.put("StoreQty", 80);
+        database.update("item", values,"ItemID"+" = ?",new String[] {"123"});
     }
 
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){

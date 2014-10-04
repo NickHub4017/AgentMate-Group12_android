@@ -47,6 +47,17 @@ public class Order implements Serializable {
 
     }
 
+    public int findQtyById(String itemID) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getItemID().equals(itemID)) {
+                return list.get(i).getQty();
+            }
+
+        }
+        return -1;
+
+    }
+
     public SellItem findByIdObj(int i) {
         return list.get(i);
     }

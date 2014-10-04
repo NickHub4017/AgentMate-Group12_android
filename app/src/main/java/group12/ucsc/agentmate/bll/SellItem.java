@@ -27,6 +27,16 @@ public class SellItem implements Serializable {
     Discount discount[];
     int QtyInMinUnit;
     String selectedUnit;
+    String deliverDate;
+
+    public String getDeliverDate() {
+        return deliverDate;
+    }
+
+    public void setDeliverDate(String deliverDate) {
+        this.deliverDate = deliverDate;
+    }
+
     public String getSelectedUnit() {
         return selectedUnit;
     }
@@ -68,6 +78,7 @@ public class SellItem implements Serializable {
         MinOrderUnit = cur.getString(cur.getColumnIndex("MinOrderUnit"));
         CategoryID = cur.getString(cur.getColumnIndex("CategoryID"));
         discount=this.getAlldiscounts();
+
 
     }
 
@@ -150,6 +161,7 @@ public class SellItem implements Serializable {
     public int getQty(){
         return QtyInMinUnit;
     }
+
 
     public Discount[] getAlldiscounts() {
         Cursor cur = dbc.getAllDiscounts(this.ItemID);

@@ -18,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Order;
@@ -35,10 +38,12 @@ import group12.ucsc.agentmate.bll.Vendor;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 import group12.ucsc.agentmate.bll.mapper;
 import group12.ucsc.agentmate.ui.DialogGetQty.GetQtyCommunicator;
+import group12.ucsc.agentmate.ui.DialogEditQty.EditComm;
+import group12.ucsc.agentmate.ui.DialogEditDemand.EditCommDemand;
 /**
  * Created by NRV on 9/27/2014.
  */
-public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
+public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,EditComm,EditCommDemand{
     Order new_order=new Order(); //Create new Order
     Order dmnd_new_order=new Order();
     DatabaseControl dbc = new DatabaseControl(this);
@@ -48,6 +53,9 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
     AutoCompleteTextView itemName_edit_auto;
     SellItem currentItem,currentdemanditem;
     boolean select_exsist,demand_exsist;
+    List<String> demandeditemsList=new ArrayList<String>();
+    Spinner spin_itemID;
+    String editabledemandedItemID;
 
 
     @Override
@@ -61,6 +69,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
         final Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
 
+        spin_itemID= (Spinner) findViewById(R.id.spinner_demanditem_id);
         TextView logged_vendor_tv = (TextView) findViewById(R.id.txt_vname_order_b);
         logged_vendor_tv.setText("Selected Vendor is :- " + sel_vendor.getShopName());
 
@@ -134,6 +143,20 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
             @Override
             public void onClick(View view) {
                     dbc.k();
+            }
+        });
+
+        Button btn_submit=(Button)findViewById(R.id.btn_submit_edit_demand);
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dmnd_new_order.list.size()>0) {
+                    editabledemandedItemID = spin_itemID.getSelectedItem().toString();
+                    EditText editedTv = (EditText) findViewById(R.id.edit_demand_qty);
+                    String new_dmnd_qty = editedTv.getText().toString();
+                    dmnd_new_order.findByIdObj(dmnd_new_order.findById(editabledemandedItemID)).setQty(Integer.parseInt(new_dmnd_qty));
+                    DemandDrawTable(dmnd_new_order.list);
+                }
             }
         });
     }
@@ -256,9 +279,18 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
         tr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TableRow idrw=(TableRow) view.findViewById(view.getId());
+                TextView idtv=(TextView)idrw.getVirtualChildAt(0);
+                String chooseID=idtv.getText().toString();
+                Bundle args2 = new Bundle();
+
+                args2.putString("ItemID",chooseID);
+                args2.putInt("Qty",new_order.findQtyById(chooseID));
+                args2.putInt("RemQty",new_order.findByIdObj(new_order.findById(chooseID)).getStoreQty());
 
                 FragmentManager fm = getFragmentManager();
                 DialogEditQty md = new DialogEditQty();
+                md.setArguments(args2);
                 md.show(fm, "edit");
 
             }
@@ -340,16 +372,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
         final TableRow tr = new TableRow(this);
 
 
-        tr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                FragmentManager fm = getFragmentManager();
-                DialogEditQty md = new DialogEditQty();
-                md.show(fm, "edit");
-
-            }
-        });
 
         if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
         tr.setId(100 + rw);
@@ -381,7 +404,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
 
         TextView labelDate = new TextView(this);
         labelDate.setId(600 + rw);
-        labelDate.setText("****************");
+        labelDate.setText(item.getDeliverDate());
         labelDate.setTextColor(Color.BLACK);
         tr.addView(labelDate);
 
@@ -395,7 +418,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
     }
 
     @Override
-    public void onGetData(int qty, int demandQty) {
+    public void onGetData(int qty, int demandQty,String demand_DeliverDate) {
         Toast.makeText(getApplicationContext(),"//////////////"+qty+" "+demandQty+" "+" " ,Toast.LENGTH_SHORT).show();
         //to select item
         if((!select_exsist) &&(qty!=0)){
@@ -413,11 +436,21 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
 
         if((!demand_exsist)&&(demandQty!=0)){
             currentdemanditem.setQty(demandQty);
+            currentdemanditem.setDeliverDate(demand_DeliverDate);
             dmnd_new_order.addItem(currentdemanditem);
+            demandeditemsList.add(currentItem.getItemID());
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_spinner_item, demandeditemsList);
+            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spin_itemID.setAdapter(dataAdapter);
+
+
+
         }
         else{
             currentdemanditem.setQty(demandQty);
         }
+
 
         for (int i=0;i<new_order.list.size();i++){
             String c=new_order.list.get(i).getItemID()+" "+new_order.list.get(i).getItemName()+" "+new_order.list.get(i).getStoreQty();
@@ -434,7 +467,16 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator{
         DrawTable(new_order.list);
         DemandDrawTable(dmnd_new_order.list);
     }
+
+    @Override
+    public void onEditMessage(String ItemID, int qty,int tot) {
+        SellItem item=new_order.findByIdObj(new_order.findById(ItemID));
+        item.resetStoreQty();
+        item.setStoreQty(tot-qty);
+        item.setQty(qty);
+        DrawTable(new_order.list);
+
+    }
+
+
 }
-
-
-

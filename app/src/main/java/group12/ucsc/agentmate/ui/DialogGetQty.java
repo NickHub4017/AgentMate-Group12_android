@@ -24,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.mapper;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
@@ -52,7 +54,7 @@ public class DialogGetQty extends DialogFragment {
     String[] QtyArray,QtyArray_demand;
     EditText enterBox[],DemandBox[];
     int tot=0,demtot=0;
-
+    String deliverDate;
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -111,7 +113,7 @@ public class DialogGetQty extends DialogFragment {
                     show_warning();
                 }
                 else{
-                    cm.onGetData(tot,demtot);
+                    cm.onGetData(tot,0,"1");
                     dismiss();
                 }
 
@@ -138,34 +140,53 @@ public class DialogGetQty extends DialogFragment {
         btn_submit_demand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                tot=0;
-                for (int i=0;i<Umaps.u_map.length;i++){
-                    try{
-                        int x=Integer.parseInt(QtyArray[i]);
-                        tot=tot+Umaps.getQtyInMinUnit(Umaps.u_map[i].getUnit(),x);
-                    }
-                    catch (Exception e){
-                        tot=tot+0;
-                    }
-                }
-                Log.d("Array total",""+tot);
-                if (tot>cur_store_Qty){
-                    show_warning();
-                }
-                else{
-                    demtot=0;
+
+                EditText delv_date=(EditText)view.getRootView().findViewById(R.id.editdate);
+
+                try{
+                    int period=Integer.parseInt(delv_date.getText().toString());
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DAY_OF_MONTH,period);
+                    deliverDate =String.valueOf(cal.get(Calendar.DATE))+"-"+String.valueOf(cal.get(Calendar.MONTH))+"-"+String.valueOf(cal.get(Calendar.YEAR));
+                    tot=0;
                     for (int i=0;i<Umaps.u_map.length;i++){
+                        Log.d("Print main array",""+QtyArray[i]);
                         try{
-                            int x=Integer.parseInt(QtyArray_demand[i]);
-                            demtot=demtot+Umaps.getQtyInMinUnit(Umaps.u_map[i].getUnit(),x);
+                            int x=Integer.parseInt(QtyArray[i]);
+
+                            tot=tot+Umaps.getQtyInMinUnit(Umaps.u_map[i].getUnit(),x);
                         }
                         catch (Exception e){
-                            demtot=demtot+0;
+                            tot=tot+0;
                         }
                     }
-                    cm.onGetData(tot,demtot);
-                    dismiss();
+                    Log.d("Array total",""+tot);
+                    if (tot>cur_store_Qty){
+                        show_warning();
+                    }
+                    else{
+                        demtot=0;
+                        for (int i=0;i<Umaps.u_map.length;i++){
+                            try{
+                                int x=Integer.parseInt(QtyArray_demand[i]);
+                                demtot=demtot+Umaps.getQtyInMinUnit(Umaps.u_map[i].getUnit(),x);
+                            }
+                            catch (Exception e){
+                                demtot=demtot+0;
+                            }
+                        }
+                        cm.onGetData(tot,demtot,deliverDate);
+                        dismiss();
+                    }
+
+                    Log.d("Time",deliverDate);
                 }
+                catch (Exception e){
+                    Log.d("Time","*****************"+e.toString());
+                    delv_date.setText(null);
+                    delv_date.setBackgroundColor(Color.MAGENTA);
+                }
+
 
                 //cm.onGetData(tot,demtot);
 
@@ -192,6 +213,7 @@ public class DialogGetQty extends DialogFragment {
             EditText demandtv=(EditText)getView().getRootView().findViewById(1900+i);
             int result_for_demand=areas/Umaps.u_map[i].getQtyMap();
             int result_for_select=tot/Umaps.u_map[i].getQtyMap();
+
             if (result_for_demand==0){//we cannot give the areas by using this unit
                 demandtv.setText(null);
             }
@@ -214,89 +236,9 @@ public class DialogGetQty extends DialogFragment {
         }
     }
 
-    public void radioBtnCreator(View view,String[] Unitlist){
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.Radiolink1);
-        layout.setBackgroundColor(Color.GRAY);
-        RadioGroup radioGroup = new RadioGroup(getActivity().getApplicationContext());
-        radioGroup.setOrientation(RadioGroup.HORIZONTAL);
 
 
 
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-
-        );
-
-
-        layout.addView(radioGroup, p);
-
-           for (int i=0;i<Unitlist.length;i++) {
-
-
-               final RadioButton radioButtonView = new RadioButton(getActivity().getApplicationContext());
-               radioButtonView.setText(Unitlist[i]);
-               radioButtonView.setTextColor(Color.BLACK);
-               radioButtonView.setId(i+1500);
-
-
-               if (Umaps.getsmallUnit().equals(Unitlist[i])){
-                   radioButtonView.setChecked(true);
-                   Selectedunit=Umaps.getsmallUnit();
-               }
-               radioButtonView.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View view) {
-                       Toast.makeText(getActivity().getApplicationContext(), radioButtonView.getText().toString()+"******", Toast.LENGTH_SHORT).show();
-                       Selectedunit=radioButtonView.getText().toString();
-                   }
-               });
-               radioGroup.addView(radioButtonView, 100,60);
-           }
-
-    }
-
-    public void radioBtnCreator_demand(View view,String[] Unitlist){
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.radio_link_2);
-        layout.setBackgroundColor(Color.GRAY);
-        RadioGroup radioGroup = new RadioGroup(getActivity().getApplicationContext());
-        radioGroup.setOrientation(RadioGroup.HORIZONTAL);
-
-
-
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-
-        );
-
-
-        layout.addView(radioGroup, p);
-
-        for (int i=0;i<Unitlist.length;i++) {
-
-
-            final RadioButton radioButtonView = new RadioButton(getActivity().getApplicationContext());
-            radioButtonView.setText(Unitlist[i]);
-            radioButtonView.setTextColor(Color.BLACK);
-            radioButtonView.setId(i+1600);
-            radioButtonView.setBackgroundColor(Color.GRAY);
-
-            if (Umaps.getsmallUnit().equals(Unitlist[i])){
-                radioButtonView.setChecked(true);
-                Selected_demndedunit=Umaps.getsmallUnit();
-            }
-            radioButtonView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(getActivity().getApplicationContext(), radioButtonView.getText().toString()+"******", Toast.LENGTH_SHORT).show();
-                    Selected_demndedunit=radioButtonView.getText().toString();
-                }
-            });
-            radioGroup.addView(radioButtonView, 100,60);
-        }
-
-    }
 
     public void show_warning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -317,7 +259,7 @@ public class DialogGetQty extends DialogFragment {
 
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        cm.onGetData(tot, 0);//ToDo set arrays
+                        cm.onGetData(cur_store_Qty, 0,"1");//ToDo set arrays
                         dismiss();
                     }
                 })                        //Do nothing on no
@@ -404,7 +346,7 @@ public class DialogGetQty extends DialogFragment {
     }
 
     interface GetQtyCommunicator{
-        public void onGetData(int qty,int demandQty);
+        public void onGetData(int qty,int demandQty,String demand_DateToDeliver);
     }
 
 

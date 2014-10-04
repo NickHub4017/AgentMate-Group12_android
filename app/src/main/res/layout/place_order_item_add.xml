@@ -97,5 +97,33 @@
             android:stretchColumns="0,1,2,3">
             </TableLayout>
 
+        <TableRow
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:stretchColumns="0,1,2,3">
+
+            <Spinner
+                android:id="@+id/spinner_demanditem_id"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:layout_width="126dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:paddingTop="10dp"
+                android:id="@+id/edit_demand_qty"
+                android:hint="Enter new Qty"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit Demand Qty"
+                android:id="@+id/btn_submit_edit_demand" />
+
+        </TableRow>
+
     </LinearLayout>
 </ScrollView>
