@@ -329,7 +329,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         labelDiscount.setTextColor(Color.BLACK);
 
 
-            labelQty.setText(String.valueOf(item.getQty()) + " " + item.getSelectedUnit());
+            labelQty.setText(String.valueOf(item.getQty()) + " " + item.getMinOrderUnit());
             tr.addView(labelQty);
             labelDiscount.setText(String.valueOf(item.getRelavantDiscount(item.getQty())));
             tr.addView(labelDiscount);
@@ -397,7 +397,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
 
         TextView labelQty = new TextView(this);
         labelQty.setId(400 + rw);
-        labelQty.setText(String.valueOf(item.getQty())+" "+item.getSelectedUnit());
+        labelQty.setText(String.valueOf(item.getQty())+" "+item.getMinOrderUnit());
         labelQty.setTextColor(Color.BLACK);
         tr.addView(labelQty);
 
@@ -476,6 +476,15 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         item.setQty(qty);
         DrawTable(new_order.list);
 
+    }
+
+    public String getBestUnit(int qty){
+        for (int i=0;i<mpUnitnames.u_map.length;i++){
+            if ((qty%mpUnitnames.u_map[i].getQtyMap())==0){
+                return mpUnitnames.u_map[i].getUnit();
+            }
+        }
+        return "";
     }
 
 
