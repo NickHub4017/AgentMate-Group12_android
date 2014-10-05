@@ -13,7 +13,7 @@ import group12.ucsc.agentmate.ui.PlaceOrderSecond;
  * Created by NRV on 9/9/2014.
  */
 public class SellItem implements Serializable {
-    DatabaseControl dbc;
+    //DatabaseControl dbc;
 
     String ItemID;
     String ItemName;
@@ -28,6 +28,15 @@ public class SellItem implements Serializable {
     int QtyInMinUnit;
     String selectedUnit;
     String deliverDate;
+    double currentPrice;
+
+    public double getCurrentPrice() {
+        return currentPrice;
+    }
+
+    public void setCurrentPrice(double currentPrice) {
+        this.currentPrice = currentPrice;
+    }
 
     public String getDeliverDate() {
         return deliverDate;
@@ -66,7 +75,7 @@ public class SellItem implements Serializable {
     }
 
     public  SellItem(String itemID,Context con){
-        dbc=new DatabaseControl(con);
+        DatabaseControl dbc=new DatabaseControl(con);
         Cursor cur=dbc.getExactItemByID(itemID);
         cur.moveToFirst();
         ItemID = itemID;
@@ -77,7 +86,7 @@ public class SellItem implements Serializable {
         MinUnit =cur.getString(cur.getColumnIndex("MinUnit"));
         MinOrderUnit = cur.getString(cur.getColumnIndex("MinOrderUnit"));
         CategoryID = cur.getString(cur.getColumnIndex("CategoryID"));
-        discount=this.getAlldiscounts();
+        discount=this.getAlldiscounts(con);
 
 
     }
@@ -163,7 +172,8 @@ public class SellItem implements Serializable {
     }
 
 
-    public Discount[] getAlldiscounts() {
+    public Discount[] getAlldiscounts(Context con) {
+        DatabaseControl dbc=new DatabaseControl(con);
         Cursor cur = dbc.getAllDiscounts(this.ItemID);
         Discount[] allDiscount=new Discount[cur.getCount()];
         int i=0;

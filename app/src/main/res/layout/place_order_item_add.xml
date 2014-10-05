@@ -28,11 +28,23 @@
             android:id="@+id/txt_vname_order_b"
             android:textSize="@dimen/norm_val" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test"
-            android:id="@+id/button_testing" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:id="@+id/button_testing" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:id="@+id/btn_go_to_bill" />
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -53,7 +65,7 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="Select Name"
-                android:id="@+id/textView3" />
+                android:id="@+id/txt_billVal_bill" />
         </LinearLayout>
 
         <LinearLayout

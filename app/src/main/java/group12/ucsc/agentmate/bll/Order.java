@@ -1,5 +1,8 @@
 package group12.ucsc.agentmate.bll;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,12 +16,13 @@ public class Order implements Serializable {
     String Deliver_Date;
     String VenOrderID;
     String OrderID;
-    public ArrayList<SellItem> list = new ArrayList<SellItem>();
+    public ArrayList<SellItem> list = new  ArrayList<SellItem>();
+
     boolean sync;
 
     public Order() {
-        Calendar c = Calendar.getInstance();
-        Order_Date = c.getTime().toString();
+       // Calendar c = Calendar.getInstance();
+        Order_Date ="sfasfsa"; //c.getTime().toString();
 //        Calendar cal = Calendar.getInstance();
         //cmpID = logged_rep.getEmp_id()+String.valueOf(cal.get(Calendar.DATE))+String.valueOf(cal.get(Calendar.MONTH))+String.valueOf(cal.get(Calendar.YEAR))+String.valueOf(cal.get(Calendar.HOUR_OF_DAY))+String.valueOf(cal.get(Calendar.MINUTE))+String.valueOf(cal.get(Calendar.SECOND));
 
@@ -77,4 +81,6 @@ public class Order implements Serializable {
         Calendar cal = Calendar.getInstance();
         String OrderID = "Or"+logged_rep.getEmp_id()+"Y"+String.valueOf(cal.get(Calendar.DATE))+String.valueOf(cal.get(Calendar.MONTH))+String.valueOf(cal.get(Calendar.YEAR))+String.valueOf(cal.get(Calendar.HOUR_OF_DAY))+String.valueOf(cal.get(Calendar.MINUTE))+String.valueOf(cal.get(Calendar.SECOND));
     }
+
+
 }

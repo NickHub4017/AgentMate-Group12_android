@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -159,6 +161,18 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
                     dmnd_new_order.findByIdObj(dmnd_new_order.findById(editabledemandedItemID)).setQty(Integer.parseInt(new_dmnd_qty));
                     DemandDrawTable(dmnd_new_order.list);
                 }
+            }
+        });
+
+        Button btn_next =(Button)findViewById(R.id.btn_go_to_bill);
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent next=new Intent(PlaceOrderSecond2.this,PlaceOrderBill.class);
+                next.putExtra("vendor",sel_vendor);
+                next.putExtra("logged_user",logged_rep);
+                next.putExtra("select_order", new_order);
+                startActivity(next);
             }
         });
     }
