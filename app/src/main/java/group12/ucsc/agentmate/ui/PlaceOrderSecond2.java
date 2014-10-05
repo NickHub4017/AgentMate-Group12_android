@@ -1,7 +1,9 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -295,6 +297,21 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
 
             }
         });
+        tr.setLongClickable(true);
+
+        tr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                TableRow idrwdel=(TableRow) view.findViewById(view.getId());
+                TextView idtvdel=(TextView)idrwdel.getVirtualChildAt(0);
+
+                String chooseIDDel=idtvdel.getText().toString();
+                Log.d("ON LONG",chooseIDDel);
+                show_warning_delete(chooseIDDel,new_order.findQtyById(chooseIDDel));
+                return false;
+            }
+        });
 
         if (rw % 2 != 0) tr.setBackgroundColor(Color.GRAY);
         tr.setId(100 + rw);
@@ -407,6 +424,19 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         labelDate.setText(item.getDeliverDate());
         labelDate.setTextColor(Color.BLACK);
         tr.addView(labelDate);
+        tr.setLongClickable(true);
+        tr.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                TableRow idrwdeldemand=(TableRow) view.findViewById(view.getId());
+                TextView idtvdeldemand=(TextView)idrwdeldemand.getVirtualChildAt(0);
+
+                String chooseIDDemandDel=idtvdeldemand.getText().toString();
+                show_warning_delete_demand(chooseIDDemandDel,dmnd_new_order.findQtyById(chooseIDDemandDel));
+
+                return false;
+            }
+        });
 
 
 // finally add this to the table row
@@ -487,5 +517,54 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         return "";
     }
 
+    public void show_warning_delete(final String ItmID,int Qty) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setTitle("Delete this ITEM?")
+                .setMessage("Click Delete "+ ItmID+" if you want to delete this item "+Qty+" Qty(s)")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        new_order.list.remove(new_order.findById(ItmID));
+                        DrawTable(new_order.list);
+
+                    }
+                })
+                .setNegativeButton("Don't Delete", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })                        //Do nothing on no
+                .show();
+
+
+    }
+
+    public void show_warning_delete_demand(final String ItmID,int Qty) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder
+                .setTitle("Delete this Demnded ITEM?")
+                .setMessage("Click Delete "+ ItmID+" if you want to delete this demanded item "+Qty+" Qty(s)")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dmnd_new_order.list.remove(dmnd_new_order.findById(ItmID));
+                        DemandDrawTable(dmnd_new_order.list);
+
+                    }
+                })
+                .setNegativeButton("Don't Delete", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })                        //Do nothing on no
+                .show();
+
+
+    }
 
 }

@@ -55,6 +55,7 @@ public class DialogGetQty extends DialogFragment {
     EditText enterBox[],DemandBox[];
     int tot=0,demtot=0;
     String deliverDate;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -236,10 +237,6 @@ public class DialogGetQty extends DialogFragment {
         }
     }
 
-
-
-
-
     public void show_warning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder
@@ -349,6 +346,4 @@ public class DialogGetQty extends DialogFragment {
         public void onGetData(int qty,int demandQty,String demand_DateToDeliver);
     }
 
-
 }
-
