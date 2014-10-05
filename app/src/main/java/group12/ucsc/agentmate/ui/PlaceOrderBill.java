@@ -72,9 +72,12 @@ public class PlaceOrderBill extends Activity {
         btn_crt_bill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (delDate!=null &&delDate!="") {
                 new_order_done.VenOrderSubmitToDatabase(getApplicationContext());
                 new_order_done.OrderSubmitToDatabase(getApplicationContext());
-                curBill.BillSubmitToDB(getApplicationContext());
+                    curBill.setPayDate(delDate);
+                    curBill.BillSubmitToDB(getApplicationContext());
+                }
 
             }
         });

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Recopy My Bill"
+        android:id="@+id/textView3"
+        android:layout_gravity="center_horizontal" />
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Vendor"
+            android:id="@+id/txt_pay_vendor" />
+
+        <AutoCompleteTextView
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:id="@+id/autotxt_venid" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Your Current Areas is Rs "
+        android:id="@+id/txt_areas_payment"
+        android:textSize="@dimen/highlight"
+        android:textColor="#ff1f22ff"
+        android:background="#fffffbd7" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Pay Amount"
+        android:id="@+id/textView"
+        android:textColor="#ff4eb1ff"
+        android:textColorHighlight="#ff5cff19"
+        android:textSize="@dimen/highlight" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:id="@+id/edit_payamount" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="51dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/radio_payment_options">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Check"
+            android:id="@+id/radio_check"
+            android:checked="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cash"
+            android:id="@+id/radio_cash"
+            android:checked="false" />
+
+
+
+    </RadioGroup>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make Payment"
+        android:id="@+id/btn_make_payment"
+        android:layout_gravity="center_horizontal" />
+
+
+
+</LinearLayout>

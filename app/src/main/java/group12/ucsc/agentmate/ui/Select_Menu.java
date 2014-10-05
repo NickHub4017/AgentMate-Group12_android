@@ -96,6 +96,17 @@ public class Select_Menu extends Activity{
                 startActivity(van_stock_intent);
             }
         });
+
+        Button btn_recopy_bill=(Button) findViewById(R.id.btn_recopy_bill);
+        btn_recopy_bill.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent bill_recopy_intent=new Intent(Select_Menu.this,MakePayment.class);
+                bill_recopy_intent.putExtra("logged_user", logged_rep);
+                startActivity(bill_recopy_intent);
+            }
+        });
+
     }
 
 
