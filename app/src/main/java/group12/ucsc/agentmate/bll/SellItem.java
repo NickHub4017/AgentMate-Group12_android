@@ -220,4 +220,14 @@ public class SellItem implements Serializable {
         this.setQty(Qtymin);
     }
 
+    public void ItemSubmitToDB(Context con){
+        DatabaseControl dbc=new DatabaseControl(con);
+        dbc.itemQtyUpdate(this);
+    }
+
+    public void ItemSubmitToOrderDB(Context con,String orderID){
+        DatabaseControl dbc=new DatabaseControl(con);
+        dbc.ItemAddToOrderTable(this,orderID);
+    }
+
 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -31,9 +32,9 @@ public class PlaceOrderBill extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_bill);
         Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
-        Order new_order_done = (Order) getIntent().getExtras().getSerializable("select_order");
+        final Order new_order_done = (Order) getIntent().getExtras().getSerializable("select_order");
         Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
-        Bill curBill=new Bill(sel_vendor,logged_rep);
+        final Bill curBill=new Bill(sel_vendor,logged_rep);
 
         double BillValue=0,Discount=0;
         SellItem temp_item;
@@ -65,6 +66,16 @@ public class PlaceOrderBill extends Activity {
                 TextView datetv=(TextView)findViewById(R.id.txt_date);
                 delDate=datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth();
                 datetv.setText("Your Payment date is "+delDate);
+            }
+        });
+        Button btn_crt_bill=(Button)findViewById(R.id.btn_create_bill);
+        btn_crt_bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new_order_done.VenOrderSubmitToDatabase(getApplicationContext());
+                new_order_done.OrderSubmitToDatabase(getApplicationContext());
+                curBill.BillSubmitToDB(getApplicationContext());
+
             }
         });
 

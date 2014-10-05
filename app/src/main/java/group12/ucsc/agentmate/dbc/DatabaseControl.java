@@ -9,12 +9,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.HashMap;
 
 import group12.ucsc.agentmate.bll.Complain;
+import group12.ucsc.agentmate.bll.Order;
 import group12.ucsc.agentmate.bll.SellItem;
 import group12.ucsc.agentmate.bll.UnitMap;
 import group12.ucsc.agentmate.bll.Vendor;
@@ -64,15 +66,13 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(17) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_complain_Table_query);
 
-        String create_bill_Table_query = "CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,Total INTEGER,Sync BOOLEAN)";
+        String create_bill_Table_query = "CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,Total INTEGER,venderno VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_bill_Table_query);
 
-
+        String create_order_Table_query = "CREATE TABLE Myorder (VenOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DiscountAMT FLOAT,Sync BOOLEAN, PRIMARY KEY (VenOrderID, ItemID))";
+        database.execSQL(create_order_Table_query);
 
         Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
-
-
-
 
     }
 
@@ -82,7 +82,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
     public void k(){
-        //SQLiteDatabase database = this.getWritableDatabase();
+        SQLiteDatabase database = this.getWritableDatabase();
         //String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
         //database.execSQL(create_unit_mapping_Table_query);
         //Toast.makeText(con, "id ", Toast.LENGTH_SHORT).show();
@@ -114,11 +114,44 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
         database.insert("measure",null, values3);
         Toast.makeText(con, "****//*///*//**** ", Toast.LENGTH_SHORT).show();*/
-        SQLiteDatabase database = this.getWritableDatabase();
+        /*SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("StoreQty", 80);
-        database.update("item", values,"ItemID"+" = ?",new String[] {"123"});
+        database.update("item", values,"ItemID"+" = ?",new String[] {"123"});*/
+        try {
+            String create_bill_Table_query = "ALTER TABLE bill ADD COLUMN venderno VARCHAR(6)";
+            database.execSQL(create_bill_Table_query);
+        }
+        catch (Exception e){
+            Log.d("Table create error bill",e.toString());
+        }
+
+        try {
+            String create_order_Table_query = "CREATE TABLE Myorder (VenOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DiscountAMT FLOAT,Sync BOOLEAN,PRIMARY KEY (VenOrderID, ItemID))";
+            database.execSQL(create_order_Table_query);
+        }
+        catch (Exception e){
+            Log.d("Table create error ",e.toString());
+        }
+        try {
+            ShowOrderTable();
+        }
+        catch (Exception e){
+            Log.d("Table print error ",e.toString());
+        }
+        try{
+        ShowVenOrderTable();
+        }
+        catch (Exception e){
+            Log.d("Table print error ",e.toString());
+        }
+        try{
+        ShowBillTable();
+        }
+        catch (Exception e){
+            Log.d("Table print error ",e.toString());
+        }
     }
 
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
@@ -139,7 +172,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         else{
 
             database.insert("login",null, values);
-            database.close(); //Query if member id does not exsists insert.
+            //database.close(); //Query if member id does not exsists insert.
         }
     }
 
@@ -215,6 +248,15 @@ public class DatabaseControl extends SQLiteOpenHelper{
         database.update("vendor", values, "venderno" + " = ?", new String[]{ven_id});
     }
 
+    public void itemQtyUpdate(SellItem item){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("StoreQty", item.getStoreQty());
+        values.put("Sync","false");
+        database.update("item", values,"ItemID"+" = ?",new String[] {item.getItemID()});
+
+}
+
   public void addVendor(Vendor new_vendor){
       SQLiteDatabase database = this.getWritableDatabase();
       ContentValues values = new ContentValues();
@@ -270,7 +312,6 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
 
-
     public void add_complain(String CompID_ins,String ItemID_ins,String Complain_ins,String VendorID_ins,Boolean synced_ins){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -282,15 +323,16 @@ public class DatabaseControl extends SQLiteOpenHelper{
         database.insert("complain",null, values);
     }
 
-    public void add_bill(String BillID_ins,String VenorderID_ins,String BillDate_ins,String paid_Date_ins,float paid_amount_ins,float full_amount_ins){
+    public void add_bill(String BillID_ins,String VenorderID_ins,String BillDate_ins,String paid_Date_ins,double paid_amount_ins,String venno){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("BillID",BillID_ins);
-        values.put("venorderID",VenorderID_ins);
-        values.put("Billing_date",BillDate_ins);
-        values.put("paid_date",paid_Date_ins);
-        values.put("paid_amount",paid_amount_ins);
-        values.put("full_amount",full_amount_ins);
+        values.put("VenOrderID",VenorderID_ins);
+        values.put("BillDate",BillDate_ins);
+        values.put("Total",paid_amount_ins);
+        values.put("venderno",venno);
+        values.put("Sync","false");
+
         database.insert("bill",null, values);
     }
 
@@ -305,8 +347,6 @@ public void like(){
     //Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
     //Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
 }
-
-
 
 public Cursor findComplain(){
     SQLiteDatabase database = this.getReadableDatabase();
@@ -342,7 +382,6 @@ public void AddItem (SellItem item){
 
 
 }
-
 
 public Cursor getExactItemByID(String ItemID){
     SQLiteDatabase database = this.getReadableDatabase();
@@ -426,6 +465,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
         database.insert("complain",null, values);
 
     }
+
     public void getComplainID(){
         SQLiteDatabase database = this.getReadableDatabase();
         String select_id_complain_Query = "SELECT * FROM complain";
@@ -442,12 +482,82 @@ public void AddDiscount (String id,int max,int min,double disc) {
         }
 
     }
+
     public Cursor findBillByID(String BillID_ins){
         SQLiteDatabase database = this.getReadableDatabase();
         String select_discount_id_Query = "SELECT * FROM bill where BillID='"+BillID_ins+"' order by name desc";
 
         Cursor cursor = database.rawQuery(select_discount_id_Query,null);
         return cursor;
+    }
+
+    public void addToVenOrder(Order order){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("VenOrderID",order.getVenOrderID());
+        values.put("VendorNo",order.getVender_no());
+//        values.put("OrderDate",);//Order date will set by default in SQL database
+      //  values.put("DeliverDate",);
+        values.put("Sync","false");
+        database.insert("venOrder",null, values);
+    }
+
+    public void ItemAddToOrderTable(SellItem item,String OrderID){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("VenOrderID",OrderID);
+        values.put("ItemID",item.getItemID());
+        values.put("Qty",item.getQty());
+        values.put("DiscountAMT",item.getRelavantDiscount(item.getQty()));
+        values.put("Sync","false");
+        database.insert("Myorder",null, values);
+    }
+
+    public void ShowOrderTable(){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_order_Query = "SELECT * FROM Myorder";
+
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        int i=0;
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d("OrderTable DATA",cursor.getString(cursor.getColumnIndex("VenOrderID"))+" - "+cursor.getString(cursor.getColumnIndex("ItemID"))+" - "+cursor.getString(cursor.getColumnIndex("Qty"))+" - "+cursor.getString(cursor.getColumnIndex("DiscountAMT"))+" - "+cursor.getString(cursor.getColumnIndex("Sync")));
+                i++;
+            } while (cursor.moveToNext());
+
+        }
+
+    }
+    public void ShowVenOrderTable(){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_order_Query = "SELECT * FROM venOrder";
+
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        int i=0;
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d("VenOrderTable DATA",cursor.getString(cursor.getColumnIndex("VenOrderID"))+" - "+cursor.getString(cursor.getColumnIndex("VendorNo"))+" - "+cursor.getString(cursor.getColumnIndex("OrderDate"))+" - "+cursor.getString(cursor.getColumnIndex("DeliverDate"))+" - "+cursor.getString(cursor.getColumnIndex("Sync")));
+                i++;
+            } while (cursor.moveToNext());
+
+        }
+
+    }
+
+    public void ShowBillTable(){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_order_Query = "SELECT * FROM bill";
+
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        int i=0;
+        if (cursor.moveToFirst()) {
+            do {
+                Log.d("Bill DATA",cursor.getString(cursor.getColumnIndex("BillID"))+" - "+cursor.getString(cursor.getColumnIndex("VenOrderID"))+" - "+cursor.getString(cursor.getColumnIndex("BillDate"))+" - "+cursor.getString(cursor.getColumnIndex("Total"))+" - "+cursor.getString(cursor.getColumnIndex("Sync"))+" - "+cursor.getString(cursor.getColumnIndex("venderno")));
+                i++;
+            } while (cursor.moveToNext());
+
+        }
+
     }
 
 

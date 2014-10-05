@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import group12.ucsc.agentmate.R;
@@ -50,6 +51,7 @@ import group12.ucsc.agentmate.ui.DialogEditDemand.EditCommDemand;
 public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,EditComm,EditCommDemand{
     Order new_order=new Order(); //Create new Order
     Order dmnd_new_order=new Order();
+
     DatabaseControl dbc = new DatabaseControl(this);
     UnitMap[] map;
     mapper mpUnitnames=null;
@@ -72,7 +74,10 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
 
         final Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
-
+        new_order.setVenOrderID(logged_rep.Emp_id+"Or"+Calendar.getInstance().getTime().toString());
+        dmnd_new_order.setVenOrderID(logged_rep.Emp_id+"DemOr"+Calendar.getInstance().getTime().toString());
+        new_order.setVender_no(sel_vendor.getVenderNo());
+        dmnd_new_order.setVender_no(sel_vendor.getVenderNo());
         spin_itemID= (Spinner) findViewById(R.id.spinner_demanditem_id);
         TextView logged_vendor_tv = (TextView) findViewById(R.id.txt_vname_order_b);
         logged_vendor_tv.setText("Selected Vendor is :- " + sel_vendor.getShopName());
