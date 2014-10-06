@@ -3,10 +3,12 @@ package group12.ucsc.agentmate.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -21,11 +23,7 @@ import group12.ucsc.agentmate.bll.Vendor;
  * Created by NRV on 10/5/2014.
  */
 public class PlaceOrderBill extends Activity {
-    String BillID;
-    String VenOrderID;
-    String BillDate;
     String delDate="";
-    boolean Sync;
     Button btn_mk_payment;
     Representative logged_rep;
 
@@ -33,7 +31,7 @@ public class PlaceOrderBill extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_bill);
-        Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
+        final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
         final Order new_order_done = (Order) getIntent().getExtras().getSerializable("select_order");
         logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Bill curBill=new Bill(sel_vendor,logged_rep);
@@ -65,6 +63,23 @@ public class PlaceOrderBill extends Activity {
                 TextView datetv=(TextView)findViewById(R.id.txt_date);
                 delDate=datePicker.getYear()+"-"+datePicker.getMonth()+"-"+datePicker.getDayOfMonth();
                 datetv.setText("Your Payment date is "+delDate);
+                String msg="You have make a order for "+sel_vendor.getShopName()+" with total "+curBill.getTotal()+" in "+curBill.getBillDate()+" THANK YOU D.N. DISTRIBUTORS";
+                String number=sel_vendor.getTelNoConfm();
+                if (number==null){
+                    number="0777117110";
+                }
+                try {
+
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(number, null, msg, null, null);
+                    Toast.makeText(getApplicationContext(), "Message Sent",
+                            Toast.LENGTH_LONG).show();
+                } catch (Exception ex) {
+                    Toast.makeText(getApplicationContext(),
+                            ex.getMessage().toString(),
+                            Toast.LENGTH_LONG).show();
+                    ex.printStackTrace();
+                }
             }
         });
         Button btn_crt_bill=(Button)findViewById(R.id.btn_create_bill);
@@ -77,6 +92,7 @@ public class PlaceOrderBill extends Activity {
                     curBill.setPayDate(delDate);
                     curBill.BillSubmitToDB(getApplicationContext());
                     btn_mk_payment.setEnabled(true);
+
                 }
             }
         });
@@ -91,6 +107,4 @@ public class PlaceOrderBill extends Activity {
             }
         });
     }
-
-
 }

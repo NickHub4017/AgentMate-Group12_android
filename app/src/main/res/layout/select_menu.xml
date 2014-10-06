@@ -36,10 +36,10 @@
             android:text="Place an Order" />
 
         <Button
-            android:id="@+id/btn_edit_order"
+            android:id="@+id/btn_sync_data_to_pc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Edit an Order" />
+            android:text="Sync Data To PC" />
 
         <Button
             android:id="@+id/btn_recopy_bill"

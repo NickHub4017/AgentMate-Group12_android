@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,11 +26,9 @@ import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Payment;
 import group12.ucsc.agentmate.bll.Representative;
 import group12.ucsc.agentmate.bll.SellItem;
+import group12.ucsc.agentmate.bll.Vendor;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 
-/**
- * Created by NRV on 10/5/2014.
- */
 public class MakePayment extends Activity {
     DatabaseControl dbc;
     AutoCompleteTextView ven_id;
@@ -92,6 +92,23 @@ public class MakePayment extends Activity {
                         pay.setType("csh");
                     }
                     pay.SubmitToDB(view.getRootView().getContext());
+                    String msg="You ("+pay.getVenderNo()+ ") have make payment of Rs "+pay.getPayAmount()+" in "+pay.getPayDate()+" via "+ pay.getType()+" THANK YOU. D.N. DISTRIBUTORS.";
+                    String number=dbc.getVendorConfNumberByID(pay.getVenderNo());
+                    if (number==null){
+                        number="0777117110";
+                    }
+                    try {
+
+                        SmsManager smsManager = SmsManager.getDefault();
+                        smsManager.sendTextMessage(number, null, msg, null, null);
+                        Toast.makeText(getApplicationContext(), "Message Sent",
+                                Toast.LENGTH_LONG).show();
+                    } catch (Exception ex) {
+                        Toast.makeText(getApplicationContext(),
+                                ex.getMessage().toString(),
+                                Toast.LENGTH_LONG).show();
+                        ex.printStackTrace();
+                    }
                 }
                 }
         });
@@ -125,10 +142,5 @@ public class MakePayment extends Activity {
     public double getAreas(String vendorno){
         return dbc.getAreasForVendor(vendorno);
     }
-
-
-
-
-
 
 }

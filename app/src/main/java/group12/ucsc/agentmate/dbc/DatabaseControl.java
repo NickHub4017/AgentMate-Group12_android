@@ -766,6 +766,23 @@ public void AddDiscount (String id,int max,int min,double disc) {
     database.delete(table_name, null, null);
 }
 
+    public String getVendorConfNumberByID(String VenID){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_order_Query = "SELECT * FROM vendor where venderno='"+VenID+"'";
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        if (cursor.moveToFirst()) {
+            return cursor.getString(cursor.getColumnIndex("TelNoConfirm"));
+        }
+        return null;
+    }
+
+    public Cursor OutTableData(String table_name){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_id_complain_Query = "SELECT * FROM "+table_name;
+        Cursor cursor = database.rawQuery(select_id_complain_Query,null);
+        return cursor;
+    }
+
 
     }
 

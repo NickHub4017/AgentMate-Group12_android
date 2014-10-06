@@ -129,9 +129,28 @@ public class Select_Menu extends Activity{
             }
         });
 
+        Button btn_get_store_qty=(Button) findViewById(R.id.btn_store_stock);
+        btn_get_store_qty.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent get_store_qty_intent=new Intent(Select_Menu.this,GetStoreQty.class);
+                get_store_qty_intent.putExtra("logged_user", logged_rep);
+                startActivity(get_store_qty_intent);
+            }
+        });
+
+        Button btn_sync_data_to_pc=(Button) findViewById(R.id.btn_sync_data_to_pc);
+        btn_sync_data_to_pc.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sync_to_PC_intent=new Intent(Select_Menu.this,UnLoadData.class);
+                sync_to_PC_intent.putExtra("logged_user", logged_rep);
+                startActivity(sync_to_PC_intent);
+            }
+        });
+
+
     }
-
-
 
 }
 

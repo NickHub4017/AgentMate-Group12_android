@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,7 +44,7 @@ public class Loader extends Activity {
     public int readFile(){
         String filename="load.txt";
         sdcard = Environment.getExternalStorageDirectory();
-        loadfile = new File(sdcard,"load.txt");
+        loadfile = new File(sdcard,"/AgentMate/IN/load.agent");
         StringBuilder text = new StringBuilder();
 
         final Thread t = new Thread(){
@@ -56,7 +57,8 @@ public class Loader extends Activity {
                     String line;
                     int slptime=300;
                     int table=-1;
-                    if (br.readLine().contains("false")) {
+                    String first=br.readLine();
+                    if (first.contains("false")) {
                         while ((line = br.readLine()) != null) {
 
                             line=line.trim();
@@ -191,11 +193,24 @@ public class Loader extends Activity {
                         }
                         p_br.setProgress(100);
                         br.close();
+                        File editFile=new File(sdcard,"/AgentMate/IN/load.agent");
+                        FileWriter fw = new FileWriter(editFile,false);
+                        fw.write("true\n");
+                        fw.flush();
+                        fw.close();
+
+
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
                     }
-                    else if(br.readLine().contains("true")){
+                    else if(first.contains("true")){
                         Log.d("srgsrb","Can load");
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (Exception e){
+
+                        }
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
                     }
