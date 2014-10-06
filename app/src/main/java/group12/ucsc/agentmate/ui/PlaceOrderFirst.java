@@ -38,14 +38,50 @@ public class PlaceOrderFirst extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.place_order_ven_select);
+        btn_cntd=(Button)findViewById(R.id.btn_contd_order_a);
+        btn_cntd.setEnabled(false);
+
         final Representative logged_rep=(Representative)getIntent().getExtras().getSerializable("logged_user");
+        final boolean isReturn=getIntent().getExtras().getBoolean("Window_type");
+
+        if (isReturn){
+            TextView titleTv=(TextView)findViewById(R.id.txtplaceorder);
+            titleTv.setText("Make A Return");
+            setTitle("Get Return");
+            btn_cntd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (btn_cntd.isEnabled()){
+
+                        Intent next=new Intent(PlaceOrderFirst.this,GetReturnItems.class);
+                        next.putExtra("vendor",sel_vendor);
+                        next.putExtra("logged_user",logged_rep);
+                        startActivity(next);
+                    }
+                }
+            });
+        }
+        else{
+            btn_cntd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (btn_cntd.isEnabled()){
+
+                        Intent next=new Intent(PlaceOrderFirst.this,PlaceOrderSecond2.class);
+                        next.putExtra("vendor",sel_vendor);
+                        next.putExtra("logged_user",logged_rep);
+                        startActivity(next);
+                    }
+                }
+            });
+
+        }
         vno_edit_auto=(AutoCompleteTextView)findViewById(R.id.edit_auto_venid_order);
         shname_edit_auto=(AutoCompleteTextView)findViewById(R.id.edit_shopname_auto_order);
         txt_venaddr=(TextView)findViewById(R.id.txt_venaddr_order);
         txt_venmngr=(TextView)findViewById(R.id.txt_mngr_nm_order);
         txt_due_amnt=(TextView)findViewById(R.id.txt_due_amnt_order);
-        btn_cntd=(Button)findViewById(R.id.btn_contd_order_a);
-        btn_cntd.setEnabled(false);
 
         cursor_ven_id=dbc.getVendorTable();
         final String[] str_arry_vno=new String[cursor_ven_id.getCount()];
@@ -90,18 +126,6 @@ public class PlaceOrderFirst extends Activity {
         });
 
 
-        btn_cntd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (btn_cntd.isEnabled()){
-
-                        Intent next=new Intent(PlaceOrderFirst.this,PlaceOrderSecond2.class);
-                        next.putExtra("vendor",sel_vendor);
-                        next.putExtra("logged_user",logged_rep);
-                        startActivity(next);
-                    }
-                }
-            });
 
 
 

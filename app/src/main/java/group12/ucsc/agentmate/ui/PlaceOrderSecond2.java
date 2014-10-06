@@ -63,7 +63,6 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
     Spinner spin_itemID;
     String editabledemandedItemID;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +96,20 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
                 j++;
             } while (itm_cur.moveToNext());
         }
+        ArrayAdapter adapter2 = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str_arry_item_name);
+        itemName_edit_auto.setAdapter(adapter2);
+        itemName_edit_auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String selection = (String) adapterView.getItemAtPosition(position);
+                String ItemID=dbc.finditemByName(selection);
+                mpUnitnames=new mapper(getApplicationContext(),ItemID);//GET the unit maps
+                itemID_edit_auto.setText(ItemID);
+                selector(ItemID);
+            }
+        });
+
+
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, str_arry_item_id);
         itemID_edit_auto.setAdapter(adapter);
         itemID_edit_auto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,44 +118,8 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String selection = (String) adapterView.getItemAtPosition(position);//
                 mpUnitnames=new mapper(getApplicationContext(),selection);//GET the unit maps
-                int pos = new_order.findById(selection);
-                int pos_dmnd=dmnd_new_order.findById(selection);
-                Toast.makeText(getApplicationContext(),dmnd_new_order.list.size()+"**",Toast.LENGTH_SHORT).show();
 
-                if (pos != -1) {
-                    Toast.makeText(getApplicationContext(),"it is in list",Toast.LENGTH_SHORT).show();
-                    currentItem = new_order.findByIdObj(pos);
-                    select_exsist=true;
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"it is not in list",Toast.LENGTH_SHORT).show();
-                    select_exsist=false;
-                    currentItem = new SellItem(selection, PlaceOrderSecond2.this);
-                }
-                ///to demand item
-                if (pos_dmnd != -1) {
-                    Toast.makeText(getApplicationContext(),"it is in demand",Toast.LENGTH_SHORT).show();
-                    currentdemanditem = dmnd_new_order.findByIdObj(pos_dmnd);
-                    demand_exsist=true;
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"it is not in demand",Toast.LENGTH_SHORT).show();
-                    demand_exsist=false;
-                    currentdemanditem = new SellItem(selection, PlaceOrderSecond2.this);
-                }
-
-                FragmentManager fm = getFragmentManager();
-                DialogGetQty md = new DialogGetQty();
-                Bundle args = new Bundle();
-
-                args.putInt("qty", currentItem.getStoreQty());
-                args.putString("itemid", currentItem.getItemID());
-                args.putSerializable("umapname", mpUnitnames);
-                md.setArguments(args);
-                md.show(fm, "dialog2");
-
-
-
+                selector(selection);
             }
 
         });
@@ -182,6 +159,46 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         });
     }
 
+    public void selector(String selection){
+        int pos = new_order.findById(selection);
+        int pos_dmnd=dmnd_new_order.findById(selection);
+        Toast.makeText(getApplicationContext(),dmnd_new_order.list.size()+"**",Toast.LENGTH_SHORT).show();
+
+
+        if (pos != -1) {
+            Toast.makeText(getApplicationContext(),"it is in list",Toast.LENGTH_SHORT).show();
+            currentItem = new_order.findByIdObj(pos);
+            select_exsist=true;
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"it is not in list",Toast.LENGTH_SHORT).show();
+            select_exsist=false;
+            currentItem = new SellItem(selection, PlaceOrderSecond2.this);
+        }
+        itemName_edit_auto.setText(currentItem.getItemName());
+        ///to demand item
+        if (pos_dmnd != -1) {
+            Toast.makeText(getApplicationContext(),"it is in demand",Toast.LENGTH_SHORT).show();
+            currentdemanditem = dmnd_new_order.findByIdObj(pos_dmnd);
+            demand_exsist=true;
+        }
+        else{
+            Toast.makeText(getApplicationContext(),"it is not in demand",Toast.LENGTH_SHORT).show();
+            demand_exsist=false;
+            currentdemanditem = new SellItem(selection, PlaceOrderSecond2.this);
+        }
+
+        FragmentManager fm = getFragmentManager();
+        DialogGetQty md = new DialogGetQty();
+        Bundle args = new Bundle();
+
+        args.putInt("qty", currentItem.getStoreQty());
+        args.putString("itemid", currentItem.getItemID());
+        args.putSerializable("umapname", mpUnitnames);
+        md.setArguments(args);
+        md.show(fm, "dialog2");
+
+    }
     public void table_hdr() {
         TableLayout tl = (TableLayout) findViewById(R.id.selected_table1);
         final TableRow tr_head = new TableRow(this);

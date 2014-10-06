@@ -53,6 +53,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.15"
         android:id="@+id/data_text_layout"></LinearLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:visibility="invisible"
+        android:id="@+id/edit_price_order" />
 
     <LinearLayout
         android:orientation="horizontal"

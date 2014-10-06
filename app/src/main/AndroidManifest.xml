@@ -9,8 +9,8 @@
         android:theme="@style/AppTheme" >
 
         <activity
-            android:name=".ui.Login_Activity"
-            android:label="@string/app_name" >
+            android:name=".ui.Loader"
+            android:label="Loading....." >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,9 +27,14 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".ui.ComplainReport" android:label="Place an Order"></activity>
         <activity android:name=".ui.ReamainVan" android:label="Reamin Stock"></activity>
-        <activity android:name=".ui.PlaceOrderSecond2" android:label="Reamin Stock"></activity>
+        <activity android:name=".ui.PlaceOrderSecond2" android:label="Reamin Stock"
+            android:screenOrientation="landscape"></activity>
         <activity android:name=".ui.PlaceOrderBill" android:label="Your Bill"></activity>
-        <activity android:name=".ui.MakePayment" android:label="Recopy Your Bill"></activity>
+        <activity android:name=".ui.MakePayment" android:label="Make Your Payment"></activity>
+        <activity android:name=".ui.RePrintBill" android:label="Recopy Your Bill"></activity>
+        <activity android:name=".ui.GetReturnItems" android:label="Get Return Items"></activity>
+        <activity android:name=".ui.Login_Activity" android:label="@string/app_name"></activity>
+
     </application>
 
 </manifest>

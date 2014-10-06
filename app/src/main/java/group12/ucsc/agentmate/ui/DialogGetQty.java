@@ -78,21 +78,13 @@ public class DialogGetQty extends DialogFragment {
         btn_submit=(Button)view.findViewById(R.id.btn_sbmt_dialog);
         btn_cancel=(Button)view.findViewById(R.id.btn_cancel_dialog);
         btn_submit_demand=(Button)view.findViewById(R.id.btn_sbmt_with_demand_dialog);
-        txt_get_qty=(EditText) view.findViewById(R.id.txt_Qty);
+
         txt_get_dmnd_qty=(EditText) view.findViewById(R.id.edit_demand_qty);
         txt_item_reamin=(TextView)view.findViewById(R.id.text_remain);
         txt_item_reamin.setText("Currently Only "+cur_store_Qty+" "+Umaps.getsmallUnit()+" are only available");
         QtyArray=new String[Umaps.getUnitNames().length];
         QtyArray_demand=new String[Umaps.getUnitNames().length];
 
-
-        txt_get_qty.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                Log.d("KEY",txt_get_qty.getText().toString());
-                return false;
-            }
-        });
 
 
         btn_submit.setOnClickListener(new View.OnClickListener() {

@@ -77,7 +77,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Set Password" />
-
+        <Button
+            android:id="@+id/btn_set_payment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Make Payment" />
 
 
 

@@ -84,6 +84,9 @@ public class Bill implements Serializable {
 
     }
 
+    public Bill() {
+    }
+
     public void BillSubmitToDB(Context con){
         DatabaseControl dbc=new DatabaseControl(con);
         dbc.add_bill(this.BillID,this.venderID,this.BillDate,this.PayDate,this.Total,this.getVenderID());

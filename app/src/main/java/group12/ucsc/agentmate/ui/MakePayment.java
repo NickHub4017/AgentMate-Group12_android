@@ -82,18 +82,21 @@ public class MakePayment extends Activity {
         btn_create_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText edit_payamount=(EditText)view.getRootView().findViewById(R.id.edit_payamount);
-                pay.setPayAmount(Double.parseDouble(edit_payamount.getText().toString()));
+                if (pay.getVenderNo()!=null) {
+                    EditText edit_payamount = (EditText) view.getRootView().findViewById(R.id.edit_payamount);
+                    pay.setPayAmount(Double.parseDouble(edit_payamount.getText().toString()));
 
-                if (rbtn_check.isChecked()){
-                    pay.setType("chk");
+                    if (rbtn_check.isChecked()) {
+                        pay.setType("chk");
+                    } else if (rbtn_cash.isChecked()) {
+                        pay.setType("csh");
+                    }
+                    pay.SubmitToDB(view.getRootView().getContext());
                 }
-                else if(rbtn_cash.isChecked()){
-                    pay.setType("csh");
                 }
-                pay.SubmitToDB(view.getRootView().getContext());
-            }
         });
+
+
     }
     public String[] vendors(DatabaseControl dbc){
         Cursor cur=dbc.getVendorTable();

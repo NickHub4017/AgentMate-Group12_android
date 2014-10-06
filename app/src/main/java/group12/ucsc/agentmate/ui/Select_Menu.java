@@ -74,6 +74,7 @@ public class Select_Menu extends Activity{
             public void onClick(View view) {
                 Intent place_order_first_intent=new Intent(Select_Menu.this,PlaceOrderFirst.class);
                 place_order_first_intent.putExtra("logged_user", logged_rep);
+                place_order_first_intent.putExtra("Window_type", false);
                 startActivity(place_order_first_intent);
             }
         });
@@ -97,17 +98,39 @@ public class Select_Menu extends Activity{
             }
         });
 
-        Button btn_recopy_bill=(Button) findViewById(R.id.btn_recopy_bill);
-        btn_recopy_bill.setOnClickListener(new OnClickListener() {
+        Button btn_payment_bill=(Button) findViewById(R.id.btn_set_payment);
+        btn_payment_bill.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent bill_recopy_intent=new Intent(Select_Menu.this,MakePayment.class);
+                Intent bill_payment_intent=new Intent(Select_Menu.this,MakePayment.class);
+                bill_payment_intent.putExtra("logged_user", logged_rep);
+                startActivity(bill_payment_intent);
+            }
+        });
+
+        Button btn_reprint_bill=(Button) findViewById(R.id.btn_recopy_bill);
+        btn_reprint_bill.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent bill_recopy_intent=new Intent(Select_Menu.this,RePrintBill.class);
                 bill_recopy_intent.putExtra("logged_user", logged_rep);
                 startActivity(bill_recopy_intent);
             }
         });
 
+        Button btn_return_itm=(Button) findViewById(R.id.btn_get_return);
+        btn_return_itm.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent return_item_intent=new Intent(Select_Menu.this,PlaceOrderFirst.class);
+                return_item_intent.putExtra("logged_user", logged_rep);
+                return_item_intent.putExtra("Window_type", true);
+                startActivity(return_item_intent);
+            }
+        });
+
     }
+
 
 
 }

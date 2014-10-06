@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Place Order"
-            android:id="@+id/textView"
+            android:id="@+id/txt_place_title"
             android:layout_gravity="center_horizontal"
             android:textSize="@android:dimen/app_icon_size"
             android:textStyle="bold"
@@ -80,7 +80,7 @@
                 android:id="@+id/auto_comp_item_id" />
 
             <AutoCompleteTextView
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:text="Name"

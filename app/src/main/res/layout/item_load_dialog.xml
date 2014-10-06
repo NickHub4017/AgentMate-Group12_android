@@ -19,25 +19,6 @@
         android:layout_height="45dp"
         android:id="@+id/QtyOrderLayout">
 
-        <EditText
-            android:id="@+id/txt_Qty"
-            android:layout_width="190dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="5dp"
-            android:hint="Enter QTY"
-            android:inputType="number">
-        </EditText>
-
-        <Spinner
-            android:layout_width="122dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/unit_spinner"
-            android:spinnerMode="dropdown"
-
-            />
     </LinearLayout>
 
     <LinearLayout
@@ -79,14 +60,7 @@
         android:layout_marginLeft="5dp"
         android:hint="Enter Name">
     </EditText>
-        <Spinner
-            android:layout_width="139dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/demand_unit_spinner"
-            android:spinnerMode="dropdown"
-
-            />
-        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"

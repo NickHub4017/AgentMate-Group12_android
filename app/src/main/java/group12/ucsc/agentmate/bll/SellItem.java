@@ -73,7 +73,9 @@ public class SellItem implements Serializable {
     public Discount[] getDiscount() {
         return discount;
     }
-
+public SellItem(String itemID){
+    ItemID = itemID;
+}
     public  SellItem(String itemID,Context con){
         DatabaseControl dbc=new DatabaseControl(con);
         Cursor cur=dbc.getExactItemByID(itemID);
@@ -89,6 +91,12 @@ public class SellItem implements Serializable {
         discount=this.getAlldiscounts(con);
 
 
+    }
+    public void setItemNameViaDatabase(Context con){
+        DatabaseControl dbc=new DatabaseControl(con);
+        Cursor cur=dbc.getExactItemByID(this.ItemID);
+        cur.moveToFirst();
+        ItemName = cur.getString(cur.getColumnIndex("ItemName"));
     }
 
     public String getItemID() {
