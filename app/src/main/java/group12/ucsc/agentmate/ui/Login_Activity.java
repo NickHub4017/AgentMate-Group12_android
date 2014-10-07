@@ -50,6 +50,7 @@ public class Login_Activity extends Activity {
             public void onClick(View view) {
                 login();
 
+
             }
         });
 

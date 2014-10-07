@@ -11,8 +11,11 @@ import android.widget.ProgressBar;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import group12.ucsc.agentmate.R;
+import group12.ucsc.agentmate.bll.Representative;
 import group12.ucsc.agentmate.dbc.DatabaseControl;
 
 /**
@@ -23,6 +26,7 @@ public class UnLoadData extends Activity {
     File unloadfile;
     File sdcard;
     ProgressBar p_br;
+    Representative logged_rep;
 
 
     @Override
@@ -31,6 +35,7 @@ public class UnLoadData extends Activity {
         setContentView(R.layout.out_data);
         p_br=(ProgressBar)findViewById(R.id.sync_out_progress_bar);
         Button btn_sync_out=(Button)findViewById(R.id.btn_sync_out);
+        logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         btn_sync_out.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +48,7 @@ public class UnLoadData extends Activity {
 
     public void Syncer() {
         sdcard = Environment.getExternalStorageDirectory();
-        unloadfile = new File(sdcard,"/AgentMate/OUT/unload.agent");
+        unloadfile = new File(sdcard,"/AgentMate/OUT/unload.txt");
         if (unloadfile.exists()){
             unloadfile.delete();
         }
@@ -63,6 +68,8 @@ public class UnLoadData extends Activity {
 
                     FileWriter fw = new FileWriter(unloadfile, true);
                     fw.append("false\n");
+                    fw.append(logged_rep.Emp_id+"\n");
+                    fw.append(Calendar.getInstance(TimeZone.getTimeZone("GMT+05:30")).getInstance().getTime().toString()+"\n");
                     String[] tables={"login","vendor","item","venOrder","discount","measure","complain","bill","Myorder","payment"};
                     p_br.setMax(tables.length);
                     int j=0;
@@ -81,8 +88,9 @@ public class UnLoadData extends Activity {
                         }
                         j++;
                         p_br.setProgress(j);
-                       Thread.sleep(300);
+                       Thread.sleep(200);
                     }
+                    fw.append("Synced_OK");
                     fw.flush();
                     fw.close();
                 }

@@ -44,7 +44,7 @@ public class Loader extends Activity {
     public int readFile(){
         String filename="load.txt";
         sdcard = Environment.getExternalStorageDirectory();
-        loadfile = new File(sdcard,"/AgentMate/IN/load.agent");
+        loadfile = new File(sdcard,"/AgentMate/IN/load.txt");
         StringBuilder text = new StringBuilder();
 
         final Thread t = new Thread(){
@@ -60,7 +60,6 @@ public class Loader extends Activity {
                     String first=br.readLine();
                     if (first.contains("false")) {
                         while ((line = br.readLine()) != null) {
-
                             line=line.trim();
                             Log.d("MYLINE",line);
                             if (line.equals("login")) {
@@ -188,29 +187,40 @@ public class Loader extends Activity {
                                 tableSwitcher(table,line);
                                 //Send line to add to table
                                 Log.d("ELSE",line);
+                                //Toast.makeText(Loader.this,"ELSE",Toast.LENGTH_LONG);
                             }
 
                         }
                         p_br.setProgress(100);
                         br.close();
-                        File editFile=new File(sdcard,"/AgentMate/IN/load.agent");
+
+
+
+                        //Toast.makeText(getApplicationContext(),"BRCLOSE",Toast.LENGTH_LONG).show();
+                        File editFile=new File(sdcard,"/AgentMate/IN/load.txt");
                         FileWriter fw = new FileWriter(editFile,false);
                         fw.write("true\n");
                         fw.flush();
                         fw.close();
-
-
+                        Intent intent2 = new Intent(Loader.this, LocationService.class);
+                        startService(intent2);
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
+
+                        //startthenext();
+
                     }
                     else if(first.contains("true")){
                         Log.d("srgsrb","Can load");
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                         }
                         catch (Exception e){
 
                         }
+                        Intent intent2 = new Intent(Loader.this, LocationService.class);
+                        startService(intent2);
+
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
                     }
@@ -219,8 +229,8 @@ public class Loader extends Activity {
                     }
 
                 }
-                catch (IOException e) {
-                    Toast.makeText(getApplicationContext(),"NoFile Found "+sdcard.toString(),Toast.LENGTH_SHORT).show();
+                catch (Exception e) {
+                    //Toast.makeText(getApplicationContext(),"NoFile Found "+sdcard.toString(),Toast.LENGTH_SHORT).show();
                     Log.d("FileRead","NoFile");
                     //You'll need to add proper error handling here
                 }
@@ -281,6 +291,9 @@ public class Loader extends Activity {
     }
 
     public void Progress(){
+
+    }
+    public void startthenext(){
 
     }
 }
