@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,8 +15,13 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Bill;
@@ -29,9 +35,10 @@ public class RePrintBill extends Activity {
     DatabaseControl dbc=new DatabaseControl(this);
     AutoCompleteTextView autoVendor;
     Cursor cursor_ven_id;
-    TextView tvSelectBill;
+    TextView tvSelectBill,tvCreateprogress;
     String Select_BillID=null;
     Button btn_RePrint;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +72,8 @@ public class RePrintBill extends Activity {
         btn_RePrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String VenOrderID=dbc.getVenOrderID(Select_BillID);
+                String VenOrderID=dbc.getVenOrderIDByBillID(Select_BillID);
+                Toast.makeText(getApplicationContext(),"VenOrderId"+VenOrderID,Toast.LENGTH_LONG).show();
                 CreateBill(VenOrderID);
             }
         });
@@ -178,13 +186,53 @@ public class RePrintBill extends Activity {
 
     }
 
-    public void CreateBill(String VenOrderID){
-        Cursor cur=dbc.getOrderByVenOrderID(VenOrderID);
-        if(cur.moveToFirst()){
-            do{
-                //cursor.getString(cursor.getColumnIndex("DiscountAMT"))
-            }while (cur.moveToNext());
+    public void CreateBill(String VenOrderID){//Get the data from My order table and make the printing file.
+        //VenOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DiscountAMT FLOAT,Sync BOOLEAN, PRIMARY KEY (VenOrderID, ItemID)
+
+            Bill temp =dbc.findBillonVenOrderID(VenOrderID);
+        String k=temp.getBillID().replaceAll(":","");
+        String pathend= "/AgentMate/OUT/print.txt";
+            File editFile = new File(Environment.getExternalStorageDirectory(),pathend);
+
+        Log.i("HIIIIIIIII",String.valueOf(editFile.exists()));
+        try {
+            FileWriter fw = new FileWriter(editFile, false);
+
+            fw.write("D.N.Distributors Sri Lanka\n");
+            fw.write("Tel No:- 0719720470\n");
+            fw.write("-----This bill is Reprinted\n");
+            fw.write("reprint date:- "+Calendar.getInstance().getTime().toString()+"\n");
+            fw.write("---------Bill Details------\n");
+            fw.write("BillID :- "+temp.getBillID()+"\n");
+            fw.write("VenOrderID :- "+VenOrderID+"\n");
+            fw.write("getVenderID :- "+temp.getVenderID()+"\n");
+            fw.write("getBillDate :- "+temp.getBillDate()+"\n");
+            fw.write("getTotal :- "+temp.getTotal()+"\n");
+            fw.write("ItemID\t"+"Qty\t"+"Discount Precentage\t"+"\n");
+            Cursor cursor=dbc.getOrderfromMyorderOnVenOrderID(VenOrderID);
+
+            if (cursor.moveToFirst()){
+                do{
+
+                    String line=cursor.getString(cursor.getColumnIndex("ItemID"))+" \t"+cursor.getString(cursor.getColumnIndex("Qty"))+" \t"+cursor.getString(cursor.getColumnIndex("DiscountAMT"))+"\n";
+                    fw.write(line);
+                }while (cursor.moveToNext());
+            }
+            else{
+
+            }
+            fw.write("D.N.Distributors"+"\n");
+            fw.write("Developed by UCSC 2012 Group12"+"\n");
+            fw.write("All Right reserved"+"\n");
+            fw.flush();
+            fw.close();
+            Toast.makeText(getApplicationContext(),"Bill Has been created",Toast.LENGTH_LONG).show();
         }
-        //"CREATE TABLE Myorder (VenOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DiscountAMT FLOAT,Sync BOOLEAN, PRIMARY KEY (VenOrderID, ItemID))"
+        catch (Exception e){
+            Log.i("HIIIIIIIII",e.toString()+"cannot write file");
+        }
+
     }
+
+
 }

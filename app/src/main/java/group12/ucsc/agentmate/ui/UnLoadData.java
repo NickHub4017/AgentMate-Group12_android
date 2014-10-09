@@ -70,7 +70,8 @@ public class UnLoadData extends Activity {
                     fw.append("false\n");
                     fw.append(logged_rep.Emp_id+"\n");
                     fw.append(Calendar.getInstance(TimeZone.getTimeZone("GMT+05:30")).getInstance().getTime().toString()+"\n");
-                    String[] tables={"login","vendor","item","venOrder","discount","measure","complain","bill","Myorder","payment"};
+                    //String[] tables={"login","vendor","item","venOrder","discount","measure","complain","bill","Myorder","payment"};
+                    String[] tables={"venOrder","bill","Myorder","payment"};
                     p_br.setMax(tables.length);
                     int j=0;
                     for (String name:tables){//Going throgh the tables
@@ -81,7 +82,8 @@ public class UnLoadData extends Activity {
                             do{//Going through the columns
                                 String temp="";
                                 for (int i=0;i<num_cols;i++){
-                                    temp=temp+"#"+cur.getString(i);
+
+                                    temp=temp+"-->"+cur.getColumnName(i)+"#"+cur.getString(i);//Todo remove "-->"+cur.getColumnName(i)+
                                 }
                                 fw.append(temp+"\n");
                             }while (cur.moveToNext());

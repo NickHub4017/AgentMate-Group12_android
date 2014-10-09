@@ -33,8 +33,10 @@ public class PlaceOrderBill extends Activity {
         setContentView(R.layout.create_bill);
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
         final Order new_order_done = (Order) getIntent().getExtras().getSerializable("select_order");
+
         logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
-        final Bill curBill=new Bill(sel_vendor,logged_rep);
+        final Bill curBill=new Bill(sel_vendor,logged_rep,new_order_done.getOrderID());
+        Toast.makeText(getApplicationContext(),"OrderId detect in Place bill"+new_order_done.getOrderID()+"--> Ven"+new_order_done.getVenOrderID(),Toast.LENGTH_LONG).show();
         btn_mk_payment=(Button)findViewById(R.id.btn_make_payment_cr_bill);
         btn_mk_payment.setEnabled(false);
         double BillValue=0,Discount=0;
@@ -75,9 +77,9 @@ public class PlaceOrderBill extends Activity {
                     Toast.makeText(getApplicationContext(), "Message Sent",
                             Toast.LENGTH_LONG).show();
                 } catch (Exception ex) {
-                    Toast.makeText(getApplicationContext(),
-                            ex.getMessage().toString(),
-                            Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),
+                            //ex.getMessage().toString(),
+                            //Toast.LENGTH_LONG).show();
                     ex.printStackTrace();
                 }
             }
@@ -91,6 +93,8 @@ public class PlaceOrderBill extends Activity {
                 new_order_done.OrderSubmitToDatabase(getApplicationContext());
                     curBill.setPayDate(delDate);
                     curBill.BillSubmitToDB(getApplicationContext());
+                    curBill.setVenOrderID(new_order_done.getOrderID());
+                    Toast.makeText(getApplicationContext(),"Create bill VenorderID"+curBill.getVenderID(),Toast.LENGTH_LONG);
                     btn_mk_payment.setEnabled(true);
 
                 }

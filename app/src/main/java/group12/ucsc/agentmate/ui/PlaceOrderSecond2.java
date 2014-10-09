@@ -74,6 +74,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         final Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
         new_order.setVenOrderID(logged_rep.Emp_id+"Or"+Calendar.getInstance().getTime().toString());
+        new_order.setOrderID(new_order.getVenOrderID());
         dmnd_new_order.setVenOrderID(logged_rep.Emp_id+"DemOr"+Calendar.getInstance().getTime().toString());
         new_order.setVender_no(sel_vendor.getVenderNo());
         dmnd_new_order.setVender_no(sel_vendor.getVenderNo());

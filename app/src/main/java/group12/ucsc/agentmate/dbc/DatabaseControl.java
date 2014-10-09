@@ -406,7 +406,7 @@ public Cursor findComplainByID(String comp_id_ins){
 public void AddItem (SellItem item){
     SQLiteDatabase database = this.getWritableDatabase();
     ContentValues values = new ContentValues();
-    Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
+//    Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
     values.put("ItemID",item.getItemID());
     values.put("ItemName",item.getItemName());
     values.put("Price",item.getPrice());
@@ -676,12 +676,14 @@ public void AddDiscount (String id,int max,int min,double disc) {
        return bl;
     }
 
-    public String getVenOrderID(String BillID){
+    public String getVenOrderIDByBillID(String BillID){
         SQLiteDatabase database = this.getReadableDatabase();
         String select_order_Query = "SELECT * FROM bill where BillID='"+BillID+"'";
         Cursor cursor = database.rawQuery(select_order_Query,null);
         if (cursor.moveToFirst()) {
-         return cursor.getString(cursor.getColumnIndex("VenOrderID"));
+
+            Toast.makeText(con,"db--> "+cursor.getString(cursor.getColumnIndex("VenOrderID")),Toast.LENGTH_LONG).show();
+            return cursor.getString(cursor.getColumnIndex("VenOrderID"));
         }
         return null;
     }
@@ -782,6 +784,29 @@ public void AddDiscount (String id,int max,int min,double disc) {
         Cursor cursor = database.rawQuery(select_id_complain_Query,null);
         return cursor;
     }
+    public Bill findBillonVenOrderID(String VenOrderID){
+        SQLiteDatabase database = this.getReadableDatabase();
+        //"CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,PayDate date,Total INTEGER,venderno VARCHAR(6),Sync BOOLEAN)";
+        String select_order_Query = "SELECT * FROM bill where VenOrderID='"+VenOrderID+"'";
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        if (cursor.moveToFirst()) {
+            Bill temp=new Bill();
+            temp.setTotal(Double.parseDouble(cursor.getString(cursor.getColumnIndex("Total"))));
+            temp.setBillID(cursor.getString(cursor.getColumnIndex("BillID")));
+            temp.setBillDate(cursor.getString(cursor.getColumnIndex("BillDate")));
+            temp.setVenderID(cursor.getString(cursor.getColumnIndex("venderno")));
+            return temp;
+        }
+        return null;
+    }
+
+    public Cursor getOrderfromMyorderOnVenOrderID(String VenorderID){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_order_Query = "SELECT * FROM Myorder where VenOrderID='"+VenorderID+"'";
+        Cursor cursor = database.rawQuery(select_order_Query,null);
+        return cursor;
+    }
+
 
 
     }

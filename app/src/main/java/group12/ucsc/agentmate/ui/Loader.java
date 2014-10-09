@@ -1,11 +1,18 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -29,13 +36,35 @@ public class Loader extends Activity {
     ProgressBar p_br;
     File loadfile;
     File sdcard;
+    LocationManager locationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startup_window);
-        dbc=new DatabaseControl(this);
-        p_br=(ProgressBar)findViewById(R.id.loading_bar);
-        readFile();
+        try{
+            ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||(activeNetwork!=null)&&(activeNetwork.getType()==ConnectivityManager.TYPE_MOBILE)){
+                dbc=new DatabaseControl(this);
+                p_br=(ProgressBar)findViewById(R.id.loading_bar);
+                readFile();
+            }
+            else{
+                Toast.makeText(getApplicationContext(),"Please Activate GPS and Internet connection to Proceed",Toast.LENGTH_LONG).show();
+                TextView editTv=(TextView)findViewById(R.id.txt_loading);
+                editTv.setText("Please Activate GPS and INTERNET then Restart the Application");
+                editTv.setTextColor(Color.BLACK);
+                editTv.setBackgroundColor(Color.LTGRAY);
+                setTitle("Resource Error..");
+            }
+        }
+        catch(Exception e){
+
+        }
+
+
 
 
     }
@@ -231,7 +260,8 @@ public class Loader extends Activity {
                 }
                 catch (Exception e) {
                     //Toast.makeText(getApplicationContext(),"NoFile Found "+sdcard.toString(),Toast.LENGTH_SHORT).show();
-                    Log.d("FileRead","NoFile");
+                    Log.d("FileRead","NoFile "+e.toString());
+                    e.printStackTrace();
                     //You'll need to add proper error handling here
                 }
 
@@ -259,29 +289,29 @@ public class Loader extends Activity {
 
         else if (table==2){
             //ToDo drop the item table
-            //SellItem item=new SellItem(data[0],data[1],Double.parseDouble(data[2]),Integer.parseInt(data[3]),Double.parseDouble(data[4]),data[5],data[6],data[7],Boolean.parseBoolean(data[8]));
-            //item.setSync(true);
-            //dbc.AddItem(item);
+            SellItem item=new SellItem(data[0],data[1],Double.parseDouble(data[2]),Integer.parseInt(data[3]),Double.parseDouble(data[4]),data[5],data[6],data[7],Boolean.parseBoolean(data[8]));
+            item.setSync(true);
+            dbc.AddItem(item);
         }
         else if (table==3){
             //dbc.LoadToVenOrder(data[0], data[1], data[2], data[3], true);
 
         }
         else if (table==4){
-            //dbc.LoadToDiscount(data[0],Integer.parseInt(data[1]),Integer.parseInt(data[2]),Double.parseDouble(data[3]),true);
+            dbc.LoadToDiscount(data[0],Integer.parseInt(data[1]),Integer.parseInt(data[2]),Double.parseDouble(data[3]),true);
 
         }
         else if (table==5){
-            //dbc.LoadToMeasure(data[0],data[1],Integer.parseInt(data[2]));
+            dbc.LoadToMeasure(data[0],data[1],Integer.parseInt(data[2]));
         }
         else if (table==6){
 
         }
         else if (table==7){
-            //dbc.LoadToBill(data[0],data[1],data[2],data[3],Integer.parseInt(data[4]),data[5],true);
+            dbc.LoadToBill(data[0],data[1],data[2],data[3],Integer.parseInt(data[4]),data[5],true);
         }
         else if (table==8){
-//            dbc.LoadToMyorder(data[0],data[1],Integer.parseInt(data[2]),Double.parseDouble(data[3]),true);
+           dbc.LoadToMyorder(data[0],data[1],Integer.parseInt(data[2]),Double.parseDouble(data[3]),true);
 
         }
         else if (table==9){

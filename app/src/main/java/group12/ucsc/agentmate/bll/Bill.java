@@ -1,6 +1,7 @@
 package group12.ucsc.agentmate.bll;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -12,6 +13,7 @@ import group12.ucsc.agentmate.dbc.DatabaseControl;
  */
 public class Bill implements Serializable {
     String BillID;
+    String VenOrderID;
     String venderID;
     String BillDate;
     String PayDate;
@@ -71,11 +73,12 @@ public class Bill implements Serializable {
         PayDate = payDate;
     }
 
-    public Bill(Vendor vendor,Representative rep){
+    public Bill(Vendor vendor,Representative rep,String VenID){
     venderID=vendor.getVenderNo();
     createBillNo(rep);
         sync=false;
     BillDate=Calendar.getInstance().getTime().toString();
+        this.VenOrderID=VenID;
 
 }
     public void createBillNo(Representative rep){
@@ -87,9 +90,18 @@ public class Bill implements Serializable {
     public Bill() {
     }
 
+    public String getVenOrderID() {
+        return VenOrderID;
+    }
+
+    public void setVenOrderID(String venOrderID) {
+        VenOrderID = venOrderID;
+    }
+
     public void BillSubmitToDB(Context con){
         DatabaseControl dbc=new DatabaseControl(con);
-        dbc.add_bill(this.BillID,this.venderID,this.BillDate,this.PayDate,this.Total,this.getVenderID());
+        dbc.add_bill(this.BillID,this.VenOrderID,this.BillDate,this.PayDate,this.Total,this.getVenderID());
+        Toast.makeText(con,"VENORDER ID"+this.getVenOrderID(),Toast.LENGTH_LONG).show();
     }
 
 
