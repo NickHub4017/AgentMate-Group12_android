@@ -3,6 +3,7 @@ package group12.ucsc.agentmate.bll;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -134,6 +135,23 @@ public class Order implements Serializable {
 
 
     }
+
+
+    public void ReturnSubmitToDB(Context con)
+
+    {
+        DatabaseControl dbc=new DatabaseControl(con);
+        for (int i = 0; i < this.list.size(); i++) {
+            dbc.addItemToReturnTable(this.list.get(i),vender_no);
+        }
+        if (this.list.size()>0){
+            Toast.makeText(con,"Return Order Has been submitted successfully",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Toast.makeText(con,"Return Order Submission error",Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
 }

@@ -77,6 +77,9 @@ public class DatabaseControl extends SQLiteOpenHelper{
         String create_payment_Table_query = "CREATE TABLE payment (ReceiptID VARCHAR(16) PRIMARY KEY,BillID VARCHAR(17),PayDate datetime default current_timestamp,PayAmount FLOAT,type VARCHAR(3),venderno VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_payment_Table_query);
 
+        String create_return_Table_query = "CREATE TABLE return (SubItemID VARCHAR(11) PRIMARY KEY,Qty INTEGER,Date datetime default current_timestamp,ActualPrice FLOAT,Sync BOOLEAN)";
+        database.execSQL(create_return_Table_query);
+
         Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
 
 
@@ -90,6 +93,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     public void k(){
         SQLiteDatabase database = this.getWritableDatabase();
+        String create_return_Table_query = "CREATE TABLE return (SubItemID VARCHAR(11) PRIMARY KEY,Qty INTEGER,Date datetime default current_timestamp,ActualPrice FLOAT,Sync BOOLEAN)";
+        database.execSQL(create_return_Table_query);
 
         //database.delete("complain", null, null);
 
@@ -807,9 +812,35 @@ public void AddDiscount (String id,int max,int min,double disc) {
         return cursor;
     }
 
+public void addItemToReturnTable(SellItem item,String vendorno){
+    SQLiteDatabase database = this.getReadableDatabase();
+    String get_item_Query = "SELECT * FROM item where ItemID='"+item.getItemID()+"'";
+    Cursor cursor = database.rawQuery(get_item_Query,null);
+    if (cursor.moveToFirst()){
+            double curprice=Double.parseDouble(cursor.getString(cursor.getColumnIndex("Price")));
+            if (curprice==item.getPrice()){
+                //change the qty of item table
+                ContentValues values = new ContentValues();
+                int curqty=Integer.parseInt(cursor.getString(cursor.getColumnIndex("StoreQty")));//Current items price
+                values.put("StoreQty",item.getQty()+curqty);
+                database.update("item", values,"ItemID"+" = ?",new String[] {item.getItemID()});
 
+            }
+            addReturnTable(item,database,vendorno);//Anything will upload to the vendor table due to calculate the price of the return order.
+    }
+        }
+
+    public void addReturnTable(SellItem item,SQLiteDatabase database,String vendorno){
+        item.setItemID(item.getItemID()+"#"+vendorno);
+        ContentValues values = new ContentValues();
+        values.put("SubItemID",item.getItemID());
+        values.put("Qty",item.getQty());
+        values.put("ActualPrice",item.getPrice());
+        database.insert("return",null, values);
+    }
 
     }
+
 
 
 

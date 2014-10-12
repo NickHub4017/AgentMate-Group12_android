@@ -67,7 +67,7 @@ public class GetReturnItems extends Activity implements DialogGetReturnQty.GetQt
 
         final Representative logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
-        return_order.setVenOrderID(logged_rep.Emp_id+"Or"+ Calendar.getInstance().getTime().toString());
+        //return_order.setVenOrderID(logged_rep.Emp_id+"Or"+ Calendar.getInstance().getTime().toString());  No need a VenOrderID
 
         return_order.setVender_no(sel_vendor.getVenderNo());
 
@@ -128,10 +128,18 @@ public class GetReturnItems extends Activity implements DialogGetReturnQty.GetQt
         });
         btset.setVisibility(View.INVISIBLE);
 
+
         Button btn_submit=(Button)findViewById(R.id.btn_submit_edit_demand);
         btn_submit.setVisibility(View.INVISIBLE);
 
+
         Button btn_next =(Button)findViewById(R.id.btn_go_to_bill);
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                return_order.ReturnSubmitToDB(GetReturnItems.this);
+            }
+        });
 
 
     }
