@@ -111,6 +111,7 @@ public class LocationService extends Service
             intent.putExtra("new_location"," New Location is "+loc.getAltitude()+" "+loc.getLongitude()+" "+loc.getLatitude());
             intent.putExtra("updated_time",loc.getTime());
             intent.putExtra("speed",loc.getSpeed());
+
             intent.setAction("group12.tutorialspoint.CUSTOM_INTENT");
             sendBroadcast(intent);
 
