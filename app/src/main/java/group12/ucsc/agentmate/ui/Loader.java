@@ -233,6 +233,8 @@ public class Loader extends Activity {
                         fw.close();
                         Intent intent2 = new Intent(Loader.this, LocationService.class);
                         startService(intent2);
+                        Intent intent3 = new Intent(Loader.this, NetSync.class);
+                        startService(intent3);
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
 
@@ -249,7 +251,8 @@ public class Loader extends Activity {
                         }
                         Intent intent2 = new Intent(Loader.this, LocationService.class);
                         startService(intent2);
-
+                        Intent intent3 = new Intent(Loader.this, NetSync.class);
+                        startService(intent3);
                         Intent loginIntent=new Intent(Loader.this,Login_Activity.class);
                         startActivity(loginIntent);
                     }
