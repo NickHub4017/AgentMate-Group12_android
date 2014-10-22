@@ -11,6 +11,8 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 /**
  * Created by NRV on 10/7/2014.
  */
@@ -31,6 +33,10 @@ public class LocationService extends Service
         int res = super.onStartCommand(intent, flags, startId);
         Toast.makeText(getApplicationContext(), "Service LOC Started", Toast.LENGTH_LONG).show();
 
+        Intent intent3 = new Intent();
+
+        intent3.setAction("group12.tutorialspoint.StartLoc");
+        sendBroadcast(intent3);
 
         return START_STICKY;
     }
@@ -45,6 +51,10 @@ public class LocationService extends Service
     @Override
     public void onStart(Intent intent, int startId)
     {
+        Intent intent2 = new Intent();
+
+        intent2.setAction("group12.tutorialspoint.StartLoc");
+        sendBroadcast(intent2);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         listener = new MyLocationListener();
         //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
@@ -119,7 +129,13 @@ public class LocationService extends Service
 
         public void onProviderDisabled(String provider)
         {
-            Toast.makeText(getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Gps Disabled", Toast.LENGTH_SHORT).show();///If GPS disabled this will set as location msg
+            Intent intent = new Intent();
+            intent.putExtra("new_location"," GPS Disabled");
+            intent.putExtra("updated_time", Calendar.getInstance().getTime().toString());
+            intent.putExtra("speed",0.0);
+            intent.setAction("group12.tutorialspoint.CUSTOM_INTENT");
+            sendBroadcast(intent);
         }
 
 

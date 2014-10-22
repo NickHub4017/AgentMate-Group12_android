@@ -839,6 +839,13 @@ public void addItemToReturnTable(SellItem item,String vendorno){
         database.insert("return",null, values);
     }
 
+    public int getItemQtyByItemID(String ItemID){
+     Cursor c=getExactItemByID(ItemID);
+        c.moveToFirst();
+        return  c.getInt(c.getColumnIndex("StoreQty"));
+
+    }
+
     }
 
 

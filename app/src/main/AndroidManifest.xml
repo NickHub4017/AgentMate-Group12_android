@@ -56,7 +56,17 @@
             <intent-filter>
                 <action android:name="group12.tutorialspoint.CUSTOM_INTENT">
                 </action>
+                <action android:name="group12.tutorialspoint.PaymentIntent">
+                </action>
+                <action android:name="group12.tutorialspoint.Order">
+                </action>
+                <action android:name="group12.tutorialspoint.StartLoc">
+                </action>
+                <action android:name="group12.tutorialspoint.StartSync">
+                </action>
+
             </intent-filter>
+
         </receiver>
     </application>
 </manifest>

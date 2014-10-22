@@ -2,6 +2,7 @@ package group12.ucsc.agentmate.ui;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import group12.ucsc.agentmate.R;
 import group12.ucsc.agentmate.bll.Payment;
@@ -94,21 +96,38 @@ public class MakePayment extends Activity {
                     pay.SubmitToDB(view.getRootView().getContext());
                     String msg="You ("+pay.getVenderNo()+ ") have make payment of Rs "+pay.getPayAmount()+" in "+pay.getPayDate()+" via "+ pay.getType()+" THANK YOU. D.N. DISTRIBUTORS.";
                     String number=dbc.getVendorConfNumberByID(pay.getVenderNo());
-                    if (number==null){
+                    if (number==null||number.length()!=10){
                         number="0777117110";
                     }
                     try {
 
                         SmsManager smsManager = SmsManager.getDefault();
+                        //Toast.makeText(getApplicationContext(),"a "+(smsManager==null),Toast.LENGTH_LONG).show();
                         smsManager.sendTextMessage(number, null, msg, null, null);
                         Toast.makeText(getApplicationContext(), "Message Sent",
                                 Toast.LENGTH_LONG).show();
+
+
                     } catch (Exception ex) {
-                        Toast.makeText(getApplicationContext(),
+                        /*Toast.makeText(getApplicationContext(),
                                 ex.getMessage().toString(),
-                                Toast.LENGTH_LONG).show();
+                                Toast.LENGTH_LONG).show();*/
                         ex.printStackTrace();
                     }
+                    Intent intent = new Intent();
+
+                    if (pay.getType().equals("chk")){
+                        intent.putExtra("mnh",0.0);
+                        intent.putExtra("tot",pay.getPayAmount());
+                    }
+                    else{
+                        intent.putExtra("mnh",pay.getPayAmount());
+                        intent.putExtra("tot",pay.getPayAmount());
+                    }
+
+                    intent.setAction("group12.tutorialspoint.PaymentIntent");
+
+                    sendBroadcast(intent);
                 }
                 }
         });
