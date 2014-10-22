@@ -39,8 +39,13 @@
         <activity android:name=".ui.RePrintBill" android:label="Recopy Your Bill"></activity>
         <activity android:name=".ui.GetReturnItems" android:label="Get Return Items"></activity>
         <activity android:name=".ui.Login_Activity" android:label="@string/app_name"></activity>
-        <activity android:name=".ui.GetStoreQty" android:label="Check the Store"></activity>
-        <activity android:name=".ui.UnLoadData" android:label="Sync Data To PC"></activity>
+        <activity android:name=".ui.GetStoreQty" android:label="Check the Store">
+            <intent-filter>
+                <action android:name="Get.Store.Intent"></action>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.UnLoadData" android:label="Sync Data To PC">
+        </activity>
         <service
             android:name=".ui.LocationService"
             android:enabled="true"
@@ -63,6 +68,8 @@
                 <action android:name="group12.tutorialspoint.StartLoc">
                 </action>
                 <action android:name="group12.tutorialspoint.StartSync">
+                </action>
+                <action android:name="Errors">
                 </action>
 
             </intent-filter>

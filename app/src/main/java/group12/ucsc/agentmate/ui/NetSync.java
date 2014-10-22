@@ -31,7 +31,7 @@ public class NetSync extends Service{
 
         intent2.setAction("group12.tutorialspoint.StartSync");
         sendBroadcast(intent2);
-        Toast.makeText(getApplicationContext(), "Service SYNC Started", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Service SYNC Started", Toast.LENGTH_LONG).show();
         final Thread t = new Thread() {
 
             @Override
@@ -46,23 +46,40 @@ public class NetSync extends Service{
 
             @Override
             public void run() {
-                if(!mConnection.isConnected()){
-//                    mConnection.connect();
-                    try {
-                        sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+                while (true) {
+                    if (!mConnection.isConnected()) {
 
+
+                        Intent erInt = new Intent();
+                        erInt.setAction("Errors");
+                        sendBroadcast(erInt);
+
+                        try {
+                            sleep(5000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
             }
         };
-  //      tt.start();
+        tt.start();
 
         Toast.makeText(getApplicationContext(),"Line",Toast.LENGTH_LONG).show();
 
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Intent intent2 = new Intent();
+
+        intent2.setAction("group12.tutorialspoint.StartSync");
+        sendBroadcast(intent2);
+        mestart();
     }
 
     private void mestart() {
@@ -103,6 +120,12 @@ public class NetSync extends Service{
                         String[] list=payload.split(" ");
                         if (list.length==4) {
                             mConnection.sendTextMessage("DATA #vanqty " + "dbc.getItemQtyByItemID(list[3])" + " @nirm");//ToDo change for interact with Database
+                            Intent in=new Intent("Get.Store.Intent");
+                            String tmp[]=list[3].split("%");
+                            in.putExtra("Store_QTY",Double.parseDouble(tmp[0]));
+                            in.putExtra("Store_Item",tmp[1]);
+                            sendBroadcast(in);
+
                         }
                     }
 
@@ -115,7 +138,7 @@ public class NetSync extends Service{
 
                 @Override
                 public void onClose(int code, String reason) {
-                    Log.d(TAG, "Connection lost.");
+                    Log.d(TAG, "Connection lost."+reason);
                     mestart();
                     //Toast.makeText(getApplicationContext(),"^^^^^^^",Toast.LENGTH_LONG).show();
                 }
@@ -123,7 +146,7 @@ public class NetSync extends Service{
             });
         } catch (WebSocketException e) {
 //            Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_LONG).show();
-            mestart();
+//            mestart();
             Log.d(TAG, e.toString());
         }
     }

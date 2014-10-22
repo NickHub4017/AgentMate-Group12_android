@@ -47,7 +47,7 @@ public class MessageReceiver extends BroadcastReceiver {
             // Toast.makeText(context, "Intent Detected." + time+"  "+speed+" " + msg, Toast.LENGTH_LONG).show();
         }
         else if (intent.getAction().equals("group12.tutorialspoint.PaymentIntent")) {
-            MoneyInHand=intent.getDoubleExtra("mnh",-1);
+            MoneyInHand=MoneyInHand+intent.getDoubleExtra("mnh",-1);
             Total=Total+intent.getDoubleExtra("tot",0);
             writeToFile(msg,MoneyInHand,Total);
             //Toast.makeText(context, "Intent Detected. Payment"+MoneyInHand+" "+Total , Toast.LENGTH_LONG).show();
@@ -58,13 +58,17 @@ public class MessageReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Intent Detected. Order", Toast.LENGTH_LONG).show();
         }
         else if (intent.getAction().equals("group12.tutorialspoint.StartLoc")) {
-            Toast.makeText(context, "Intent Detected. LOC", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Intent Detected. LOC", Toast.LENGTH_LONG).show();
             readFromFile(context);
         }
         else if (intent.getAction().equals("group12.tutorialspoint.StartSync")) {
-            Toast.makeText(context, "Intent Detected. SYNC", Toast.LENGTH_LONG).show();
+            //Toast.makeText(context, "Intent Detected. SYNC", Toast.LENGTH_LONG).show();
             readFromFile(context);
         }
+        else if (intent.getAction().equals("Errors")) {
+            Toast.makeText(context, "Socket not connected", Toast.LENGTH_LONG).show();
+        }
+
         else{
             Toast.makeText(context, "Else"+intent.getAction(), Toast.LENGTH_LONG).show();
 
@@ -124,7 +128,7 @@ public class MessageReceiver extends BroadcastReceiver {
         Calendar c = Calendar.getInstance();
         String date = "" + c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DATE);
         if (!datafile.exists()) {
-            Toast.makeText(context,"Read if file Not here",Toast.LENGTH_LONG).show();
+            //Toast.makeText(context,"Read if file Not here",Toast.LENGTH_LONG).show();
             try {
                 datafile.createNewFile();
                 FileWriter fw = null;
@@ -143,22 +147,22 @@ public class MessageReceiver extends BroadcastReceiver {
 
         }
         else{
-            Toast.makeText(context,"File is found",Toast.LENGTH_LONG).show();
+            //Toast.makeText(context,"File is found",Toast.LENGTH_LONG).show();
             BufferedReader br = null;
             try {
                 br = new BufferedReader(new FileReader(datafile));
                 String first=br.readLine();
                 if (date.contains(first)){
-                    Toast.makeText(context,"File conains cur date",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,"File conains cur date",Toast.LENGTH_LONG).show();
                     String second=br.readLine();
                     String[] data=second.split("#");
                     msg=data[0];
                     MoneyInHand=Double.parseDouble(data[1]);
                     Total=Double.parseDouble(data[2]);
-                    Toast.makeText(context,msg+" "+MoneyInHand+" "+Total,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context,msg+" "+MoneyInHand+" "+Total,Toast.LENGTH_LONG).show();
                 }
                 else{
-                    Toast.makeText(context,"File contains another date",Toast.LENGTH_LONG).show();
+              //      Toast.makeText(context,"File contains another date",Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
