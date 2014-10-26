@@ -10,13 +10,14 @@
         android:layout_height="fill_parent">
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Complain maker"
             android:id="@+id/txt_cmp_title"
             android:textColor="#ff0027ff"
             android:textStyle="bold"
-            android:textSize="30dp" />
+            android:textSize="30dp"
+            android:layout_gravity="center_horizontal" />
 
         <LinearLayout
             android:orientation="horizontal"

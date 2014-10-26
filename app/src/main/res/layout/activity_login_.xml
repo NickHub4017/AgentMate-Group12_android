@@ -13,9 +13,10 @@ tools:context=".Login_Activity" >
     android:id="@+id/imageView1"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
     android:adjustViewBounds="true"
-    android:src="@drawable/abc" />
+    android:src="@drawable/abc"
+    android:layout_alignRight="@+id/btn_submit"
+    android:layout_alignParentLeft="true" />
 
 <Button
     android:id="@+id/btn_submit"
