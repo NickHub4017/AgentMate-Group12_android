@@ -22,14 +22,20 @@ public class NetSync extends Service{
     //DatabaseControl dbc=new DatabaseControl(getApplicationContext());
     private final WebSocketConnection mConnection = new WebSocketConnection();
     private static final String TAG = "de.tavendo.test1";
+    final String wsuri = "ws://connect.mysensors.mobi:8080";
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    //WebSocketHandler webhand=;
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //TAG = "de.tavendo.test1";
+
+
         int res = super.onStartCommand(intent, flags, startId);
         Intent intent2 = new Intent();
 
@@ -93,10 +99,10 @@ public class NetSync extends Service{
 
     private void mestart() {
 //ws://echo.websocket.org:80
-        final String wsuri = "ws://connect.mysensors.mobi:8080";
+        //final String wsuri = "ws://connect.mysensors.mobi:8080";
 
         try {
-            mConnection.connect(wsuri, new WebSocketHandler() {
+            mConnection.connect(wsuri,new WebSocketHandler() {
 
                 @Override
                 public void onOpen() {
@@ -116,7 +122,7 @@ public class NetSync extends Service{
                     Log.d(TAG, "Got echo: " + payload);
 
                     String msgs[]=payload.split(" ");
-                    Toast.makeText(getApplicationContext(),"payload "+ payload ,Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"payload "+ payload ,Toast.LENGTH_LONG).show();
                     if (payload.contains("#loc")){
                         mConnection.sendTextMessage("DATA #loc "+MessageReceiver.msg+" @nirm");
                     }
@@ -145,7 +151,7 @@ public class NetSync extends Service{
                     }
 
                     //else{
-                      //  mConnection.sendTextMessage("DATA #loc Invalid_Sensor @nirm");//ToDO change the loc part
+                    //  mConnection.sendTextMessage("DATA #loc Invalid_Sensor @nirm");//ToDO change the loc part
                     //}
 
 
@@ -157,6 +163,7 @@ public class NetSync extends Service{
                     mestart();
                     //Toast.makeText(getApplicationContext(),"^^^^^^^",Toast.LENGTH_LONG).show();
                 }
+
 
             });
         } catch (WebSocketException e) {
@@ -172,7 +179,6 @@ public class NetSync extends Service{
         @Override
         public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
         {
-            //Toast.makeText(getApplication(),"wrgeheth "+intent.getStringExtra("Get_Store_Item"),Toast.LENGTH_LONG).show();
             mConnection.sendTextMessage("DATA #vanqty "+intent.getStringExtra("Get_Store_Item")+" @nirm");
         }
     }

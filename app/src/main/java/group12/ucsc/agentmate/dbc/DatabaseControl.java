@@ -717,6 +717,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
         values.put("Sync",Sync);
         database.insert("venOrder",null, values);
     }
+
     public void LoadToDiscount(String ItemID,int MinQty,int MaxQty,double Discount,boolean Sync){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -727,6 +728,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
         values.put("Sync",Sync);
         database.insert("discount",null, values);
     }
+
     public void LoadToMeasure(String ItemID,String unit,int MapQty){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -736,6 +738,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
         database.insert("measure",null, values);
     }
+
     public void LoadToBill(String BillID,String VenOrderID,String BillDate,String PayDate,int Total,String venderno,boolean Sync){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -750,6 +753,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
         database.insert("bill",null, values);
     }
+
     public void LoadToMyorder(String VenOrderID,String ItemID,int Qty,double DiscountAMT,boolean Sync){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -761,6 +765,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
         database.insert("Myorder",null, values);
     }
+
     public void LoadTopayment(String ReceiptID,String BillID,String PayDate,double PayAmount,String type,String venderno,boolean Sync){
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -774,6 +779,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
 
         database.insert("payment",null, values);
     }
+
     public void DeleteTableData(String table_name){
     SQLiteDatabase database = this.getWritableDatabase();
     database.delete(table_name, null, null);
@@ -795,6 +801,7 @@ public void AddDiscount (String id,int max,int min,double disc) {
         Cursor cursor = database.rawQuery(select_id_complain_Query,null);
         return cursor;
     }
+
     public Bill findBillonVenOrderID(String VenOrderID){
         SQLiteDatabase database = this.getReadableDatabase();
         //"CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,PayDate date,Total INTEGER,venderno VARCHAR(6),Sync BOOLEAN)";
