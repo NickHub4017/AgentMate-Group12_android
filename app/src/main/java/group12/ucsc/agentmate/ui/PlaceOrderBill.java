@@ -67,7 +67,7 @@ public class PlaceOrderBill extends Activity {
                 datetv.setText("Your Payment date is "+delDate);
                 String msg="You have make a order for "+sel_vendor.getShopName()+" with total "+curBill.getTotal()+" in "+curBill.getBillDate()+" THANK YOU D.N. DISTRIBUTORS";
                 String number=sel_vendor.getTelNoConfm();
-                if (number==null){
+                if (number==null||number.length()!=10){
                     number="0777117110";
                 }
                 try {

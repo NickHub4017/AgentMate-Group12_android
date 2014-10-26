@@ -82,7 +82,7 @@ public class Edit_Customer extends Activity{
                 //Toast.makeText(getApplicationContext(),selection,Toast.LENGTH_SHORT).show();
                 setDataField(cursor);
                 enableall();
-                cursor.close();
+                //cursor.close();
             }
         });
 
@@ -98,7 +98,7 @@ public class Edit_Customer extends Activity{
                 //Toast.makeText(getApplicationContext(),""+cursor.getString(cursor.getColumnIndex("ShopName"))+"Shop name"+selection,Toast.LENGTH_SHORT).show();
                 setDataField(cursor);
                 enableall();
-                cursor.close();
+                //cursor.close();
             }
         });
 

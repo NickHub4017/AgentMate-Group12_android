@@ -28,6 +28,15 @@ public class GetStoreQty extends Activity {
     AutoCompleteTextView itemName_edit_auto;
     AutoCompleteTextView itemID_edit_auto;
     TextView dataTv;
+    String Item_ID_Select=null;
+    AccelerationServiceReceiver accelerationReceiver = new AccelerationServiceReceiver();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(accelerationReceiver);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +44,6 @@ public class GetStoreQty extends Activity {
 
         IntentFilter movementFilter;
         movementFilter = new IntentFilter("Get.Store.Intent");
-        AccelerationServiceReceiver accelerationReceiver = new AccelerationServiceReceiver();
         registerReceiver(accelerationReceiver, movementFilter);
 
         dataTv=(TextView)findViewById(R.id.txt_show_data);
@@ -62,7 +70,7 @@ public class GetStoreQty extends Activity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String selection = (String) adapterView.getItemAtPosition(position);
                 String ItemID=dbc.finditemByName(selection);
-
+                Item_ID_Select=ItemID;
                 itemID_edit_auto.setText(ItemID);
 
             }
@@ -78,7 +86,7 @@ public class GetStoreQty extends Activity {
                 String selection = (String) adapterView.getItemAtPosition(position);//
                 String ItemName=dbc.finditemByID(selection);
                 itemName_edit_auto.setText(ItemName);
-
+                Item_ID_Select=selection;
 
 
             }
@@ -89,11 +97,11 @@ public class GetStoreQty extends Activity {
         btn_get_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-     /*          Intent in=new Intent("Get.Store.Intent");
-                in.putExtra("Store_QTY",100.0);
-                in.putExtra("Store_Item","Test");
+              Intent in=new Intent("Req.Store.Intent");
+                //in.putExtra("Store_QTY",100.0);
+                in.putExtra("Get_Store_Item",Item_ID_Select);
                 sendBroadcast(in);
-     */       }
+           }
         });
     }
 

@@ -1,7 +1,11 @@
 package group12.ucsc.agentmate.ui;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,6 +35,11 @@ public class NetSync extends Service{
 
         intent2.setAction("group12.tutorialspoint.StartSync");
         sendBroadcast(intent2);
+        IntentFilter movementFilter;
+        movementFilter = new IntentFilter("Req.Store.Intent");
+        GetStoreReceiver getstoreReceiver = new GetStoreReceiver();
+        registerReceiver(getstoreReceiver, movementFilter);
+
         //Toast.makeText(getApplicationContext(), "Service SYNC Started", Toast.LENGTH_LONG).show();
         final Thread t = new Thread() {
 
@@ -93,6 +102,7 @@ public class NetSync extends Service{
                 public void onOpen() {
                     Log.d(TAG, "Status: Connected to " + wsuri);
                     mConnection.sendTextMessage("LOGIN #name Randul #skey 123456 @mysensors");//Logging to MySensor
+
                     mConnection.sendTextMessage("SHARE #loc @nirm");//Sharing sensors
                     mConnection.sendTextMessage("SHARE #mnh @nirm");
                     mConnection.sendTextMessage("SHARE #tot @nirm");
@@ -121,11 +131,16 @@ public class NetSync extends Service{
                         if (list.length==4) {
                             mConnection.sendTextMessage("DATA #vanqty " + "dbc.getItemQtyByItemID(list[3])" + " @nirm");//ToDo change for interact with Database
                             Intent in=new Intent("Get.Store.Intent");
-                            String tmp[]=list[3].split("%");
-                            in.putExtra("Store_QTY",Double.parseDouble(tmp[0]));
-                            in.putExtra("Store_Item",tmp[1]);
-                            sendBroadcast(in);
+                            try {
+                                String tmp[] = list[3].split("%");
+                                in.putExtra("Store_QTY", Double.parseDouble(tmp[0]));
+                                in.putExtra("Store_Item", tmp[1]);
 
+                                sendBroadcast(in);
+                            }
+                            catch (Exception e){
+                                Toast.makeText(getApplication(),"Error in data connection, Please Try Again after 5 Seconds",Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
 
@@ -150,4 +165,16 @@ public class NetSync extends Service{
             Log.d(TAG, e.toString());
         }
     }
+
+    public class GetStoreReceiver extends BroadcastReceiver
+
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
+        {
+            //Toast.makeText(getApplication(),"wrgeheth "+intent.getStringExtra("Get_Store_Item"),Toast.LENGTH_LONG).show();
+            mConnection.sendTextMessage("DATA #vanqty "+intent.getStringExtra("Get_Store_Item")+" @nirm");
+        }
+    }
+
 }

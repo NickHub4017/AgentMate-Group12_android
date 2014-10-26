@@ -13,9 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Recopy My Bill"
+        android:text="Make Payment"
         android:id="@+id/textView3"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:textColor="#ff1337ff"
+        android:textSize="30dp" />
 
 
 
@@ -46,7 +49,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Pay Amount"
         android:id="@+id/textView"
-        android:textColor="#ff4eb1ff"
+        android:textColor="#ff47bcff"
         android:textColorHighlight="#ff5cff19"
         android:textSize="@dimen/highlight" />
 

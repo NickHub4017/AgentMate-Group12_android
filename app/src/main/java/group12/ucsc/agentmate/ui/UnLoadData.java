@@ -83,7 +83,7 @@ public class UnLoadData extends Activity {
                                 String temp="";
                                 for (int i=0;i<num_cols;i++){
 
-                                    temp=temp+"-->"+cur.getColumnName(i)+"#"+cur.getString(i);//Todo remove "-->"+cur.getColumnName(i)+
+                                    temp=temp+"#"+cur.getString(i);
                                 }
                                 fw.append(temp+"\n");
                             }while (cur.moveToNext());

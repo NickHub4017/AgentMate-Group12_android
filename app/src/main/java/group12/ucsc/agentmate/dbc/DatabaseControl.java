@@ -30,7 +30,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
         super(context, "datacollection.db", null, 1);
         con=context;
-        //con.deleteFile("datacollection.db");
+
 
 
     }
@@ -62,26 +62,34 @@ public class DatabaseControl extends SQLiteOpenHelper{
                 "MaxQty INTEGER,Discount FLOAT,Sync BOOLEAN,PRIMARY KEY (ItemID, MinQty, MaxQty))";
         database.execSQL(create_discount_Table_query);
 
+//Create measure table
         String create_unit_mapping_Table_query = "CREATE TABLE measure (ItemID VARCHAR(5), unit VARCHAR(3),MapQty INTEGER,PRIMARY KEY (ItemID,unit))";
         database.execSQL(create_unit_mapping_Table_query);
-
+//Create complain table
         String create_complain_Table_query = "CREATE TABLE complain (ComplainID VARCHAR(17) PRIMARY KEY, ItemID VARCHAR(5),Complain TEXT,VendorNo VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_complain_Table_query);
-
+//Create bill table
         String create_bill_Table_query = "CREATE TABLE bill (BillID VARCHAR(17) PRIMARY KEY, VenOrderID VARCHAR(16),BillDate date,PayDate date,Total INTEGER,venderno VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_bill_Table_query);
-
+//Create Myorder table
         String create_order_Table_query = "CREATE TABLE Myorder (VenOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DiscountAMT FLOAT,Sync BOOLEAN, PRIMARY KEY (VenOrderID, ItemID))";
         database.execSQL(create_order_Table_query);
-
+//Create payment table
         String create_payment_Table_query = "CREATE TABLE payment (ReceiptID VARCHAR(16) PRIMARY KEY,BillID VARCHAR(17),PayDate datetime default current_timestamp,PayAmount FLOAT,type VARCHAR(3),venderno VARCHAR(6),Sync BOOLEAN)";
         database.execSQL(create_payment_Table_query);
-
+//Create return table
         String create_return_Table_query = "CREATE TABLE return (SubItemID VARCHAR(11) PRIMARY KEY,Qty INTEGER,Date datetime default current_timestamp,ActualPrice FLOAT,Sync BOOLEAN)";
         database.execSQL(create_return_Table_query);
+//Create discount table
+//        Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(con,"DONE",Toast.LENGTH_SHORT).show();
-
+//Create demandvenOrder table//ToDo Implement thess tables methods
+        String create_demand_venOrderTable_query = "CREATE TABLE demandvenOrder (DemOrderID VARCHAR(16) PRIMARY KEY, VendorNo VARCHAR(6) , " +
+                "OrderDate datetime default current_timestamp,Sync BOOLEAN)";
+        database.execSQL(create_demand_venOrderTable_query);
+//Create demandMyorder table
+        String create_demand_order_Table_query = "CREATE TABLE demandMyorder (DemOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,,DeliverDate datetime,Sync BOOLEAN, PRIMARY KEY (DemOrderID, ItemID))";
+        database.execSQL(create_demand_order_Table_query);
 
     }
 
@@ -191,22 +199,18 @@ public class DatabaseControl extends SQLiteOpenHelper{
         else{
 
             database.insert("login",null, values);
-            //database.close(); //Query if member id does not exsists insert.
+             //Query if member id does not exsists insert.
         }
     }
 
     public Cursor getLoginInfo(String Username_ins) {
-        HashMap<String, String> LoginMap = new HashMap<String, String>();
-
-
+        //HashMap<String, String> LoginMap = new HashMap<String, String>();
 
         SQLiteDatabase database = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM login  where UserName='"+Username_ins+"'";
 
         Cursor cursor = database.rawQuery(selectQuery,null);
-        //Toast.makeText(con, "no of rows", Toast.LENGTH_SHORT).show();
-        //Toast.makeText(con, ""+ cursor.getCount(), Toast.LENGTH_SHORT).show();
         return cursor;
     }
 
@@ -258,6 +262,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
     }
 
     public void change_Password(String UserName,String new_Password){
+       // Toast.makeText(con,"Updated succefully "+UserName+" "+new_Password, Toast.LENGTH_SHORT).show();
         SQLiteDatabase database = this.getWritableDatabase();
         Calendar cal = Calendar.getInstance();
         int seconds = cal.get(Calendar.DATE);
@@ -269,10 +274,11 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
         ///Set the date of the update when this happens
 
-        database.update("login", values,"UserName"+" = ?",new String[] {UserName});
+        int k=database.update("login", values,"UserName"+" = ?",new String[] {UserName});
 
         Cursor c=getLoginInfo(UserName);
         c.moveToFirst();
+        //Toast.makeText(con,k+" Count "+c.getCount()+" "+password_encoder(new_Password), Toast.LENGTH_SHORT).show();
         String pw_in_db2=c.getString(c.getColumnIndex("Password"));
         if (pw_in_db2.equals(password_encoder(new_Password))){
             //Updated correctly

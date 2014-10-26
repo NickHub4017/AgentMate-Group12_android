@@ -17,6 +17,12 @@
             android:layout_gravity="center"
             android:text="                      "
             android:textAppearance="?android:attr/textAppearanceMedium" />
+        <Button
+            android:id="@+id/Margin_Gapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gapper"
+            android:visibility="invisible"/>
 
         <Button
             android:id="@+id/btn_create_new_customer"

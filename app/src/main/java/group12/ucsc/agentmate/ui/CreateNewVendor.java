@@ -32,6 +32,7 @@ DatabaseControl dbc=new DatabaseControl(this);
         @Override
         public void onClick(View view) {
            vender_create_func();
+            Toast.makeText(getApplication(),"New User added Successfully",Toast.LENGTH_LONG).show();
         }
         });
 

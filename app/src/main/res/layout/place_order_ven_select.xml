@@ -19,7 +19,7 @@
             android:id="@+id/txtplaceorder"
             android:layout_gravity="center_horizontal"
             android:textColorHighlight="@android:color/holo_blue_dark"
-            android:textColor="@android:color/holo_green_dark"
+            android:textColor="#ff1e35ff"
             android:textSize="@android:dimen/app_icon_size"
             android:textStyle="bold" />
 
@@ -74,7 +74,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="**********"
             android:id="@+id/txt_venaddr_order"
             android:layout_gravity="center_horizontal" />
 
@@ -89,7 +88,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="//////"
             android:id="@+id/txt_mngr_nm_order"
             android:layout_gravity="center_horizontal" />
 
@@ -104,7 +102,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="----------"
             android:id="@+id/txt_due_amnt_order" />
 
         <TextView
