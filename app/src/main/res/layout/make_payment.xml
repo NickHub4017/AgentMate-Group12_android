@@ -3,12 +3,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@drawable/money"
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,21 +19,27 @@
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
         android:textColor="#ff1337ff"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        android:background="@android:color/darker_gray"/>
 
 
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="148dp"
             android:layout_height="wrap_content"
             android:text="Select Vendor"
-            android:id="@+id/txt_pay_vendor" />
+            android:id="@+id/txt_pay_vendor"
+            android:textStyle="bold"
+            android:background="@android:color/holo_purple"
+            android:textSize="20dp"
+            android:layout_gravity="left" />
 
         <AutoCompleteTextView
-            android:layout_width="160dp"
+            android:layout_width="227dp"
             android:layout_height="wrap_content"
             android:text=""
-            android:id="@+id/autotxt_venid" />
+            android:id="@+id/autotxt_venid"
+            android:textStyle="bold|italic" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -49,16 +56,19 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Pay Amount"
         android:id="@+id/textView"
-        android:textColor="#ff47bcff"
+        android:textColor="#ffff5e18"
         android:textColorHighlight="#ff5cff19"
-        android:textSize="@dimen/highlight" />
+        android:textSize="@dimen/highlight"
+        android:textIsSelectable="false"
+        android:textStyle="bold" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="numberSigned"
         android:ems="10"
-        android:id="@+id/edit_payamount" />
+        android:id="@+id/edit_payamount"
+        android:textStyle="bold|italic" />
 
     <RadioGroup
         android:layout_width="wrap_content"
@@ -72,14 +82,16 @@
             android:layout_height="wrap_content"
             android:text="Check"
             android:id="@+id/radio_check"
-            android:checked="false" />
+            android:checked="false"
+            android:textStyle="bold" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cash"
             android:id="@+id/radio_cash"
-            android:checked="false" />
+            android:checked="false"
+            android:textStyle="bold" />
 
 
 
@@ -89,7 +101,8 @@
         android:layout_height="wrap_content"
         android:text="Make Payment"
         android:id="@+id/btn_make_payment"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold" />
 
     </LinearLayout>
 

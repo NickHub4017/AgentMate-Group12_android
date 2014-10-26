@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CreateNewVendor" >
+    tools:context=".CreateNewVendor"
+    android:background="@android:drawable/arrow_up_float">
 
     <TextView
         android:id="@+id/new_lblVendorID"

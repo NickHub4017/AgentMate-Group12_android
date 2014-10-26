@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:background="@android:drawable/arrow_down_float">
 
     <TextView
         android:layout_width="fill_parent"
@@ -49,7 +50,9 @@
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/dlvr_date_picker" />
+        android:id="@+id/dlvr_date_picker"
+        />
+
 
     <TextView
         android:layout_width="wrap_content"
