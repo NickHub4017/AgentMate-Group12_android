@@ -41,6 +41,7 @@
             android:id="@+id/autotxt_venid"
             android:textStyle="bold|italic" />
 
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
