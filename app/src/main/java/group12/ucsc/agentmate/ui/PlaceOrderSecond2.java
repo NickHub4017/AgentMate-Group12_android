@@ -163,28 +163,28 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
     public void selector(String selection){
         int pos = new_order.findById(selection);
         int pos_dmnd=dmnd_new_order.findById(selection);
-        Toast.makeText(getApplicationContext(),dmnd_new_order.list.size()+"**",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),dmnd_new_order.list.size()+"**",Toast.LENGTH_SHORT).show();
 
 
         if (pos != -1) {
-            Toast.makeText(getApplicationContext(),"it is in list",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"it is in list",Toast.LENGTH_SHORT).show();
             currentItem = new_order.findByIdObj(pos);
             select_exsist=true;
         }
         else{
-            Toast.makeText(getApplicationContext(),"it is not in list",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"it is not in list",Toast.LENGTH_SHORT).show();
             select_exsist=false;
             currentItem = new SellItem(selection, PlaceOrderSecond2.this);
         }
         itemName_edit_auto.setText(currentItem.getItemName());
         ///to demand item
         if (pos_dmnd != -1) {
-            Toast.makeText(getApplicationContext(),"it is in demand",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"it is in demand",Toast.LENGTH_SHORT).show();
             currentdemanditem = dmnd_new_order.findByIdObj(pos_dmnd);
             demand_exsist=true;
         }
         else{
-            Toast.makeText(getApplicationContext(),"it is not in demand",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),"it is not in demand",Toast.LENGTH_SHORT).show();
             demand_exsist=false;
             currentdemanditem = new SellItem(selection, PlaceOrderSecond2.this);
         }
@@ -486,7 +486,7 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
 
     @Override
     public void onGetData(int qty, int demandQty,String demand_DeliverDate) {
-        Toast.makeText(getApplicationContext(),"//////////////"+qty+" "+demandQty+" "+" " ,Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),"//////////////"+qty+" "+demandQty+" "+" " ,Toast.LENGTH_SHORT).show();
         //to select item
         if((!select_exsist) &&(qty!=0)){
             currentItem.setQty(qty);
@@ -522,13 +522,13 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         for (int i=0;i<new_order.list.size();i++){
             String c=new_order.list.get(i).getItemID()+" "+new_order.list.get(i).getItemName()+" "+new_order.list.get(i).getStoreQty();
             Log.d("new order",c);
-            Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
         }
-        Toast.makeText(getApplicationContext(),"***********",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(),"***********",Toast.LENGTH_SHORT).show();
         for (int i=0;i<dmnd_new_order.list.size();i++){
             String c=dmnd_new_order.list.get(i).getItemID()+" "+dmnd_new_order.list.get(i).getItemName()+" "+dmnd_new_order.list.get(i).getStoreQty();
             Log.d("dmnd_new_order",c);
-            Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),c,Toast.LENGTH_SHORT).show();
         }
 
         DrawTable(new_order.list);
