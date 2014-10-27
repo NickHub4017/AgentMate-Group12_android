@@ -44,7 +44,9 @@ tools:context=".Login_Activity" >
     android:layout_height="wrap_content"
     android:layout_alignLeft="@+id/imageView1"
     android:layout_alignTop="@+id/btn_submit"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:layout_gravity="center|left"
+    android:layout_alignRight="@+id/btn_submit">
 
     <TextView
         android:id="@+id/labelforget2"
@@ -60,14 +62,16 @@ tools:context=".Login_Activity" >
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:id="@+id/text_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/textpassword"
-        android:textAppearance="?android:attr/textAppearanceLarge" /><EditText android:id="@+id/Edit_Password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignLeft="@+id/linearLayout1" android:layout_below="@+id/linearLayout1" android:ems="10" android:inputType="textPassword">
+        android:textAppearance="?android:attr/textAppearanceLarge" /><EditText android:id="@+id/Edit_Password" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignLeft="@+id/linearLayout1" android:layout_below="@+id/linearLayout1" android:ems="10" android:inputType="textPassword"
+    android:layout_gravity="center_horizontal">
 </EditText>
 </LinearLayout>
 

@@ -32,7 +32,7 @@ DatabaseControl dbc=new DatabaseControl(this);
         @Override
         public void onClick(View view) {
            vender_create_func();        //Call to the vender creation function
-            Toast.makeText(getApplication(),"New User added Successfully",Toast.LENGTH_LONG).show();
+
         }
         });
 
@@ -101,11 +101,12 @@ DatabaseControl dbc=new DatabaseControl(this);
         String address_ins=edit_address_window.getText().toString();
         String shoptel_ins=edit_shoptel_window.getText().toString();
         String cnftel_ins=edit_cnftel_window.getText().toString();
+
         if (!shopname_ins.isEmpty() && !owner_ins.isEmpty() && !address_ins.isEmpty()){
         Vendor new_vendor=new Vendor(vno_ins,shopname_ins,owner_ins,address_ins,shoptel_ins,cnftel_ins,0.0,false);
         //Vendor new_vendor=new Vendor(1,"a","b","c",2,3,0.0,false);
         dbc.addVendor(new_vendor);
-
+            Toast.makeText(getApplication(),"New User added Successfully",Toast.LENGTH_LONG).show();
         }
         else{
             if (shopname_ins.isEmpty()){

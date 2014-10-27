@@ -115,7 +115,7 @@ public class Loader extends Activity {
                                 }
                             }
                             else if (line.equals("item")){
-                                //dbc.DeleteTableData("item");
+                                dbc.DeleteTableData("item");
                                 //Toast.makeText(getApplicationContext(),"bill",Toast.LENGTH_SHORT).show();
                                 table=2;
                                 p_br.setProgress(20);

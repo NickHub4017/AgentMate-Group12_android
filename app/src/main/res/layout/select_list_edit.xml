@@ -77,7 +77,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DELETE"
-            android:id="@+id/btn_order_edit_delete" />
+            android:id="@+id/btn_order_edit_delete"
+            android:visibility="invisible" />
 
         <Button
             android:layout_width="wrap_content"

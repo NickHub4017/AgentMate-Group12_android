@@ -31,7 +31,7 @@ public class LocationService extends Service
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         int res = super.onStartCommand(intent, flags, startId);
-        Toast.makeText(getApplicationContext(), "Service LOC Started", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "Service LOC Started", Toast.LENGTH_LONG).show();
 
         Intent intent3 = new Intent();
 

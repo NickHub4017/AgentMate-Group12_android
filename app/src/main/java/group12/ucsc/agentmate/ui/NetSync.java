@@ -62,6 +62,12 @@ public class NetSync extends Service{
             @Override
             public void run() {
                 while (true) {
+                    try {
+                        sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
                     if (!mConnection.isConnected()) {
 
 
@@ -69,11 +75,7 @@ public class NetSync extends Service{
                         erInt.setAction("Errors");
                         sendBroadcast(erInt);
 
-                        try {
-                            sleep(5000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+
                     }
 
                 }
@@ -81,7 +83,7 @@ public class NetSync extends Service{
         };
         tt.start();
 
-        Toast.makeText(getApplicationContext(),"Line",Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),"Line",Toast.LENGTH_LONG).show();
 
 
         return START_STICKY;
@@ -114,7 +116,7 @@ public class NetSync extends Service{
                     mConnection.sendTextMessage("SHARE #tot @nirm");
                     mConnection.sendTextMessage("SHARE #vanqty @nirm");
 
-                    Toast.makeText(getApplicationContext(),"Open",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Open",Toast.LENGTH_LONG).show();
                 }
 
                 @Override
