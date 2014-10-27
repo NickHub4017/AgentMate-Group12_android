@@ -99,7 +99,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
 
-    public void k(){
+    public void k(){ //All test cases are added here.
         SQLiteDatabase database = this.getWritableDatabase();
         String create_return_Table_query = "CREATE TABLE return (SubItemID VARCHAR(11) PRIMARY KEY,Qty INTEGER,Date datetime default current_timestamp,ActualPrice FLOAT,Sync BOOLEAN)";
         database.execSQL(create_return_Table_query);
@@ -180,7 +180,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
             Log.d("Table print error ",e.toString());
         }
     }
-
+//This function let the Add new user to login database
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
 
         SQLiteDatabase database = this.getWritableDatabase();
