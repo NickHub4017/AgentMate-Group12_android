@@ -90,7 +90,7 @@
         android:id="@+id/lblconftel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Confirm Telephone Number"
+        android:text="Owner Telephone Number"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
