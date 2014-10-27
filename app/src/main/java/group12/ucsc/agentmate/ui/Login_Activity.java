@@ -25,20 +25,8 @@ public class Login_Activity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_);
-        ///Message for activity startup done
-        //Toast.makeText(getApplicationContext(), dbc.password_encoder("k"), Toast.LENGTH_SHORT).show();
-        ///Create buttons
-        SellItem s1=new SellItem("11","cccc",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s2=new SellItem("113","ccbbbb",20.10,5,2.5,"pkt","pkt","pe",false);
-        SellItem s3=new SellItem("1134","cccc",20.5,100,2.5,"pkt","pkt","pe",false);
-        SellItem s4=new SellItem("114","ffaa",20.5,5,2.5,"pkt","pkt","pe",false);
-        SellItem s5=new SellItem("115","fffbcc",20.5,5,2.5,"pkt","pkt","pe",false);
-        /*dbc.AddItem(s1);
-        dbc.AddItem(s2);
-        dbc.AddItem(s3);
-        dbc.AddItem(s4);
-        dbc.AddItem(s5);*/
-        //ToDo delete this part
+
+
 
         Button Login_button = (Button) findViewById(R.id.BtnLogin);
         Button Forget_button = (Button) findViewById(R.id.BtnForget);
@@ -48,7 +36,7 @@ public class Login_Activity extends Activity {
         Login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                login();//Call the login function (*)
 
 
             }
@@ -81,33 +69,10 @@ public class Login_Activity extends Activity {
             }
         });
 
-        try {
-            dbc.insertToLogin("RP01", "grp12", dbc.password_encoder("2012"), "Year of joined ", dbc.password_encoder("2012"));
-            dbc.insertToLogin("RP02", "grp12a", dbc.password_encoder("2014"), "this year ", dbc.password_encoder("2014"));
-        }
-        catch(Exception e){
-            Toast.makeText(getApplicationContext(),"Not insert"+e.getMessage(),Toast.LENGTH_SHORT).show();
 
-        }
 
-        Exit_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //dbc.test();
-                //finish();
-                dbc.AddDiscount("123",5,1,2.5);
-                dbc.AddDiscount("123",15,6,3.5);
-                dbc.AddDiscount("123",25,16,4.5);
-                dbc.AddDiscount("123",30,26,5.5);
-                dbc.AddDiscount("12",15,1,2.5);
-                dbc.AddDiscount("12",25,16,3.5);
-                //ToDo delete this part
 
-            }
-        });
     }
-
-
 
 public void login(){
 
@@ -126,7 +91,7 @@ public void login(){
         Cursor c=dbc.getLoginInfo(username_ins.getText().toString());
         if (c.getCount()==0){
             Toast.makeText(getApplicationContext(), "Invalid credintials Please try again", Toast.LENGTH_SHORT).show();
-            username_ins.setBackgroundColor(Color.RED);
+            username_ins.setBackgroundColor(Color.RED);//If credentials wrong
             password_ins.setBackgroundColor(Color.RED);
 
 
@@ -166,8 +131,6 @@ public void login(){
             password_ins.setBackgroundColor(Color.RED);
         }
     }
-
-
 
 
 public void forgot(){

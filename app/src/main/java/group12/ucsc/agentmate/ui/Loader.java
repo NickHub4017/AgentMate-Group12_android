@@ -41,17 +41,17 @@ public class Loader extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.startup_window);
-        try{
+        try{    //Check weather the GPS and internet activated
             ConnectivityManager cm = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
             locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||(activeNetwork!=null)&&(activeNetwork.getType()==ConnectivityManager.TYPE_MOBILE)){
                 dbc=new DatabaseControl(this);
-                p_br=(ProgressBar)findViewById(R.id.loading_bar);
-                readFile();
+                p_br=(ProgressBar)findViewById(R.id.loading_bar);//Create a progress bar to show the current progress of the file reading
+                readFile();///Read the file (*)
             }
-            else{
+            else{       //Show the error messages
                 Toast.makeText(getApplicationContext(),"Please Activate GPS and Internet connection to Proceed",Toast.LENGTH_LONG).show();
                 TextView editTv=(TextView)findViewById(R.id.txt_loading);
                 editTv.setText("Please Activate GPS and INTERNET then Restart the Application");
@@ -70,16 +70,16 @@ public class Loader extends Activity {
     }
 
 
-    public int readFile(){
+    public int readFile(){  //Read the file
         String filename="load.txt";
         sdcard = Environment.getExternalStorageDirectory();
-        loadfile = new File(sdcard,"/AgentMate/IN/load.txt");
+        loadfile = new File(sdcard,"/AgentMate/IN/load.txt");//Where the file is
         StringBuilder text = new StringBuilder();
 
         final Thread t = new Thread(){
 
             @Override
-            public void run(){
+            public void run(){//On another thread
 
                 try {
                     BufferedReader br = new BufferedReader(new FileReader(loadfile));
@@ -276,6 +276,8 @@ public class Loader extends Activity {
     return 1;
     }
 
+    //If the current read line in the file is not a table name then it means current line is data.
+    //So enter that data in to the relavant table.
     public void tableSwitcher(int table,String line){
 
         String[] data=line.split("#");

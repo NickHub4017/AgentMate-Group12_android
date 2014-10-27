@@ -104,7 +104,7 @@ public class Edit_Customer extends Activity{
 
 
     }
-
+//Get the position of the key in the given array
     public static int getArrayPosition(String key,String[] array){
         for (int i=0;i<array.length;i++){
             if (array[i].equals(key)){
@@ -113,7 +113,7 @@ public class Edit_Customer extends Activity{
         }
         return -1;
     }
-
+//Activate all fields when user select the vender.
     public void enableall(){
         edit_new_owner_window.setEnabled(true);
         edit_new_address_window.setEnabled(true);
@@ -121,6 +121,7 @@ public class Edit_Customer extends Activity{
         edit_new_confTel_window.setEnabled(true);
 
     }
+    //Accroding to the selection other data fields will be populated
     public void setDataField(Cursor cursor){
         no_edit_auto.setText(cursor.getString(cursor.getColumnIndex("venderno")));
         shname_edit_auto.setText(cursor.getString(cursor.getColumnIndex("ShopName")));
@@ -131,7 +132,7 @@ public class Edit_Customer extends Activity{
 
     }
 
-
+//Edit the vendor details and send to database
     public void edit_vendor(View v){
 
         String v_no=no_edit_auto.getText().toString();

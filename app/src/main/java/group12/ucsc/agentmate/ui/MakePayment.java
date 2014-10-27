@@ -52,11 +52,12 @@ public class MakePayment extends Activity {
         dbc=new DatabaseControl(MakePayment.this);
         ven_id=(AutoCompleteTextView)findViewById(R.id.autotxt_venid);
         Cursor cursor_ven_id=dbc.getVendorTable();
+
         final String[] str_arry_vno=new String[cursor_ven_id.getCount()];
         final String[] str_arry_shname=new String[cursor_ven_id.getCount()];
         pay=new Payment(logged_rep);
         int i=0;
-        if (cursor_ven_id.moveToFirst()){
+        if (cursor_ven_id.moveToFirst()){      //Add items to selectable list
             do{
                 str_arry_vno[i]=cursor_ven_id.getString(cursor_ven_id.getColumnIndex("venderno"));
                 str_arry_shname[i]=cursor_ven_id.getString(cursor_ven_id.getColumnIndex("ShopName"));
@@ -80,7 +81,7 @@ public class MakePayment extends Activity {
 
             }
         });
-        Button btn_create_payment=(Button)findViewById(R.id.btn_make_payment);
+        Button btn_create_payment=(Button)findViewById(R.id.btn_make_payment);   //When click the btn relavnt details will set in the pay table.
         btn_create_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +97,7 @@ public class MakePayment extends Activity {
                     pay.SubmitToDB(view.getRootView().getContext());
                     String msg="You ("+pay.getVenderNo()+ ") have make payment of Rs "+pay.getPayAmount()+" in "+pay.getPayDate()+" via "+ pay.getType()+" THANK YOU. D.N. DISTRIBUTORS.";
                     String number=dbc.getVendorConfNumberByID(pay.getVenderNo());
-                    if (number==null||number.length()!=10){
+                    if (number==null||number.length()!=10){      //If the vendor doesnt have confirmation number sms willl redirect to agents mobile.
                         number="0777117110";
                     }
                     try {
@@ -134,6 +135,8 @@ public class MakePayment extends Activity {
 
 
     }
+
+
     public String[] vendors(DatabaseControl dbc){
         Cursor cur=dbc.getVendorTable();
         String[] vendrs=new String[cur.getCount()];
@@ -158,6 +161,7 @@ public class MakePayment extends Activity {
         return bills;
     }
 
+    //get the areas of the vendor.
     public double getAreas(String vendorno){
         return dbc.getAreasForVendor(vendorno);
     }

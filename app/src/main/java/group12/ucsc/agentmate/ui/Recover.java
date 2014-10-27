@@ -52,7 +52,7 @@ public class Recover extends  Activity{
                 String ent_ans=ans_txt.getText().toString();
                if (ans.equals(dbc.password_encoder(ent_ans))){
 
-                    String phoneNo = "0777117110";//0712626607
+                    String phoneNo = "0719720470";//0712626607  //Password request send to agent.
                     String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
                     try {
 
@@ -76,6 +76,7 @@ public class Recover extends  Activity{
         final EditText code_win=(EditText)findViewById(R.id.editcode);
         Button btn_code_win=(Button)findViewById(R.id.btn_submit_code);
 
+        //If the code is right then user redirect to the next window.
         btn_code_win.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

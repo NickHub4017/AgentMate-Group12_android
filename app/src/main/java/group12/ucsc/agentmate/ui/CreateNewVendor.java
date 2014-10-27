@@ -31,7 +31,7 @@ DatabaseControl dbc=new DatabaseControl(this);
     submit_btn.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-           vender_create_func();
+           vender_create_func();        //Call to the vender creation function
             Toast.makeText(getApplication(),"New User added Successfully",Toast.LENGTH_LONG).show();
         }
         });
@@ -86,7 +86,7 @@ DatabaseControl dbc=new DatabaseControl(this);
     }
 
 
-    public void vender_create_func(){
+    public void vender_create_func(){//Table to create the vender by getting the data from user inputs.
 
         EditText edit_vno_window=(EditText)findViewById(R.id.edit_vno);
         EditText edit_shopname_window=(EditText)findViewById(R.id.edit_ShopName);

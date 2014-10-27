@@ -37,7 +37,7 @@ public class Select_Menu extends Activity{
         btn_set_password.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {//Set activity start on set password button clicked
                 Intent set_password_intent=new Intent(Select_Menu.this, SetPassword.class);
                 set_password_intent.putExtra("logged_user", logged_rep);
                 startActivity(set_password_intent);

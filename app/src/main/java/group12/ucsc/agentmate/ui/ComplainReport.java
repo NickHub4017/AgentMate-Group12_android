@@ -52,7 +52,7 @@ public class ComplainReport extends Activity {
         edit_comment = (EditText) findViewById(R.id.edit_cmp_complain);
         btn_cmp_submit = (Button) findViewById(R.id.btn_compalin_submit);
 
-        cursor_ven_id = dbc.getVendorTable();
+        cursor_ven_id = dbc.getVendorTable();//Load the items to select list to select
         final String[] str_arry_vno = new String[cursor_ven_id.getCount()];
         final String[] str_arry_shname = new String[cursor_ven_id.getCount()];
         int i = 0;
@@ -74,7 +74,7 @@ public class ComplainReport extends Activity {
             }
         });
 
-        cursor_item = dbc.getAllItemByName();
+        cursor_item = dbc.getAllItemByName();//Add item list to select to select field.
         final String[] str_arry_item_id = new String[cursor_item.getCount()];
         final String[] str_arry_item_name = new String[cursor_item.getCount()];
         int j = 0;
@@ -133,7 +133,7 @@ public class ComplainReport extends Activity {
 
     }
 
-    public int srch(String key,String[] array){
+    public int srch(String key,String[] array){//Get the position of the given string
 
         for (int i=0;i<array.length;i++){
             if (array[i].equals(key)){

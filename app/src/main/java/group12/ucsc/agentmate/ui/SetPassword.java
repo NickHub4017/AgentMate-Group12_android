@@ -33,10 +33,11 @@ public class SetPassword extends Activity{
         logged_username=logged_rep.UserName;
         logged_password=logged_rep.enc_password;
         Button btn_submit=(Button)findViewById(R.id.btn_submit);
+
         btn_submit.setOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(View v) {
+            public void onClick(View v) {  ///When Click the submit button.
                 EditText old_pw_ins_window=(EditText)findViewById(R.id.edit_old_pw);
                 EditText new_pw_ins_window=(EditText)findViewById(R.id.edit_new_pwd);
                 EditText new_pw_ins_cnf_window=(EditText)findViewById(R.id.edit_new_confirm);

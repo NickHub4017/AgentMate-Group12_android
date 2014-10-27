@@ -24,10 +24,10 @@ public class ReamainVan extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_remain_van);
 
-        table_hdr();
+        table_hdr();//draw the header names in column.
 
         Cursor itm_cur = dbc.getAllItemByName();
-
+                                                    //Add the venders to the selection list to select
         final String[] str_arry_item_id = new String[itm_cur.getCount()];
         int j = 0;
         if (itm_cur.moveToFirst() && itm_cur.getCount() != 0) {
@@ -44,9 +44,9 @@ public class ReamainVan extends Activity {
     }
 
     public void table_hdr() {
-        TableLayout tl = (TableLayout) findViewById(R.id.view_remain_table);
+        TableLayout tl = (TableLayout) findViewById(R.id.view_remain_table);// MAke layout
         final TableRow tr_head = new TableRow(this);
-        tr_head.setId(10);
+        tr_head.setId(10);//Add elements
         tr_head.setBackgroundColor(Color.BLACK);
         tr_head.setLayoutParams(new TableRow.LayoutParams(
                 TableRow.LayoutParams.MATCH_PARENT,

@@ -179,8 +179,12 @@ public class DatabaseControl extends SQLiteOpenHelper{
         catch (Exception e){
             Log.d("Table print error ",e.toString());
         }
-    }
+    }//This function is used to do the modificiation to the current database structure.
 
+    ///Queries runs on login table
+
+    //In this function given details will insert to table if empId is not exsists.
+    //Will update the database if the record exsits.
     public void insertToLogin(String EmpId_ins,String username_ins,String encpassword_ins,String Question_ins,String enc_Ans_ins){
 
         SQLiteDatabase database = this.getWritableDatabase();
@@ -203,10 +207,10 @@ public class DatabaseControl extends SQLiteOpenHelper{
         }
     }
 
-    public Cursor getLoginInfo(String Username_ins) {
+    public Cursor getLoginInfo(String Username_ins) {//Get the login info with relavant to the given user name.
         //HashMap<String, String> LoginMap = new HashMap<String, String>();
 
-        SQLiteDatabase database = this.getReadableDatabase();
+     SQLiteDatabase database = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM login  where UserName='"+Username_ins+"'";
 
@@ -235,34 +239,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
 
-    public String finditemByID(String ItemID){
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String select_ven_id_Query = "SELECT * FROM item " +
-                "WHERE ItemID= '"+ItemID+"'";
-
-        //Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
-        Cursor cursor = database.rawQuery(select_ven_id_Query,null);
-        cursor.moveToFirst();
-       return cursor.getString(cursor.getColumnIndex("ItemName"));
-
-    }
-
-    public String finditemByName(String ItemName){
-        SQLiteDatabase database = this.getReadableDatabase();
-
-        String select_ven_id_Query = "SELECT * FROM item " +
-                "WHERE ItemName= '"+ItemName+"'";
-
-        //Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
-        Cursor cursor = database.rawQuery(select_ven_id_Query,null);
-        cursor.moveToFirst();
-        return cursor.getString(cursor.getColumnIndex("ItemID"));
-
-    }
-
     public void change_Password(String UserName,String new_Password){
-       // Toast.makeText(con,"Updated succefully "+UserName+" "+new_Password, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(con,"Updated succefully "+UserName+" "+new_Password, Toast.LENGTH_SHORT).show();
         SQLiteDatabase database = this.getWritableDatabase();
         Calendar cal = Calendar.getInstance();
         int seconds = cal.get(Calendar.DATE);
@@ -291,6 +269,85 @@ public class DatabaseControl extends SQLiteOpenHelper{
         }
     }
 
+
+//Queries to the item table
+    //Get the item details when itemId given
+    public String finditemByID(String ItemID){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        String select_ven_id_Query = "SELECT * FROM item " +
+                "WHERE ItemID= '"+ItemID+"'";
+
+        //Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
+        Cursor cursor = database.rawQuery(select_ven_id_Query,null);
+        cursor.moveToFirst();
+       return cursor.getString(cursor.getColumnIndex("ItemName"));
+
+    }
+
+    //Get the item details when itemName given
+    public String finditemByName(String ItemName){
+        SQLiteDatabase database = this.getReadableDatabase();
+
+        String select_ven_id_Query = "SELECT * FROM item " +
+                "WHERE ItemName= '"+ItemName+"'";
+
+        //Toast.makeText(con,select_ven_id_Query,Toast.LENGTH_SHORT).show();
+        Cursor cursor = database.rawQuery(select_ven_id_Query,null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("ItemID"));
+
+    }
+
+    //Update the item details
+    public void itemQtyUpdate(SellItem item){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("StoreQty", item.getStoreQty());
+        values.put("Sync","false");
+        database.update("item", values,"ItemID"+" = ?",new String[] {item.getItemID()});
+
+    }
+
+    //Add the item to the item table.Execute on the loader activity.
+    public void AddItem (SellItem item){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+//    Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
+        values.put("ItemID",item.getItemID());
+        values.put("ItemName",item.getItemName());
+        values.put("Price",item.getPrice());
+        values.put("StoreQty",item.getStoreQty());
+        values.put("CompanyDiscount",item.getCompanyDiscount());
+        values.put("MinUnit",item.getMinUnit());
+        values.put("MinOrderUnit",item.getMinOrderUnit());
+        values.put("CategoryID",item.getCategoryID());
+        values.put("Sync",item.isSync());
+
+        database.insert("item",null, values);
+
+
+    }
+
+//Get the Item when ItemId given
+    public Cursor getExactItemByID(String ItemID){
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_exact_item_id_Query = "SELECT * FROM item where ItemID='"+ItemID+"'";
+        Cursor cursor = database.rawQuery(select_exact_item_id_Query,null);
+        return cursor;
+
+    }
+
+//Get the all item when the name is given
+    public Cursor getAllItemByName (){//
+        SQLiteDatabase database = this.getReadableDatabase();
+        String select_item_id_Query = "SELECT ItemID,ItemName FROM item";
+
+        Cursor cursor = database.rawQuery(select_item_id_Query,null);
+        return cursor;
+    }
+
+
     public void confirm_data(Vendor vendor_conf){
         String ven_id=vendor_conf.getVenderNo();
         SQLiteDatabase database = this.getWritableDatabase();
@@ -299,15 +356,8 @@ public class DatabaseControl extends SQLiteOpenHelper{
         database.update("vendor", values, "venderno" + " = ?", new String[]{ven_id});
     }
 
-    public void itemQtyUpdate(SellItem item){
-        SQLiteDatabase database = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("StoreQty", item.getStoreQty());
-        values.put("Sync","false");
-        database.update("item", values,"ItemID"+" = ?",new String[] {item.getItemID()});
-
-}
-
+//Queries to the vendor table.
+//Add the new vendor to the table.//In the Create new customer activity
   public void addVendor(Vendor new_vendor){
       SQLiteDatabase database = this.getWritableDatabase();
       ContentValues values = new ContentValues();
@@ -322,6 +372,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
       database.insert("vendor",null, values);
   }
 
+    //Get the vendor from the table
     public Cursor findVendor(String ven_id){
         SQLiteDatabase database = this.getReadableDatabase();
 
@@ -333,6 +384,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         return cursor;
     }
 
+//Edit the vendor details in the table//Edit customer activity
     public void editVendor(Vendor editVendor,Context con){
         String edited_venderno=editVendor.getVenderNo();
 
@@ -355,6 +407,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
     }
 
+//Get all vendors in the table.//In all activity
     public Cursor getVendorTable(){
         SQLiteDatabase database = this.getReadableDatabase();
         String select_ven_name_Query = "SELECT * FROM vendor";
@@ -362,6 +415,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
         return cursor;
 
     }
+
 
     public void add_complain(String CompID_ins,String ItemID_ins,String Complain_ins,String VendorID_ins,Boolean synced_ins){
         SQLiteDatabase database = this.getWritableDatabase();
@@ -410,41 +464,6 @@ public Cursor findComplainByID(String comp_id_ins){
         SQLiteDatabase database = this.getReadableDatabase();
 
         String select_item_id_Query = "SELECT * FROM complain WHERE ComplainID='"+comp_id_ins+"'";
-        Cursor cursor = database.rawQuery(select_item_id_Query,null);
-        return cursor;
-    }
-
-public void AddItem (SellItem item){
-    SQLiteDatabase database = this.getWritableDatabase();
-    ContentValues values = new ContentValues();
-//    Toast.makeText(con,item.getItemID(),Toast.LENGTH_SHORT).show();
-    values.put("ItemID",item.getItemID());
-    values.put("ItemName",item.getItemName());
-    values.put("Price",item.getPrice());
-    values.put("StoreQty",item.getStoreQty());
-    values.put("CompanyDiscount",item.getCompanyDiscount());
-    values.put("MinUnit",item.getMinUnit());
-    values.put("MinOrderUnit",item.getMinOrderUnit());
-    values.put("CategoryID",item.getCategoryID());
-    values.put("Sync",item.isSync());
-
-    database.insert("item",null, values);
-
-
-}
-
-public Cursor getExactItemByID(String ItemID){
-    SQLiteDatabase database = this.getReadableDatabase();
-    String select_exact_item_id_Query = "SELECT * FROM item where ItemID='"+ItemID+"'";
-    Cursor cursor = database.rawQuery(select_exact_item_id_Query,null);
-    return cursor;
-
-}
-
-public Cursor getAllItemByName (){
-        SQLiteDatabase database = this.getReadableDatabase();
-        String select_item_id_Query = "SELECT ItemID,ItemName FROM item";
-
         Cursor cursor = database.rawQuery(select_item_id_Query,null);
         return cursor;
     }
@@ -860,9 +879,3 @@ public void addItemToReturnTable(SellItem item,String vendorno){
     }
 
     }
-
-
-
-
-
-
