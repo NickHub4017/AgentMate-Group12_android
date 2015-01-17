@@ -88,7 +88,7 @@ public class DatabaseControl extends SQLiteOpenHelper{
                 "OrderDate datetime default current_timestamp,Sync BOOLEAN)";
         database.execSQL(create_demand_venOrderTable_query);
 //Create demandMyorder table
-        String create_demand_order_Table_query = "CREATE TABLE demandMyorder (DemOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,,DeliverDate datetime,Sync BOOLEAN, PRIMARY KEY (DemOrderID, ItemID))";
+        String create_demand_order_Table_query = "CREATE TABLE demandMyorder (DemOrderID VARCHAR(16),ItemID VARCHAR(5),Qty INTEGER,DeliverDate datetime,Sync BOOLEAN, PRIMARY KEY (DemOrderID, ItemID))";
         database.execSQL(create_demand_order_Table_query);
 
     }
@@ -197,7 +197,12 @@ public class DatabaseControl extends SQLiteOpenHelper{
 
 
         if(this.getLoginInfo(username_ins).getCount()!=0){
-            database.update("login", values,"EmpId"+" = ?",new String[] {EmpId_ins});
+            try {
+                database.update("login", values, "EmpId" + " = ?", new String[]{EmpId_ins});
+            }catch(Exception e)
+                {
+                    Log.d("DATABASE ERROR",e.toString());
+                }
             //If already exsits member login do update
         }
         else{
