@@ -15,7 +15,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Complain maker"
+            android:text="Complain writer"
             android:id="@+id/txt_cmp_title"
             android:textColor="#ff0027ff"
             android:textStyle="bold"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Itemname"
+                android:text="Item/good_name"
                 android:id="@+id/txt_cmp_itemname" />
 
             <AutoCompleteTextView
