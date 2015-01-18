@@ -25,7 +25,7 @@ tools:context=".Login_Activity" >
     android:layout_alignParentRight="true"
     android:layout_below="@+id/imageView1"
     android:layout_marginTop="16dp"
-    android:text="See"
+    android:text="Seeit"
     android:visibility="invisible"/>
 
 <Button
