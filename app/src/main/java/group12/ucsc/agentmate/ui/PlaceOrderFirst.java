@@ -140,6 +140,7 @@ public class PlaceOrderFirst extends Activity {
        txt_venmngr.setText("\t"+cur.getString(cur.getColumnIndex("VenderName")));
        txt_venaddr.setText("\t"+cur.getString(cur.getColumnIndex("Address")));
        txt_due_amnt.setText("\t \t"+cur.getString(cur.getColumnIndex("Overdue")));
+       txt_due_amnt.setText(Double.toString(dbc.getAreasForVendor(vno_edit_auto.getText().toString())));
        txt_due_amnt.setTextColor(Color.parseColor("#F505E5"));
 
        btn_cntd.setEnabled(true);
