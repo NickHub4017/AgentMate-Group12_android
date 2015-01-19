@@ -75,6 +75,7 @@
         android:id="@+id/edit_new_Shop_TelNo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:ems="10" />
 
     <TextView
@@ -88,6 +89,7 @@
         android:id="@+id/edit_new_Conf_Tel_No"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:ems="10" />
 
     <TextView

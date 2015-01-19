@@ -41,7 +41,9 @@ public class Login_Activity extends Activity {
 
             }
         });
-
+        dbc.insertToLogin("RP01","grp12", dbc.password_encoder("2012"),"Year of joined ", dbc.password_encoder("2012"));
+        dbc.insertToLogin("abcd","pqr", dbc.password_encoder("pqr"),"pass is pqr ans is xyz ", dbc.password_encoder("lmn"));
+        dbc.insertToLogin("abcd","pqrs", dbc.password_encoder("pqr"),"pass is pqr ans is xyz ", dbc.password_encoder("lmn"));
         Forget_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,7 +56,7 @@ public class Login_Activity extends Activity {
 
             @Override
             public void onClick(View v) {
-                //dbc.insertToLogin("RP01","grp12", dbc.password_encoder("2012"),"Year of joined ", dbc.password_encoder("2012"));
+                dbc.insertToLogin("RP01","grp12", dbc.password_encoder("2012"),"Year of joined ", dbc.password_encoder("2012"));
                 dbc.insertToLogin("abcd","pqr", dbc.password_encoder("pqr"),"pass is pqr ans is xyz ", dbc.password_encoder("lmn"));
                 dbc.insertToLogin("abcd","pqrs", dbc.password_encoder("pqr"),"pass is pqr ans is xyz ", dbc.password_encoder("lmn"));
             }

@@ -84,12 +84,14 @@
         android:id="@+id/edit_Shop_TelNo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:ems="10" />
 
     <TextView
         android:id="@+id/lblconftel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:text="Owner Telephone Number"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -97,6 +99,7 @@
         android:id="@+id/edit_Conf_Tel_No"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="phone"
         android:ems="10" />
 
     <TextView
