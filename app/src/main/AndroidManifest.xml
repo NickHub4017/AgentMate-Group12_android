@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" ></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_SMS" ></uses-permission>
+    <uses-permission android:name="android.permission.READ_SMS" ></uses-permission>
 
     <application
         android:allowBackup="true"
@@ -71,9 +74,22 @@
                 </action>
                 <action android:name="Errors">
                 </action>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED">
+                </action>
+
 
             </intent-filter>
 
         </receiver>
+        <receiver android:name=".ui.SmsReceiver">
+            <intent-filter>
+                <action android:name="group12.tutorialspoint.CUSTOM_INTENT">
+                </action>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED">
+                </action>
+            </intent-filter>
+
+        </receiver>
+
     </application>
 </manifest>

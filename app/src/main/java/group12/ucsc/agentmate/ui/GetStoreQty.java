@@ -8,6 +8,9 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.telephony.gsm.SmsMessage;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,11 +33,13 @@ public class GetStoreQty extends Activity {
     TextView dataTv;
     String Item_ID_Select=null;
     AccelerationServiceReceiver accelerationReceiver = new AccelerationServiceReceiver();
+    smsRecv smsbroad = new smsRecv();
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(accelerationReceiver);
+        unregisterReceiver(smsbroad);
     }
 
     @Override
@@ -45,6 +50,12 @@ public class GetStoreQty extends Activity {
         IntentFilter movementFilter;
         movementFilter = new IntentFilter("Get.Store.Intent");
         registerReceiver(accelerationReceiver, movementFilter);
+
+        IntentFilter smsgetqtyintent;
+        smsgetqtyintent = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
+        registerReceiver(smsbroad, smsgetqtyintent);
+
+
 
         dataTv=(TextView)findViewById(R.id.txt_show_data);
 
@@ -101,6 +112,20 @@ public class GetStoreQty extends Activity {
                 //in.putExtra("Store_QTY",100.0);
                 in.putExtra("Get_Store_Item",Item_ID_Select);
                 sendBroadcast(in);
+
+                String phoneNo = "0719720470";//0712626607  //Password request send to agent.
+                String msg = " StoreQty "+Item_ID_Select;
+                try {
+
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, msg, null, null);
+                    Toast.makeText(getApplicationContext(),"Requset has been send" , Toast.LENGTH_SHORT).show();
+                } catch (Exception ex) {
+                    Toast.makeText(getApplicationContext(),
+                            ex.getMessage().toString(),
+                            Toast.LENGTH_LONG).show();
+                    ex.printStackTrace();
+                }
            }
         });
     }
@@ -124,5 +149,16 @@ public class GetStoreQty extends Activity {
 
         }
     }
+    public class smsRecv extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Toast.makeText(getApplicationContext(), "dyn got it.."+intent.getAction(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+
+
 
 }
