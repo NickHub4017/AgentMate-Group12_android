@@ -141,30 +141,49 @@ public class Edit_Customer extends Activity{
         String newAddressName=edit_new_address_window.getText().toString();
         String newShopTelName=edit_new_shopTel_window.getText().toString();
         String newConfTelName=edit_new_confTel_window.getText().toString();
-        if(!newShopName.isEmpty() && !newOwnerName.isEmpty() && !newAddressName.isEmpty()) {
+        if(!newShopName.isEmpty() && !newOwnerName.isEmpty() && !newAddressName.isEmpty() &&(newShopTelName.length()==10 || newShopTelName.length()==0)&&(newConfTelName.length()==10 || newConfTelName.length()==0)) {
             Vendor edited_vendor = new Vendor(v_no, newShopName, newOwnerName, newAddressName, newShopTelName, newConfTelName, 0, false);
             dbc.editVendor(edited_vendor, getApplicationContext());
         }
         else{
+
             Toast.makeText(getApplicationContext(),"required fields are missing",Toast.LENGTH_SHORT).show();
+            //Check for the empty inputs which is required
             if (newShopName.isEmpty()){
                 edit_new_shopname_window.setBackgroundColor(Color.MAGENTA);
             }
             else{
-                edit_new_shopname_window.setBackgroundColor(Color.WHITE);
+                edit_new_shopname_window.setBackgroundColor(Color.GREEN);
             }
+
             if (newOwnerName.isEmpty()){
                 edit_new_owner_window.setBackgroundColor(Color.MAGENTA);
             }
             else{
-                edit_new_owner_window.setBackgroundColor(Color.WHITE);
+                edit_new_owner_window.setBackgroundColor(Color.GREEN);
             }
+
             if (newAddressName.isEmpty()){
                 edit_new_address_window.setBackgroundColor(Color.MAGENTA);
             }
             else{
-                edit_new_address_window.setBackgroundColor(Color.WHITE);
+                edit_new_address_window.setBackgroundColor(Color.GREEN);
             }
+
+            if (newConfTelName.length()!=10 && newConfTelName.length()!=0){
+                edit_new_confTel_window.setBackgroundColor(Color.MAGENTA);
+            }
+            else{
+                edit_new_confTel_window.setBackgroundColor(Color.GREEN);
+            }
+
+            if (newShopTelName.length()!=10 && newShopTelName.length()!=0){
+                edit_new_shopTel_window.setBackgroundColor(Color.MAGENTA);
+            }
+            else{
+                edit_new_shopTel_window.setBackgroundColor(Color.GREEN);
+            }
+
         }
 
     }

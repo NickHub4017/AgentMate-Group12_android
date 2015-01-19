@@ -49,7 +49,12 @@ public class Loader extends Activity {
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||(activeNetwork!=null)&&(activeNetwork.getType()==ConnectivityManager.TYPE_MOBILE)){
                 dbc=new DatabaseControl(this);
                 p_br=(ProgressBar)findViewById(R.id.loading_bar);//Create a progress bar to show the current progress of the file reading
-                readFile();///Read the file (*)
+                try {
+                    readFile();///Read the file (*)
+                }
+                catch (Exception e){
+
+                }
             }
             else{       //Show the error messages
                 Toast.makeText(getApplicationContext(),"Please Activate GPS and Internet connection to Proceed",Toast.LENGTH_LONG).show();
@@ -103,6 +108,7 @@ public class Loader extends Activity {
                                 }
                             }
                             else if (line.equals("vendor")){
+                                Log.d("ERROR DATABSE",line);
                                 //dbc.DeleteTableData("vendor");
                                 table=1;
                                 p_br.setProgress(10);
@@ -115,7 +121,7 @@ public class Loader extends Activity {
                                 }
                             }
                             else if (line.equals("item")){
-                                dbc.DeleteTableData("item");
+                                //dbc.DeleteTableData("item");
                                 //Toast.makeText(getApplicationContext(),"bill",Toast.LENGTH_SHORT).show();
                                 table=2;
                                 p_br.setProgress(20);
@@ -226,11 +232,16 @@ public class Loader extends Activity {
 
 
                         //Toast.makeText(getApplicationContext(),"BRCLOSE",Toast.LENGTH_LONG).show();
-                        File editFile=new File(sdcard,"/AgentMate/IN/load.txt");
-                        FileWriter fw = new FileWriter(editFile,false);
-                        fw.write("true\n");
-                        fw.flush();
-                        fw.close();
+                        try {
+                            File editFile = new File(sdcard, "/AgentMate/IN/load.txt");
+                            FileWriter fw = new FileWriter(editFile, false);
+                            fw.write("true\n");
+                            fw.flush();
+                            fw.close();
+                        }
+                        catch (Exception e){
+
+                        }
                         Intent intent2 = new Intent(Loader.this, LocationService.class);
                         startService(intent2);
                         Intent intent3 = new Intent(Loader.this, NetSync.class);
@@ -283,12 +294,13 @@ public class Loader extends Activity {
         String[] data=line.split("#");
         Log.d("Split check",data[0]);
         if (table==0){
-            //dbc.insertToLogin(data[0],data[1],data[2],data[3],data[4]);
+            dbc.insertToLogin(data[0],data[1],data[2],data[3],data[4]);
         }
         else if (table==1){
-//            Vendor vn=new Vendor(data[0],data[1],data[2],data[3],data[4],data[5],Double.parseDouble(data[6]),Boolean.parseBoolean(data[7]));
-            //vn.setConfirm();
-            //dbc.addVendor(vn);
+            Log.d("ERROR DATABSE",line);
+            Vendor vn=new Vendor(data[0],data[1],data[2],data[3],data[4],data[5],Double.parseDouble(data[6]),Boolean.parseBoolean(data[7]));
+            vn.setConfirm();
+            dbc.addVendor(vn);
 
         }
 

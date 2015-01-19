@@ -52,7 +52,7 @@ public class Recover extends  Activity{
                 String ent_ans=ans_txt.getText().toString();
                if (ans.equals(dbc.password_encoder(ent_ans))){
 
-                    String phoneNo = "0719720470";//0712626607  //Password request send to agent.
+                    String phoneNo = "0716787377";//0712626607  //Password request send to agent.
                     String msg = "Employee "+Eid+" Request for password change And his code is "+Encoded;
                     try {
 

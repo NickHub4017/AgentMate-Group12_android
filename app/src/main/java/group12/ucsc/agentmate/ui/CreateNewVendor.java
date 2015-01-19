@@ -87,46 +87,68 @@ DatabaseControl dbc=new DatabaseControl(this);
 
 
     public void vender_create_func(){//Table to create the vender by getting the data from user inputs.
-
+//Create TextBox items
         EditText edit_vno_window=(EditText)findViewById(R.id.edit_vno);
         EditText edit_shopname_window=(EditText)findViewById(R.id.edit_ShopName);
         EditText edit_owner_window=(EditText)findViewById(R.id.edit_Owner);
         EditText edit_address_window=(EditText)findViewById(R.id.edit_Address);
         EditText edit_shoptel_window=(EditText)findViewById(R.id.edit_Shop_TelNo);
         EditText edit_cnftel_window=(EditText)findViewById(R.id.edit_Conf_Tel_No);
-
+//Get inputs to strings
         String vno_ins=edit_vno_window.getText().toString();
         String shopname_ins=edit_shopname_window.getText().toString();
         String owner_ins=edit_owner_window.getText().toString();
         String address_ins=edit_address_window.getText().toString();
         String shoptel_ins=edit_shoptel_window.getText().toString();
         String cnftel_ins=edit_cnftel_window.getText().toString();
-
-        if (!shopname_ins.isEmpty() && !owner_ins.isEmpty() && !address_ins.isEmpty()){
+//Check for availability of data
+        if (!shopname_ins.isEmpty() && !owner_ins.isEmpty() && !address_ins.isEmpty()&&(shoptel_ins.length()==10 || shoptel_ins.length()==0)&&(cnftel_ins.length()==10 || cnftel_ins.length()==0)){
         Vendor new_vendor=new Vendor(vno_ins,shopname_ins,owner_ins,address_ins,shoptel_ins,cnftel_ins,0.0,false);
         //Vendor new_vendor=new Vendor(1,"a","b","c",2,3,0.0,false);
         dbc.addVendor(new_vendor);
             Toast.makeText(getApplication(),"New User added Successfully",Toast.LENGTH_LONG).show();
         }
         else{
+        //Check for the empty inputs which is required
             if (shopname_ins.isEmpty()){
                 edit_shopname_window.setBackgroundColor(Color.CYAN);
             }
             else{
-                edit_shopname_window.setBackgroundColor(Color.WHITE);
+                edit_shopname_window.setBackgroundColor(Color.GREEN);
             }
+        //Check for the empty inputs which is required
             if (owner_ins.isEmpty()){
                 edit_owner_window.setBackgroundColor(Color.CYAN);
             }
             else{
-                edit_owner_window.setBackgroundColor(Color.WHITE);
+                edit_owner_window.setBackgroundColor(Color.GREEN);
             }
+
+
             if (address_ins.isEmpty()){
                edit_address_window.setBackgroundColor(Color.CYAN);
             }
             else{
-                edit_address_window.setBackgroundColor(Color.WHITE);
+                edit_address_window.setBackgroundColor(Color.GREEN);
             }
+
+
+            if (cnftel_ins.length()!=10 && cnftel_ins.length()!=0){
+                edit_cnftel_window.setBackgroundColor(Color.CYAN);
+            }
+            else{
+                edit_cnftel_window.setBackgroundColor(Color.GREEN);
+            }
+
+
+            if (shoptel_ins.length()!=10 && shoptel_ins.length()!=0){
+                edit_shoptel_window.setBackgroundColor(Color.CYAN);
+            }
+            else{
+                edit_shoptel_window.setBackgroundColor(Color.GREEN);
+            }
+
+
             Toast.makeText(getApplicationContext(),"Please fill the required fields",Toast.LENGTH_SHORT).show();
         }
 
