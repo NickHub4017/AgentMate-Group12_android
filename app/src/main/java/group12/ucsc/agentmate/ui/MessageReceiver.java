@@ -35,7 +35,7 @@ public class MessageReceiver extends BroadcastReceiver {
     static double speed=0;
     static double MoneyInHand=0;
     static double Total=0;
-    static int x;
+    static int xy;
 
     @Override
     public void onReceive(Context context, Intent intent) {
