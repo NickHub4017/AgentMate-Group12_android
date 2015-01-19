@@ -98,7 +98,7 @@ public class MessageReceiver extends BroadcastReceiver {
                     if (recvnum.contains("7")){
                         String toSendphoneNo = recvnum;//"0719720470";//0712626607  //Password request send to agent.
                         String toSendmsg=null;
-//create data to send
+//create data to send  at
 
                         String[] replypart=reply.split("%");
                         //Toast.makeText(context,"String-->"+reply+"---><><>"+replypart[0],Toast.LENGTH_LONG);
