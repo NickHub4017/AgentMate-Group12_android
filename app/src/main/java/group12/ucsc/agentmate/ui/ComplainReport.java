@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,8 +34,8 @@ public class ComplainReport extends Activity {
     Cursor cursor_ven_id, cursor_item;
     Representative logged_rep;
 
-    String vendor_id;
-    String itemcode;
+    String vendor_id=null;
+    String itemcode=null;
     String itemname;
     String item;
 
@@ -69,7 +70,8 @@ public class ComplainReport extends Activity {
         vno_edit_auto_comp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String vendor_id = (String) adapterView.getItemAtPosition(position);
+                vendor_id = (String) adapterView.getItemAtPosition(position);
+
 
             }
         });
@@ -119,15 +121,22 @@ public class ComplainReport extends Activity {
         btn_cmp_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String cmpID;
+
+                String cmpID=null;
                 Calendar cal = Calendar.getInstance();
                 cmpID = logged_rep.getEmp_id()+String.valueOf(cal.get(Calendar.DATE))+String.valueOf(cal.get(Calendar.MONTH))+String.valueOf(cal.get(Calendar.YEAR))+String.valueOf(cal.get(Calendar.HOUR_OF_DAY))+String.valueOf(cal.get(Calendar.MINUTE))+String.valueOf(cal.get(Calendar.SECOND));
                 //Toast.makeText(getApplicationContext(),cmpID,Toast.LENGTH_SHORT).show();
                 String complain=edit_comment.getText().toString();
-                Complain cmp=new Complain(cmpID,itemcode,complain,vendor_id,false);
-                dbc.addToComplain(cmp);
-                Toast.makeText(getApplicationContext(),"Complain is sucessfully submitted",Toast.LENGTH_SHORT).show();
-
+                if (cmpID!=null && itemcode!=null && edit_comment.length()!=0 && vendor_id!=null ) {
+                    Complain cmp = new Complain(cmpID, itemcode, complain, vendor_id, false);
+                    dbc.addToComplain(cmp);
+                    Toast.makeText(getApplicationContext(), "Complain is sucessfully submitted", Toast.LENGTH_SHORT).show();
+                    Log.d("Via complain report",complain);
+                }
+                else{
+                    Log.d("Via complain report",complain+edit_comment.length()+" cmpID"+cmpID+"itemcode "+itemcode+"vendor_id "+vendor_id);
+                    Toast.makeText(getApplicationContext(), "You need to fill all field in the form", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
