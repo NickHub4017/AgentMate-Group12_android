@@ -81,14 +81,20 @@ public class MakePayment extends Activity {
 
             }
         });
-        Button btn_create_payment=(Button)findViewById(R.id.btn_make_payment);   //When click the btn relavnt details will set in the pay table.
+        final Button btn_create_payment=(Button)findViewById(R.id.btn_make_payment);   //When click the btn relavnt details will set in the pay table.
         btn_create_payment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (pay.getVenderNo()!=null) {
                     EditText edit_payamount = (EditText) view.getRootView().findViewById(R.id.edit_payamount);
-                    pay.setPayAmount(Double.parseDouble(edit_payamount.getText().toString()));
-
+                    try {
+                        pay.setPayAmount(Double.parseDouble(edit_payamount.getText().toString()));
+                        btn_create_payment.setEnabled(false);
+                    }
+                    catch (NumberFormatException e){
+                        Toast.makeText(getApplicationContext(),"Please enter the amount",Toast.LENGTH_LONG).show();
+                        btn_create_payment.setEnabled(true);
+                    }
                     if (rbtn_check.isChecked()) {
                         pay.setType("chk");
                     } else if (rbtn_cash.isChecked()) {
@@ -130,7 +136,9 @@ public class MakePayment extends Activity {
 
                     sendBroadcast(intent);
                 }
+
                 }
+
         });
 
 

@@ -25,6 +25,7 @@ import group12.ucsc.agentmate.bll.Vendor;
 public class PlaceOrderBill extends Activity {
     String delDate="";
     Button btn_mk_payment;
+    Button btn_crt_bill;
     Representative logged_rep;
 
     @Override
@@ -33,7 +34,7 @@ public class PlaceOrderBill extends Activity {
         setContentView(R.layout.create_bill);
         final Vendor sel_vendor = (Vendor) getIntent().getExtras().getSerializable("vendor");
         final Order new_order_done = (Order) getIntent().getExtras().getSerializable("select_order");
-
+        btn_crt_bill=(Button)findViewById(R.id.btn_create_bill);
         logged_rep = (Representative) getIntent().getExtras().getSerializable("logged_user");
         final Bill curBill=new Bill(sel_vendor,logged_rep,new_order_done.getOrderID());
         Toast.makeText(getApplicationContext(),"OrderId detect in Place bill"+new_order_done.getOrderID()+"--> Ven"+new_order_done.getVenOrderID(),Toast.LENGTH_LONG).show();
@@ -54,6 +55,12 @@ public class PlaceOrderBill extends Activity {
         txt_billNo_windw.setText("Bill No:- "+curBill.getBillID());
         TextView txt_billVal_windw=(TextView)findViewById(R.id.txt_billVal_bill);
         txt_billVal_windw.setText("Total Bill Value:- RS "+curBill.getTotal());
+        if (curBill.getTotal()==0){
+            btn_crt_bill.setEnabled(false);
+        }
+        else{
+            btn_crt_bill.setEnabled(true);
+        }
         TextView txt_billtotal_high_windw=(TextView)findViewById(R.id.txt_billtotal_high_bill);
         txt_billtotal_high_windw.setText("Total To Paid :- Rs "+curBill.getTotal());
         TextView txt_dscnt_windw=(TextView)findViewById(R.id.txt_dscnt_bill);
@@ -84,7 +91,7 @@ public class PlaceOrderBill extends Activity {
                 }
             }
         });
-        Button btn_crt_bill=(Button)findViewById(R.id.btn_create_bill);
+
         btn_crt_bill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
