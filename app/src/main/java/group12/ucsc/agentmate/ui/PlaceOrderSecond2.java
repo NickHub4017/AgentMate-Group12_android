@@ -151,10 +151,12 @@ public class PlaceOrderSecond2 extends Activity implements GetQtyCommunicator,Ed
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                dbc.addToDemandVenOrder(dmnd_new_order);
                 Intent next=new Intent(PlaceOrderSecond2.this,PlaceOrderBill.class);
                 next.putExtra("vendor",sel_vendor);
                 next.putExtra("logged_user",logged_rep);
                 next.putExtra("select_order", new_order);
+                dmnd_new_order.DemndOrderDB(getApplicationContext());
                 startActivity(next);
             }
         });

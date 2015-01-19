@@ -883,4 +883,27 @@ public void addItemToReturnTable(SellItem item,String vendorno){
 
     }
 
+    public void addToDemandVenOrder(Order order){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("DemOrderID",order.getVenOrderID());
+        values.put("VendorNo",order.getVender_no());
+//        values.put("OrderDate",);//Order date will set by default in SQL database
+        //  values.put("DeliverDate",);
+        values.put("Sync","false");
+        database.insert("demandvenOrder",null, values);
+    }
+
+    public void ItemAddToDemandOrderTable(SellItem item,String OrderID){
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("DemOrderID",OrderID);
+        values.put("ItemID",item.getItemID());
+        values.put("Qty",item.getQty());
+
+        values.put("Sync","false");
+        database.insert("demandMyorder",null, values);
+    }
+
+
     }

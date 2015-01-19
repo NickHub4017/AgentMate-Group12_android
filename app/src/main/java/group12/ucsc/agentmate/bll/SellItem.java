@@ -238,4 +238,10 @@ public SellItem(String itemID){
         dbc.ItemAddToOrderTable(this,orderID);
     }
 
+    public void ItemSubmitToDemandDB(Context con,String orderID){
+        DatabaseControl dbc=new DatabaseControl(con);
+        dbc.ItemAddToDemandOrderTable(this,orderID);
+
+    }
+
 }

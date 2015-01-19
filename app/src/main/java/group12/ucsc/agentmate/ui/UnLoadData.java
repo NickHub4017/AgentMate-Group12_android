@@ -70,7 +70,7 @@ public class UnLoadData extends Activity {
                     fw.append("false\n");
                     fw.append(logged_rep.Emp_id+"\n");
                     fw.append(Calendar.getInstance(TimeZone.getTimeZone("GMT+05:30")).getInstance().getTime().toString()+"\n");
-                    String[] tables={"login","vendor","item","venOrder","discount","measure","complain","bill","Myorder","payment","return"};
+                    String[] tables={"login","vendor","item","venOrder","discount","measure","complain","bill","Myorder","payment","return","demandMyorder","demandvenOrder"};
                     //String[] tables={"venOrder","bill","Myorder","payment"};
                     p_br.setMax(tables.length);
                     int j=0;

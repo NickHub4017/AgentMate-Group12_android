@@ -132,8 +132,13 @@ public class Order implements Serializable {
             list.get(i).ItemSubmitToOrderDB(con,this.VenOrderID);//Order items will record in order table.
         }
 
+    }
 
-
+    public void DemndOrderDB(Context con){
+        for (int i=0;i<this.list.size();i++){
+            list.get(i).ItemSubmitToDemandDB(con,this.getVenOrderID());
+            //list.get(i).ItemSubmitToOrderDB(con,this.VenOrderID);//Order items will record in order table.
+        }
     }
 
 
