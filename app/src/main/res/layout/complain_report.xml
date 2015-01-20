@@ -19,7 +19,7 @@
             android:id="@+id/txt_cmp_title"
             android:textColor="#ff0027ff"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="35dp"
             android:layout_gravity="center_horizontal" />
 
         <LinearLayout
